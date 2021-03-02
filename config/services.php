@@ -22,7 +22,7 @@ return function (ContainerConfigurator $configurator) {
 
     $services->set(WatchdogSubscriber::class)
         ->args([
-            service(Watchdog::class),
+            ref(Watchdog::class),
             tagged_iterator(WatchdogExtension::HANDLER_SERVICE_TAG),
         ])
         ->tag('kernel.event_subscriber')
