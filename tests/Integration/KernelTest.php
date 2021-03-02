@@ -2,7 +2,7 @@
 
 namespace Raneomik\WatchdogBundle\Test\Integration;
 
-use Raneomik\WatchdogBundle\Event\WatchdogWoofEvent;
+use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
 use Raneomik\WatchdogBundle\Test\Integration\Stubs\StubHandler;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -38,7 +38,7 @@ class KernelTest extends TestCase
         $dispatcher = self::$container->get(EventDispatcherInterface::class);
         $testHandler = self::$container->get(StubHandler::class);
 
-        $dispatcher->dispatch(new WatchdogWoofEvent(['handled' => true]));
+        $dispatcher->dispatch(new WatchdogWoofCheckEvent(['handled' => true]));
 
         $this->assertArrayHasKey('handled', $testHandler->handled);
         $this->assertTrue($testHandler->handled['handled']);

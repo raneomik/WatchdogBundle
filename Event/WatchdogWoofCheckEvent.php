@@ -2,7 +2,7 @@
 
 namespace Raneomik\WatchdogBundle\Event;
 
-class WatchdogWoofEvent
+class WatchdogWoofCheckEvent
 {
     private $parameters;
 

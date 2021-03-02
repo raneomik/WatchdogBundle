@@ -2,7 +2,7 @@
 
 namespace Raneomik\WatchdogBundle\Subscriber;
 
-use Raneomik\WatchdogBundle\Event\WatchdogWoofEvent;
+use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -20,11 +20,11 @@ class WatchdogSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            WatchdogWoofEvent::class => 'onWoof',
+            WatchdogWoofCheckEvent::class => 'onWoofCheck',
         ];
     }
 
-    public function onWoof(WatchdogWoofEvent $event)
+    public function onWoofCheck(WatchdogWoofCheckEvent $event)
     {
         if ($this->watchdog->isWoofTime()) {
             foreach ($this->watchdogHandlers as $handler) {

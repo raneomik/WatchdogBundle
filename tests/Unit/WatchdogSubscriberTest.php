@@ -2,7 +2,7 @@
 
 namespace Raneomik\WatchdogBundle\Test\Unit;
 
-use Raneomik\WatchdogBundle\Event\WatchdogWoofEvent;
+use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
 use Raneomik\WatchdogBundle\Subscriber\WatchdogSubscriber;
 use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
@@ -26,7 +26,7 @@ class WatchdogSubscriberTest extends AbstractWatchdogTest
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber($subscriber);
         $eventDispatcher->dispatch(
-            new WatchdogWoofEvent()
+            new WatchdogWoofCheckEvent()
         );
     }
 
@@ -46,7 +46,7 @@ class WatchdogSubscriberTest extends AbstractWatchdogTest
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber($subscriber);
         $eventDispatcher->dispatch(
-            new WatchdogWoofEvent()
+            new WatchdogWoofCheckEvent()
         );
     }
 }

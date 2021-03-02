@@ -25,13 +25,24 @@ watchdog:
       - { start: '20:00', end: '22:30' }          # "and between 20:00 and 22:30"
 ```
 
-### Watchdog class
+### Watchdog service
 
-This bundle provides the `Raneomik\WatchdogBundle\Watchdog\Watchdog` class that can be injected anywhere.
+This bundle provides the `Raneomik\WatchdogBundle\Watchdog\Watchdog` service that can be injected anywhere.
 It has a `isWoofTime` method returning true once configuration matches current date time.
 
-### WatchdogHandlerInterface
+### WatchdogHandlerInterface and WatchdogWoofCheckEvent
 
-This bundle provides the `Raneomik\WatchdogBundle\Watchdog\Watchdog` class that can be injected anywhere.
-It has a `isWoofTime` method returning true once configuration matches current date time.
+This bundle also provides the `Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface` interface with `processWoof(array $parameters = [])` method, for more complex processes.
+It works with the `WatchdogSubscriber` subscribed to `WatchdogWoofCheckEvent`.
 
+Anywhere you wish to check if it `isWoofTime`, dispatch a `new WatchdogWoofCheckEvent($parameters)`, 
+and if it `isWoofTime`, it will trigger all `WatchdogHandlerInterface`s 
+and their `processWoof(array $parameters = []) // passed to the WatchdogWoofCheckEvent constructor`.
+
+If you wish to use it but your project isn't set to be autoconfigured, all your `Handlers` implementing `WatchdogHandlerInterface` must be tagged with `raneomik_watchdog.handler`.
+
+#### TODO:
+
+- [ ] - more unit tests on watchdog units
+- [ ] - format restrictions on specific units (currently, you can pass any string which is supported by `\DateTime` to most of the config keys)
+- [ ] - other not seen yet
