@@ -1,0 +1,62 @@
+<?php
+
+namespace Raneomik\WatchdogBundle\Test\Unit;
+
+use PHPUnit\Framework\TestCase;
+use Raneomik\WatchdogBundle\Exception\MalformedConfigurationValueException;
+use Raneomik\WatchdogBundle\Watchdog\Watchdog;
+
+abstract class AbstractWatchdogTest extends TestCase
+{
+    public function WoofMatchCasesProvider(): \Generator
+    {
+        $minus5Mins = new \DateTime('-5 minutes');
+        $plus5Mins = new \DateTime('+5 minutes');
+
+        yield [[['date_time' => (new \DateTime())->format('Y-m-d H:i')]]];
+        yield [[['hour' => (new \DateTime())->format('H:i')]]];
+        yield [[['time' => (new \DateTime())->format('H:i')]]];
+        yield [[['date' => (new \DateTime())->format('Y-m-d')]]];
+        yield [[['start' => $minus5Mins->format('H:i'), 'end' => $plus5Mins->format('H:i')]]];
+        yield [[['relative' => 'today']]];
+        yield [[[
+            'compound' => [
+                ['relative' => 'today'],
+                ['start' => $minus5Mins->format('H:i'), 'end' => $plus5Mins->format('H:i')],
+            ],
+        ]]];
+
+        //global config wth 1 ok rule
+        yield [[
+            ['relative' => 'tomorrow'],
+            ['start' => $minus5Mins->format('H:i'), 'end' => $plus5Mins->format('H:i')], //ok
+            ['hour' => (new \DateTime('+2 hours'))->format('H:i')],
+            ['date' => (new \DateTime('+2 days'))->format('Y-m-d')],
+        ]];
+    }
+
+    public function NotWoofMatchCasesProvider(): \Generator
+    {
+        $plus2Hours = new \DateTime('+2 hours');
+        $plus3Hours = new \DateTime('+3 hours');
+
+        yield [[['date_time' => $plus2Hours->format('Y-m-d H:i')]]];
+        yield [[['hour' => $plus2Hours->format('H:i')]]];
+        yield [[['time' => $plus3Hours->format('H:i')]]];
+        yield [[['date' => (new \DateTime('+2 days'))->format('Y-m-d')]]];
+        yield [[['start' => $plus2Hours->format('H:i'), 'end' => $plus3Hours->format('H:i')]]];
+        yield [[['relative' => 'tomorrow']]];
+        yield [[[
+            'compound' => [ // should be false
+                ['relative' => 'tomorrow'],
+                ['start' => (new \DateTime('-1 hour'))->format('H:i'), 'end' => $plus3Hours->format('H:i')],
+            ],
+        ]]];
+        yield [[
+            ['relative' => 'tomorrow'],
+            ['start' => $plus2Hours->format('H:i'), 'end' => $plus3Hours->format('H:i')],
+            ['hour' => $plus2Hours->format('H:i')],
+            ['date' => (new \DateTime('+2 days'))->format('Y-m-d')],
+        ]];
+    }
+}

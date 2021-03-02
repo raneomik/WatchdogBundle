@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         bootstrap="vendor/autoload.php"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+>
+    <coverage>
+        <exclude>
+            <directory>./vendor</directory>
+            <directory>./tests</directory>
+        </exclude>
+        <include>
+            <directory>.</directory>
+        </include>
+    </coverage>
+
+    <testsuites>
+        <testsuite name="WatchdogBundle Test Suite">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <server name="SYMFONY_PHPUNIT_VERSION" value="9"/>
+    </php>
+
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+    </listeners>
+</phpunit>

@@ -1,0 +1,35 @@
+{
+    "name": "raneomik/watchdog-bundle",
+    "description": "This bundle provides a configurable watchdog for events to fire",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marek Necesany",
+            "email": "marek@choosit.com",
+            "homepage": "https://github.com/raneomik"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "symfony/console": "^3.4|^4.0|^5.0",
+        "symfony/framework-bundle":  "^3.4|^4.0|^5.0",
+        "symfony/yaml": "^5.2"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^1.1|^2.8",
+        "symfony/test-pack": "*",
+        "symfony/debug-pack": "*"
+    },
+    "autoload": {
+        "psr-4": { "Raneomik\\WatchdogBundle\\": "" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Raneomik\\WatchdogBundle\\Test\\": "tests/" }
+    },
+    "scripts": {
+        "test": [
+            "vendor/bin/simple-phpunit"
+        ]
+    }
+}
