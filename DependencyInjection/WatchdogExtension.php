@@ -7,6 +7,7 @@ use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class WatchdogExtension extends Extension
@@ -21,10 +22,10 @@ class WatchdogExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('watchdog', $config);
+        $container->setParameter('watchdog_config', $config);
 
-        $phpLoader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../config'));
-        $phpLoader->load('services.php');
+        $phpLoader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../config'));
+        $phpLoader->load('services.yml');
 
         $container->registerForAutoconfiguration(WatchdogHandlerInterface::class)
             ->addTag(self::HANDLER_SERVICE_TAG)

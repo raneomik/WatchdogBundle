@@ -12,7 +12,7 @@ class KernelTest extends TestCase
     public function testLoadedBaseConfig()
     {
         self::bootKernel();
-        $config = self::$container->getParameter('watchdog');
+        $config = self::$container->getParameter('watchdog_config');
 
         $this->assertArrayHasKey('dates', $config);
 
@@ -25,7 +25,7 @@ class KernelTest extends TestCase
     public function testLoadedEmptyConfig()
     {
         self::bootKernel(['config' => 'empty']);
-        $config = self::$container->getParameter('watchdog');
+        $config = self::$container->getParameter('watchdog_config');
 
         $this->assertEmpty($config['dates']);
 
