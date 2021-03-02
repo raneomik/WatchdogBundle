@@ -11,7 +11,7 @@ return function (ContainerConfigurator $configurator) {
     $services = $configurator->services();
 
     $services->set(Watchdog::class)
-        ->args([param('watchdog')])
+        ->args(['%watchdog%'])
         ->public()
     ;
 
