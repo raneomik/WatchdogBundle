@@ -4,6 +4,23 @@ WatchdogBundle
 A widget bundle providing a watchdog watching over time and which "woofs" if current time matches provided configuration.
 
 
+### Installation
+
+    `composer require raneomik/watchdog-bundle`
+
+if not using symfony/flex, you need de register the bundle in your project :
+
+```php
+// config/bundles.php
+
+return [
+
+    Raneomik\WatchdogBundle\WatchdogBundle::class => ['all' => true],
+];
+
+```
+
+
 ### Configuration
 
 It can be configured as follows:
