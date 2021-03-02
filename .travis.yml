@@ -1,19 +1,27 @@
 language: php
 
-dist: trusty
+dist: xenial
+
+git:
+    depth: 2
+env:
+  global:
+    - SYMFONY_PHPUNIT_DISABLE_RESULT_CACHE=1
 
 matrix:
   fast_finish: true
   include:
     - php: 7.4
       env: SYMFONY_VERSION=4.4.*
+    - php: 8.0
+      env: SYMFONY_VERSION=4.4.*
+
     - php: 7.4
       env: SYMFONY_VERSION=5.2.*
-
-    - php: nightly
-      env: SYMFONY_VERSION=4.4.*
-    - php: nightly
-      env: SYMFONY_VERSION=5.2.*
+    - php: 8.0
+      env:
+        - SYMFONY_VERSION=5.2.*
+        - COMPOSER_FLAGS="--optimize-autoloader"
 
 before_install:
   - if [[ $COVERAGE != true ]]; then phpenv config-rm xdebug.ini || true; fi
