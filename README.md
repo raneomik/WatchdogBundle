@@ -19,11 +19,14 @@ watchdog:
     - { time: '14:15' }                           # or time      
     - { start: '2019-12-01', end: '2019-12-31' }  # an interval of dates
     - { start: '10:00', end: '11:00' }            # or of times      
-    - { relative: 'first wednesday of' }          # a [relative format](https://www.php.net/manual/fr/datetime.formats.relative.php)
+    - { relative: 'first wednesday of' }          # a relative format*
     - compound:                                   # or a composite of the rules above following "And" logic, for example :
       - { relative: 'monday' }                    # "On mondays"
       - { start: '20:00', end: '22:30' }          # "and between 20:00 and 22:30"
 ```
+
+\* [relative format](https://www.php.net/manual/fr/datetime.formats.relative.php)
+
 
 ### Watchdog service
 
@@ -43,6 +46,6 @@ If you wish to use it but your project isn't set to be autoconfigured, all your 
 
 #### TODO:
 
-- [ ] - more unit tests on watchdog units
-- [ ] - format restrictions on specific units (currently, you can pass any string which is supported by `\DateTime` to most of the config keys)
-- [ ] - other not seen yet
+- [ ] more unit tests on watchdog units
+- [ ] format restrictions on specific units (currently, you can pass any string which is supported by `\DateTime` to most of the config keys)
+- [ ] other not seen yet
