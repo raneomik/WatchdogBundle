@@ -2,7 +2,7 @@
 
 namespace Raneomik\WatchdogBundle\Watchdog\Model;
 
-class WatchdogCompound extends AbstractWatchdogUnit
+class CompoundUnit extends AbstractWatchdogUnit
 {
     private $logicalAndMode;
     private $unitCollection = [];

@@ -4,7 +4,7 @@ namespace Raneomik\WatchdogBundle\Watchdog\Model;
 
 use Raneomik\WatchdogBundle\Exception\IllogicConfigurationException;
 
-class WatchdogInterval extends AbstractWatchdogUnit
+class IntervalUnit extends AbstractWatchdogUnit
 {
     private $start;
     private $end;

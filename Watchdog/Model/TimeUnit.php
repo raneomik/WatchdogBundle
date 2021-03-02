@@ -2,7 +2,7 @@
 
 namespace Raneomik\WatchdogBundle\Watchdog\Model;
 
-class WatchdogTime extends AbstractWatchdogUnit
+class TimeUnit extends AbstractWatchdogUnit
 {
     private $matchHourOnly = false;
 

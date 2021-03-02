@@ -2,7 +2,7 @@
 
 namespace Raneomik\WatchdogBundle\Watchdog\Model;
 
-class WatchdogRelative extends AbstractWatchdogUnit
+class DateUnit extends AbstractWatchdogUnit
 {
     public function isMatching(): bool
     {

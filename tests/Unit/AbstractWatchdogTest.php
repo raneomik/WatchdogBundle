@@ -18,6 +18,7 @@ abstract class AbstractWatchdogTest extends TestCase
         yield [[['time' => (new \DateTime())->format('H:i')]]];
         yield [[['date' => (new \DateTime())->format('Y-m-d')]]];
         yield [[['start' => $minus5Mins->format('H:i'), 'end' => $plus5Mins->format('H:i')]]];
+        yield [[['start' => (new \DateTime('-1 day'))->format('Y-m-d'), 'end' => (new \DateTime('+1 day'))->format('Y-m-d')]]];
         yield [[['relative' => 'today']]];
         yield [[[
             'compound' => [
@@ -45,9 +46,10 @@ abstract class AbstractWatchdogTest extends TestCase
         yield [[['time' => $plus3Hours->format('H:i')]]];
         yield [[['date' => (new \DateTime('+2 days'))->format('Y-m-d')]]];
         yield [[['start' => $plus2Hours->format('H:i'), 'end' => $plus3Hours->format('H:i')]]];
+        yield [[['start' => (new \DateTime('+1 day'))->format('Y-m-d'), 'end' => (new \DateTime('+2 days'))->format('Y-m-d')]]];
         yield [[['relative' => 'tomorrow']]];
         yield [[[
-            'compound' => [ // should be false
+            'compound' => [
                 ['relative' => 'tomorrow'],
                 ['start' => (new \DateTime('-1 hour'))->format('H:i'), 'end' => $plus3Hours->format('H:i')],
             ],

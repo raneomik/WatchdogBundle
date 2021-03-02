@@ -29,19 +29,19 @@ abstract class AbstractWatchdogUnit implements WatchdogUnitInterface
             foreach ($data as $key => $value) {
                 switch ($key) {
                     case 'compound':
-                        return WatchdogCompound::createFromCompoundConfig($value, true);
+                        return CompoundUnit::createFromCompoundConfig($value, true);
                     case 'date_time':
-                        return WatchdogDateTime::createFromConfig($value);
+                        return DateTimeUnit::createFromConfig($value);
                     case 'date':
-                        return WatchdogDate::createFromConfig($value);
+                        return DateUnit::createFromConfig($value);
                     case 'time':
-                        return WatchdogTime::createFromConfig($value);
+                        return TimeUnit::createFromConfig($value);
                     case 'hour':
-                        return WatchdogTime::createFromConfig($value)
+                        return TimeUnit::createFromConfig($value)
                             ->setMatchHourOnly(true)
                         ;
                     case 'relative':
-                        return WatchdogRelative::createFromConfig($value);
+                        return RelativeDateTimeUnit::createFromConfig($value);
                     default:
                         $invalidConfigKey = $key;
                 }
@@ -56,7 +56,7 @@ abstract class AbstractWatchdogUnit implements WatchdogUnitInterface
                     throw new MalformedConfigurationValueException('missing "end" data for interval');
                 }
 
-                return WatchdogInterval::createFromIntervalConfig($data['start'], $data['end']);
+                return IntervalUnit::createFromIntervalConfig($data['start'], $data['end']);
             }
         } catch (IllogicConfigurationException $e) {
             throw $e;
