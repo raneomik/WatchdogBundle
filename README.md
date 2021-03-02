@@ -6,7 +6,7 @@ A widget bundle providing a watchdog watching over time and which "woofs" if cur
 
 ### Installation
 
-    `composer require raneomik/watchdog-bundle`
+    composer require raneomik/watchdog-bundle
 
 if not using symfony/flex, you need de register the bundle in your project :
 
@@ -14,7 +14,6 @@ if not using symfony/flex, you need de register the bundle in your project :
 // config/bundles.php
 
 return [
-
     Raneomik\WatchdogBundle\WatchdogBundle::class => ['all' => true],
 ];
 
