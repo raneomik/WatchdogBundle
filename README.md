@@ -48,4 +48,5 @@ If you wish to use it but your project isn't set to be autoconfigured, all your 
 
 - [ ] more unit tests on watchdog units
 - [ ] format restrictions on specific units (currently, you can pass any string which is supported by `\DateTime` to most of the config keys)
+- [ ] maybe add Messenger component support
 - [ ] other not seen yet
