@@ -4,6 +4,10 @@ dist: xenial
 
 git:
     depth: 2
+
+cache:
+  directories:
+    - $HOME/.composer/cache
 env:
   global:
     - SYMFONY_PHPUNIT_DISABLE_RESULT_CACHE=1
@@ -28,11 +32,11 @@ matrix:
         - COMPOSER_FLAGS="--optimize-autoloader"
         - COVERAGE=true
         - XDEBUG_MODE=coverage
-        - PHPUNIT_FLAGS="--coverage-clover clover.xml"
+        - PHPUNIT_FLAGS="--coverage-clover build/logs/clover.xml"
 
 before_install:
   - if [ "$DEPENDENCIES" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
-  - |# Enable extra ppa
+  - |  # Enable extra update
     if [[ $COVERAGE = true ]]; then
       composer req php-coveralls/php-coveralls phpunit/phpcov --dev
     fi
@@ -42,9 +46,9 @@ install:
   - composer update ${COMPOSER_FLAGS} --prefer-dist --no-interaction
   - composer test install
 
-after_success:
-  - if [[ $COVERAGE = true ]]; then vendor/bin/php-coveralls -v --exclude-no-stmt; fi;
-
 script:
   - composer validate --strict --no-check-lock
   - composer test -- $PHPUNIT_FLAGS
+
+after_success:
+  - if [[ $COVERAGE = true ]]; then vendor/bin/php-coveralls -v --exclude-no-stmt; fi;
