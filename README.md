@@ -1,6 +1,9 @@
 WatchdogBundle
 ==============
 
+[![Build Status](https://travis-ci.com/raneomik/WatchdogBundle.svg?branch=main)](https://travis-ci.com/raneomik/WatchdogBundle)
+[![Coverage Status](https://coveralls.io/repos/github/raneomik/WatchdogBundle/badge.svg?branch=main)](https://coveralls.io/github/raneomik/WatchdogBundle?branch=main)
+
 A widget bundle providing a watchdog watching over time and which "woofs" if current time matches provided configuration.
 
 
