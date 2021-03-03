@@ -26,10 +26,15 @@ matrix:
       env:
         - SYMFONY_VERSION=5.2.*
         - COMPOSER_FLAGS="--optimize-autoloader"
+        - COVERAGE=true
+        - PHPUNIT_FLAGS="--coverage-clover clover.xml"
 
 before_install:
-  - if [[ $COVERAGE != true ]]; then phpenv config-rm xdebug.ini || true; fi
   - if [ "$DEPENDENCIES" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
+  - |# Enable extra ppa
+    if [[ $COVERAGE = true ]]; then
+      composer req php-coveralls/php-coveralls phpunit/phpcov --dev
+    fi
 
 install:
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}"; fi;

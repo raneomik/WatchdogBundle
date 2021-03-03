@@ -4,8 +4,9 @@ phpunit.xml
 phpunit-coverage
 .phpunit.result.cache
 
+cov
+
 vendor
-composer.lock
 composer.phar
 
 .php_cs.cache

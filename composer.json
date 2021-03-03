@@ -17,7 +17,9 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^1.1|^2.8",
         "symfony/test-pack": "*",
-        "symfony/debug-pack": "*"
+        "symfony/debug-pack": "*",
+        "php-coveralls/php-coveralls": "^2.4",
+        "phpunit/phpcov": "^8.2"
     },
     "autoload": {
         "psr-4": { "Raneomik\\WatchdogBundle\\": "" }
