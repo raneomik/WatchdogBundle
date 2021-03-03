@@ -27,6 +27,7 @@ matrix:
         - SYMFONY_VERSION=5.2.*
         - COMPOSER_FLAGS="--optimize-autoloader"
         - COVERAGE=true
+        - XDEBUG_MODE=coverage
         - PHPUNIT_FLAGS="--coverage-clover clover.xml"
 
 before_install:
