@@ -62,10 +62,3 @@ and if it `isWoofTime`, it will trigger all `WatchdogHandlerInterface`s
 and their `processWoof(array $parameters = []) // passed to the WatchdogWoofCheckEvent constructor`.
 
 If you wish to use it but your project isn't set to be autoconfigured, all your `Handlers` implementing `WatchdogHandlerInterface` must be tagged with `raneomik_watchdog.handler`.
-
-#### TODO:
-
-- [ ] more unit tests on watchdog units
-- [ ] format restrictions on specific units (currently, you can pass any string which is supported by `\DateTime` to most of the config keys)
-- [ ] maybe add Messenger component support
-- [ ] other not seen yet

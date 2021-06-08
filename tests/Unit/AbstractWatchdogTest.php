@@ -8,7 +8,7 @@ use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 
 abstract class AbstractWatchdogTest extends TestCase
 {
-    public function WoofMatchCasesProvider(): \Generator
+    public function woofMatchCasesProvider(): \Generator
     {
         $minus5Mins = new \DateTime('-5 minutes');
         $plus5Mins = new \DateTime('+5 minutes');
@@ -36,7 +36,7 @@ abstract class AbstractWatchdogTest extends TestCase
         ]];
     }
 
-    public function NotWoofMatchCasesProvider(): \Generator
+    public function notWoofMatchCasesProvider(): \Generator
     {
         $plus2Hours = new \DateTime('+2 hours');
         $plus3Hours = new \DateTime('+3 hours');

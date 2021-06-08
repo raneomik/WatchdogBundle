@@ -6,9 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Raneomik\WatchdogBundle\DependencyInjection\WatchdogExtension;
 use Raneomik\WatchdogBundle\Test\Integration\Stubs\AutowiredStub;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
-use Raneomik\WatchdogBundle\WatchdogBundle;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
-use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -37,7 +35,7 @@ class WatchdogDependencyInjectionTest extends TestCase
             ->setPublic(true)
             ->setAutowired(true);
 
-        $this->compileContainer($container);
+        $container->compile();
 
         $this->assertInstanceOf(Watchdog::class, $watchdog = $container->get('test.autowired')->watchdog());
         $this->assertTrue($watchdog->isWoofTime());
@@ -54,13 +52,7 @@ class WatchdogDependencyInjectionTest extends TestCase
             'kernel.environment' => 'test',
             'kernel.runtime_environment' => 'test',
             'kernel.debug' => false,
-            'kernel.bundles_metadata' => [],
             'kernel.container_class' => 'AutowiringTestContainer',
-            'kernel.bundles' => [
-                'FrameworkBundle' => FrameworkBundle::class,
-                'WatchdogBundle' => WatchdogBundle::class,
-            ],
-            'env(base64:default::SYMFONY_DECRYPTION_SECRET)' => 'dummy',
         ]));
 
         $container->set('kernel', new class('test', false) extends Kernel {
@@ -82,10 +74,5 @@ class WatchdogDependencyInjectionTest extends TestCase
         }
 
         return $container;
-    }
-
-    private function compileContainer(ContainerBuilder $container)
-    {
-        $container->compile();
     }
 }

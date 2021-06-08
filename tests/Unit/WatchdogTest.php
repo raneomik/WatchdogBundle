@@ -16,7 +16,7 @@ class WatchdogTest extends AbstractWatchdogTest
     }
 
     /**
-     * @dataProvider WoofMatchCasesProvider
+     * @dataProvider woofMatchCasesProvider
      */
     public function testOkCases(array $timeRule)
     {
@@ -25,7 +25,7 @@ class WatchdogTest extends AbstractWatchdogTest
     }
 
     /**
-     * @dataProvider NotWoofMatchCasesProvider
+     * @dataProvider notWoofMatchCasesProvider
      */
     public function testKoCases(array $timeRule)
     {

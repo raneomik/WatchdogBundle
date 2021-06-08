@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class WatchdogSubscriberTest extends AbstractWatchdogTest
 {
     /**
-     * @dataProvider WoofMatchCasesProvider
+     * @dataProvider woofMatchCasesProvider
      */
     public function testSubscriberOnWoof(array $timeRule)
     {
@@ -31,7 +31,7 @@ class WatchdogSubscriberTest extends AbstractWatchdogTest
     }
 
     /**
-     * @dataProvider NotWoofMatchCasesProvider
+     * @dataProvider notWoofMatchCasesProvider
      */
     public function testSubscriberOnNotWoof(array $timeRule)
     {
