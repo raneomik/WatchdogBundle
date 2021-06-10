@@ -12,6 +12,7 @@
 >
     <coverage>
         <exclude>
+            <file>.php-cs-fixer.php</file>
             <directory>./vendor</directory>
             <directory>./tests</directory>
         </exclude>
