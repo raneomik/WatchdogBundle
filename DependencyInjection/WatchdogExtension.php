@@ -2,8 +2,8 @@
 
 namespace Raneomik\WatchdogBundle\DependencyInjection;
 
-use Raneomik\WatchdogBundle\Subscriber\WatchdogSubscriber;
 use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
+use Raneomik\WatchdogBundle\Subscriber\WatchdogSubscriber;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class WatchdogExtension extends Extension
 {
-    const HANDLER_SERVICE_TAG = 'raneomik_watchdog.handler';
+    public const HANDLER_SERVICE_TAG = 'raneomik_watchdog.handler';
 
     /**
      * {@inheritdoc}

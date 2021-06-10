@@ -3,8 +3,8 @@
 namespace Raneomik\WatchdogBundle\Test\Unit;
 
 use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
-use Raneomik\WatchdogBundle\Subscriber\WatchdogSubscriber;
 use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
+use Raneomik\WatchdogBundle\Subscriber\WatchdogSubscriber;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 

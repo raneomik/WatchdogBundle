@@ -6,8 +6,8 @@ use Raneomik\WatchdogBundle\Exception\IllogicConfigurationException;
 
 class IntervalUnit extends AbstractWatchdogUnit
 {
-    private $start;
-    private $end;
+    private \DateTimeInterface $start;
+    private \DateTimeInterface $end;
 
     public function __construct(string $start, string $end)
     {

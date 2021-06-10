@@ -1,7 +1,4 @@
 framework:
-  secret: test
-  test: ~
-  session:
-    storage_id: session.storage.mock_file
+  test: true
 
-#watchdog: ~
+watchdog: ~

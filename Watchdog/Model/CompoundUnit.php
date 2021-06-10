@@ -4,8 +4,8 @@ namespace Raneomik\WatchdogBundle\Watchdog\Model;
 
 class CompoundUnit extends AbstractWatchdogUnit
 {
-    private $logicalAndMode;
-    private $unitCollection = [];
+    private bool $logicalAndMode;
+    private array $unitCollection = [];
 
     public static function createFromCompoundConfig(array $data, bool $logicalAnd = false): self
     {

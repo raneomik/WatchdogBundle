@@ -4,7 +4,7 @@ namespace Raneomik\WatchdogBundle\Event;
 
 class WatchdogWoofCheckEvent
 {
-    private $parameters;
+    private array $parameters;
 
     public function __construct(array $parameters = [])
     {

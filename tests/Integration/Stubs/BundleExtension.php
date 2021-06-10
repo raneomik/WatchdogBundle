@@ -2,8 +2,6 @@
 
 namespace Raneomik\WatchdogBundle\Test\Integration\Stubs;
 
-use Raneomik\WatchdogBundle\DependencyInjection\WatchdogExtension;
-use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;

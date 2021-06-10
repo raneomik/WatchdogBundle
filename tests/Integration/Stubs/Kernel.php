@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 class Kernel extends BaseKernel
 {
-    private $config;
+    private string $config;
 
     public function __construct(string $environment, bool $debug, string $config = 'base')
     {
@@ -37,7 +37,7 @@ class Kernel extends BaseKernel
      */
     public function getCacheDir(): string
     {
-        return \sys_get_temp_dir().'/WatchdogBundle/cache';
+        return sys_get_temp_dir().'/WatchdogBundle/cache';
     }
 
     /**
@@ -45,7 +45,7 @@ class Kernel extends BaseKernel
      */
     public function getLogDir(): string
     {
-        return \sys_get_temp_dir().'/WatchdogBundle/logs';
+        return sys_get_temp_dir().'/WatchdogBundle/logs';
     }
 
     protected function build(ContainerBuilder $container)
@@ -58,6 +58,6 @@ class Kernel extends BaseKernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(\sprintf(__DIR__.'/../config/%s_config.yml', $this->config));
+        $loader->load(sprintf(__DIR__.'/../config/%s_config.yml', $this->config));
     }
 }

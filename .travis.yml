@@ -11,7 +11,6 @@ cache:
 env:
   global:
     - SYMFONY_PHPUNIT_DISABLE_RESULT_CACHE=1
-    - SYMFONY_DECRYPTION_SECRET=test
 
 matrix:
   fast_finish: true

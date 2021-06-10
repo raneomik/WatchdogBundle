@@ -8,8 +8,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class WatchdogSubscriber implements EventSubscriberInterface
 {
-    private $watchdog;
-    private $watchdogHandlers;
+    private Watchdog $watchdog;
+    private iterable $watchdogHandlers;
 
     public function __construct(Watchdog $watchdog, iterable $watchdogHandlers)
     {

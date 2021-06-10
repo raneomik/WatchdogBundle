@@ -8,7 +8,7 @@ use Raneomik\WatchdogBundle\Exception\NotSupportedConfigurationException;
 
 abstract class AbstractWatchdogUnit implements WatchdogUnitInterface
 {
-    protected $dateConfig;
+    protected \DateTimeInterface $dateConfig;
 
     public static function createFromConfig(string $dateConfig): self
     {

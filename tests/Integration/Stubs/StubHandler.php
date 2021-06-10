@@ -6,7 +6,7 @@ use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
 
 class StubHandler implements WatchdogHandlerInterface
 {
-    public $handled = [];
+    public array $handled = [];
 
     public function processWoof(array $parameters = [])
     {

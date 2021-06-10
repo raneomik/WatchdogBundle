@@ -4,7 +4,7 @@ namespace Raneomik\WatchdogBundle\Watchdog\Model;
 
 class TimeUnit extends AbstractWatchdogUnit
 {
-    private $matchHourOnly = false;
+    private bool $matchHourOnly = false;
 
     public function setMatchHourOnly(bool $matchHourOnly): self
     {

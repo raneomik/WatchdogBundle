@@ -6,7 +6,7 @@ use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 
 class AutowiredStub
 {
-    private $watchdog;
+    private Watchdog $watchdog;
 
     public function __construct(Watchdog $watchdog)
     {

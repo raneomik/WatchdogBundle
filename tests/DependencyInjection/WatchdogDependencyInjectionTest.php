@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Raneomik\WatchdogBundle\DependencyInjection\WatchdogExtension;
 use Raneomik\WatchdogBundle\Test\Integration\Stubs\AutowiredStub;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
-use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -17,9 +16,6 @@ class WatchdogDependencyInjectionTest extends TestCase
     public function testLoadConfiguration()
     {
         $container = $this->createContainer([
-            'framework' => [
-                'secret' => 'testing',
-            ],
             'watchdog' => [
                 'dates' => [
                     [
@@ -66,7 +62,6 @@ class WatchdogDependencyInjectionTest extends TestCase
         }
         );
 
-        $container->registerExtension(new FrameworkExtension());
         $container->registerExtension(new WatchdogExtension());
 
         foreach ($configs as $extension => $config) {

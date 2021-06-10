@@ -6,7 +6,7 @@ use Raneomik\WatchdogBundle\Watchdog\Model\CompoundUnit;
 
 class Watchdog
 {
-    private $dateCollectionToWatch;
+    private CompoundUnit $dateCollectionToWatch;
 
     public function __construct(array $watchdogParameters)
     {

@@ -31,7 +31,7 @@ It can be configured as follows:
 #config/packages/watchdog.yml
 
 watchdog:
-    dates: # raise an event if current date time matches
+    dates: # raise an event if current date time matches (following "Or" logic)
     - { date_time: '2019-12-01 11:00' }           # a date and time
     - { date: '2019-12-03' }                      # a specific date
     - { hour: '14:00' }                           # a specific hour            
@@ -39,12 +39,12 @@ watchdog:
     - { start: '2019-12-01', end: '2019-12-31' }  # an interval of dates
     - { start: '10:00', end: '11:00' }            # or of times      
     - { relative: 'first wednesday of' }          # a relative format*
-    - compound:                                   # or a composite of the rules above following "And" logic, for example :
+    - compound:                                   # or a composite of the rules above, following "And" logic, for example :
       - { relative: 'monday' }                    # "On mondays"
       - { start: '20:00', end: '22:30' }          # "and between 20:00 and 22:30"
 ```
 
-\* [relative format](https://www.php.net/manual/fr/datetime.formats.relative.php)
+\* [relative format](https://www.php.net/manual/datetime.formats.relative.php)
 
 
 ### Watchdog service
@@ -62,3 +62,5 @@ and if it `isWoofTime`, it will trigger all `WatchdogHandlerInterface`s
 and their `processWoof(array $parameters = []) // passed to the WatchdogWoofCheckEvent constructor`.
 
 If you wish to use it but your project isn't set to be autoconfigured, all your `Handlers` implementing `WatchdogHandlerInterface` must be tagged with `raneomik_watchdog.handler`.
+
+[License](LICENCE)

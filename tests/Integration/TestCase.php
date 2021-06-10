@@ -11,7 +11,7 @@ abstract class TestCase extends KernelTestCase
     protected function setUp(): void
     {
         $fs = new Filesystem();
-        $fs->remove(\sys_get_temp_dir().'/WatchdogBundle/');
+        $fs->remove(sys_get_temp_dir().'/WatchdogBundle/');
     }
 
     protected function tearDown(): void
@@ -25,6 +25,6 @@ abstract class TestCase extends KernelTestCase
      */
     protected static function createKernel(array $options = [])
     {
-        return new Kernel('test', true, isset($options['config']) ? $options['config'] : 'base');
+        return new Kernel('test', true, $options['config'] ?? 'base');
     }
 }

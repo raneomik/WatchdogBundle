@@ -3,8 +3,6 @@
 namespace Raneomik\WatchdogBundle\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Raneomik\WatchdogBundle\Exception\MalformedConfigurationValueException;
-use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 
 abstract class AbstractWatchdogTest extends TestCase
 {
