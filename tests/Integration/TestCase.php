@@ -5,6 +5,7 @@ namespace Raneomik\WatchdogBundle\Test\Integration;
 use Raneomik\WatchdogBundle\Test\Integration\Stubs\Kernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class TestCase extends KernelTestCase
 {
@@ -23,7 +24,7 @@ abstract class TestCase extends KernelTestCase
     /**
      * {@inheritdoc}
      */
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): KernelInterface
     {
         return new Kernel('test', true, $options['config'] ?? 'base');
     }

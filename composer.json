@@ -21,7 +21,7 @@
         "symfony/debug-pack": "*"
     },
     "autoload": {
-        "psr-4": { "Raneomik\\WatchdogBundle\\": "" }
+        "psr-4": { "Raneomik\\WatchdogBundle\\": "src/" }
     },
     "autoload-dev": {
         "psr-4": { "Raneomik\\WatchdogBundle\\Test\\": "tests/" }

@@ -52,8 +52,9 @@ class WatchdogDependencyInjectionTest extends TestCase
         ]));
 
         $container->set('kernel', new class('test', false) extends Kernel {
-            public function registerBundles()
+            public function registerBundles(): iterable
             {
+                return [];
             }
 
             public function registerContainerConfiguration(LoaderInterface $loader)

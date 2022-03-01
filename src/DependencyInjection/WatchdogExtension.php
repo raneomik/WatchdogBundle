@@ -23,7 +23,7 @@ class WatchdogExtension extends Extension
 
         $container->setParameter('watchdog_config', $config);
 
-        $phpLoader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../config'));
+        $phpLoader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
         $phpLoader->load('services.yml');
 
         $container->registerForAutoconfiguration(WatchdogHandlerInterface::class)
