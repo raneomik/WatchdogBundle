@@ -2,7 +2,7 @@
 
 namespace Raneomik\WatchdogBundle\Watchdog;
 
-use Raneomik\WatchdogBundle\Watchdog\Model\CompoundUnit;
+use Raneomik\WatchdogBundle\Watchdog\UnitModel\CompoundUnit;
 
 class Watchdog
 {
