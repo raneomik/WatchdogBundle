@@ -1,14 +1,14 @@
 <?php
 
-namespace Raneomik\WatchdogBundle\Test\Unit;
+namespace Raneomik\WatchdogBundle\Tests\Unit;
 
 use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
 use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
-use Raneomik\WatchdogBundle\Subscriber\WatchdogSubscriber;
+use Raneomik\WatchdogBundle\Subscriber\WatchdogEventSubscriber;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class WatchdogSubscriberTest extends AbstractWatchdogTest
+class WatchdogEventSubscriberTest extends AbstractWatchdogTest
 {
     /**
      * @dataProvider woofMatchCasesProvider
@@ -21,7 +21,7 @@ class WatchdogSubscriberTest extends AbstractWatchdogTest
             ->method('processWoof')
         ;
 
-        $subscriber = new WatchdogSubscriber(new Watchdog(['dates' => $timeRule]), [$handler]);
+        $subscriber = new WatchdogEventSubscriber(new Watchdog(['dates' => $timeRule]), [$handler]);
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber($subscriber);
@@ -41,7 +41,7 @@ class WatchdogSubscriberTest extends AbstractWatchdogTest
             ->method('processWoof')
         ;
 
-        $subscriber = new WatchdogSubscriber(new Watchdog(['dates' => $timeRule]), [$handler]);
+        $subscriber = new WatchdogEventSubscriber(new Watchdog(['dates' => $timeRule]), [$handler]);
 
         $eventDispatcher = new EventDispatcher();
         $eventDispatcher->addSubscriber($subscriber);

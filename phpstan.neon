@@ -11,15 +11,11 @@ parameters:
         - tests
     bootstrapFiles:
         - vendor/autoload.php
-        - tests/bootstrap.php
     parallel:
         maximumNumberOfProcesses: 10
 
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
-
-    symfony:
-        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
 
     banned_code:
         nodes:
@@ -37,9 +33,9 @@ parameters:
             -
                 type: Expr_FuncCall
                 functions:
+                    - dump
                     - dd
                     - debug_backtrace
-                    - dump
                     - exec
                     - passthru
                     - phpinfo
@@ -49,4 +45,4 @@ parameters:
                     - system
                     - var_dump
 
-    ignoreErrors: ~
+    ignoreErrors: []

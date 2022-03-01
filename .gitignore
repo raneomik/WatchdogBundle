@@ -10,3 +10,4 @@ composer.phar
 
 Makefile
 .php-cs-fixer.cache
+.php-version

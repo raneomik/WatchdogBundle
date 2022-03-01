@@ -11,9 +11,9 @@
         }
     ],
     "require": {
-        "php": "^7.4|^8.1",
+        "php": "^7.4|^8.0",
         "symfony/framework-bundle":  "^4.4|^5.4|^6.0",
-        "symfony/yaml": "^4.4|^5.3"
+        "symfony/yaml": "^4.4|^5.4"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
@@ -24,19 +24,28 @@
         "phpstan/phpstan-phpunit": "^1.0",
         "phpstan/phpstan-symfony": "^1.1",
         "symplify/coding-standard": "^10.1",
+        "symplify/phpstan-rules": "^10.1",
         "psalm/plugin-symfony": "^3.1",
         "infection/infection": "^0.26.5",
-        "symplify/phpstan-rules": "^10.1"
+        "phpstan/extension-installer": "^1.1",
+        "ekino/phpstan-banned-code": "^1.0"
+    },
+    "allow-plugins": {
+        "phpstan/extension-installer": true,
+        "infection/extension-installer": true,
+        "symfony/flex": true
     },
     "autoload": {
         "psr-4": { "Raneomik\\WatchdogBundle\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "Raneomik\\WatchdogBundle\\Test\\": "tests/" }
+        "psr-4": { "Raneomik\\WatchdogBundle\\Tests\\": "tests/" }
     },
-    "scripts": {
-        "test": [
-            "vendor/bin/simple-phpunit"
-        ]
+    "extra": {
+        "phpstan": {
+            "includes": [
+                "extension.neon"
+            ]
+        }
     }
 }

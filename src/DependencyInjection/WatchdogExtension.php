@@ -3,7 +3,7 @@
 namespace Raneomik\WatchdogBundle\DependencyInjection;
 
 use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
-use Raneomik\WatchdogBundle\Subscriber\WatchdogSubscriber;
+use Raneomik\WatchdogBundle\Subscriber\WatchdogEventSubscriber;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -30,7 +30,7 @@ class WatchdogExtension extends Extension
             ->addTag(self::HANDLER_SERVICE_TAG)
         ;
 
-        $container->registerForAutoconfiguration(WatchdogSubscriber::class)
+        $container->registerForAutoconfiguration(WatchdogEventSubscriber::class)
             ->addTag('kernel.event_subscriber')
         ;
     }

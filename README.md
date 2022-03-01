@@ -56,7 +56,7 @@ It has a `isWoofTime` method returning true once configuration matches current d
 ### WatchdogHandlerInterface and WatchdogWoofCheckEvent
 
 This bundle also provides the `Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface` interface with `processWoof(array $parameters = [])` method, for more complex processes.
-It works with the `WatchdogSubscriber` subscribed to `WatchdogWoofCheckEvent`.
+It works with the `WatchdogEventSubscriber` subscribed to `WatchdogWoofCheckEvent`.
 
 Anywhere you wish to check if it `isWoofTime`, dispatch a `new WatchdogWoofCheckEvent($parameters)`, 
 and if it `isWoofTime`, it will trigger all `WatchdogHandlerInterface`s 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Raneomik\WatchdogBundle\Watchdog\Model;
+namespace Raneomik\WatchdogBundle\Watchdog\Unit;
 
 use Raneomik\WatchdogBundle\Exception\IllogicConfigurationException;
 
-class IntervalUnit extends AbstractWatchdogUnit
+class Interval implements WatchdogUnitInterface
 {
     private \DateTimeInterface $start;
     private \DateTimeInterface $end;
@@ -19,13 +19,13 @@ class IntervalUnit extends AbstractWatchdogUnit
         }
     }
 
-    public static function createFromIntervalConfig($start, $end): self
+    public static function createFromIntervalConfig(string $start, string $end): self
     {
         return new self($start, $end);
     }
 
     public function isMatching(): bool
     {
-        return $this->start <= $this->currentDateTime() && $this->end >= $this->currentDateTime();
+        return $this->start <= ($now = new \DateTime()) && $this->end >= $now;
     }
 }

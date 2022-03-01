@@ -1,6 +1,6 @@
 <?php
 
-namespace Raneomik\WatchdogBundle\Test\Integration\Stubs;
+namespace Raneomik\WatchdogBundle\Tests\Integration\Stubs;
 
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 

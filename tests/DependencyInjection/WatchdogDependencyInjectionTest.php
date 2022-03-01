@@ -1,10 +1,10 @@
 <?php
 
-namespace Raneomik\WatchdogBundle\Test\DependencyInjection;
+namespace Raneomik\WatchdogBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Raneomik\WatchdogBundle\DependencyInjection\WatchdogExtension;
-use Raneomik\WatchdogBundle\Test\Integration\Stubs\AutowiredStub;
+use Raneomik\WatchdogBundle\Tests\Integration\Stubs\AutowiredStub;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

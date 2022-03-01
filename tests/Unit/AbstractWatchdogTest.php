@@ -1,6 +1,6 @@
 <?php
 
-namespace Raneomik\WatchdogBundle\Test\Unit;
+namespace Raneomik\WatchdogBundle\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 

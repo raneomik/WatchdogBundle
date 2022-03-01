@@ -12,13 +12,9 @@
       <directory name="vendor"/>
       <directory name="src/DependencyInjection"/>
       <!-- <file name="src/.preload.php"/>-->
-      <file name="src/Kernel.php"/>
     </ignoreFiles>
   </projectFiles>
   <plugins>
-    <pluginClass xmlns="https://getpsalm.org/schema/config" class="Psalm\SymfonyPsalmPlugin\Plugin">
-      <containerXml>var/cache/dev/App_KernelDevDebugContainer.xml</containerXml>
-    </pluginClass>
-    <pluginClass class="Weirdan\DoctrinePsalmPlugin\Plugin"/>
+    <pluginClass xmlns="https://getpsalm.org/schema/config" class="Psalm\SymfonyPsalmPlugin\Plugin"/>
   </plugins>
 </psalm>

@@ -1,19 +1,19 @@
 <?php
 
-namespace Raneomik\WatchdogBundle\Watchdog\Model;
+namespace Raneomik\WatchdogBundle\Watchdog\Unit;
 
-class CompoundUnit extends AbstractWatchdogUnit
+class Compound implements WatchdogUnitInterface
 {
-    private bool $logicalAndMode;
+    private bool $logicalAndMode = false;
     private array $unitCollection = [];
 
     public static function createFromCompoundConfig(array $data, bool $logicalAnd = false): self
     {
-        $self = new static();
+        $self = new self();
         $self->logicalAndMode = $logicalAnd;
 
         foreach ($data as $value) {
-            $self->unitCollection[] = parent::create($value);
+            $self->unitCollection[] = WatchdogUnit::create($value);
         }
 
         return $self;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Raneomik\WatchdogBundle\Test\Unit;
+namespace Raneomik\WatchdogBundle\Tests\Unit;
 
 use Raneomik\WatchdogBundle\Exception\IllogicConfigurationException;
 use Raneomik\WatchdogBundle\Exception\MalformedConfigurationValueException;

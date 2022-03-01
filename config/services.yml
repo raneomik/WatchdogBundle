@@ -8,7 +8,7 @@ services:
         Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface:
             tags: [raneomik_watchdog.handler]
 
-    Raneomik\WatchdogBundle\Subscriber\WatchdogSubscriber:
+    Raneomik\WatchdogBundle\Subscriber\WatchdogEventSubscriber:
         arguments:
             $watchdog: '@Raneomik\WatchdogBundle\Watchdog\Watchdog'
             $watchdogHandlers: !tagged raneomik_watchdog.handler

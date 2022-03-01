@@ -1,6 +1,6 @@
 <?php
 
-namespace Raneomik\WatchdogBundle\Test\Integration\Stubs;
+namespace Raneomik\WatchdogBundle\Tests\Integration\Stubs;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -28,11 +28,13 @@ class BundleExtension extends Extension implements PrependExtensionInterface
         // Annotation must be disabled since this bundle doesn't use Doctrine
         // The framework allows enabling/disabling them only since symfony 3.2 where
         // doctrine/annotations has been removed from required dependencies
-        $annotationsEnabled = (int) Kernel::MAJOR_VERSION >= 3 && (int) Kernel::MINOR_VERSION >= 2;
+        /** @phpstan-ignore-next-line */
+        $annotationsEnabled = Kernel::MAJOR_VERSION >= 3 && Kernel::MINOR_VERSION >= 2;
         if (false === $annotationsEnabled) {
             return;
         }
 
+        /* @phpstan-ignore-next-line */
         $container->prependExtensionConfig('framework', ['annotations' => ['enabled' => false]]);
     }
 }

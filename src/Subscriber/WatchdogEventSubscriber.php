@@ -6,7 +6,7 @@ use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class WatchdogSubscriber implements EventSubscriberInterface
+class WatchdogEventSubscriber implements EventSubscriberInterface
 {
     private Watchdog $watchdog;
     private iterable $watchdogHandlers;
@@ -24,7 +24,7 @@ class WatchdogSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onWoofCheck(WatchdogWoofCheckEvent $event)
+    public function onWoofCheck(WatchdogWoofCheckEvent $event): void
     {
         if ($this->watchdog->isWoofTime()) {
             foreach ($this->watchdogHandlers as $handler) {

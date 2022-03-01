@@ -2,15 +2,15 @@
 
 namespace Raneomik\WatchdogBundle\Watchdog;
 
-use Raneomik\WatchdogBundle\Watchdog\UnitModel\CompoundUnit;
+use Raneomik\WatchdogBundle\Watchdog\Unit\Compound;
 
 class Watchdog
 {
-    private CompoundUnit $dateCollectionToWatch;
+    private Compound $dateCollectionToWatch;
 
     public function __construct(array $watchdogParameters)
     {
-        $this->dateCollectionToWatch = CompoundUnit::createFromCompoundConfig(
+        $this->dateCollectionToWatch = Compound::createFromCompoundConfig(
             $watchdogParameters['dates'] ?? []
         );
     }
