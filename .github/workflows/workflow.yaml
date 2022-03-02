@@ -164,7 +164,7 @@ jobs:
           INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
 
       - name: "Output infection"
-        run: cat log/infection.log
+        run: cat infection.log
 
   static-analysis:
     name: "Static Analysis"

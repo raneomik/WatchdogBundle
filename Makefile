@@ -19,6 +19,8 @@ down-deps:
 	echo $(LOW_PHP) > .php-version
 	$(SF) composer update --no-interaction --no-progress --prefer-lowest --prefer-stable -W
 
+full-test: check-deps check-code lint infection
+
 check-deps:
 	$(SF) composer outdated
 	$(SF) composer validate
@@ -49,5 +51,3 @@ cover:
 
 infection:
 	XDEBUG_MODE=coverage vendor/bin/infection --ansi --threads=$(nproc)
-
-full-test: check-deps check-code lint infection
