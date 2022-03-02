@@ -36,30 +36,42 @@ class WatchdogTest extends AbstractWatchdogTest
     public function testNotSupportedConfigExceptionCase()
     {
         $this->expectException(NotSupportedConfigurationException::class);
+        $this->expectExceptionMessage('test : 12345" is not a supported config');
         new Watchdog(['dates' => [['test' => '12345']]]);
     }
 
     public function testMalformedDataExceptionCase()
     {
         $this->expectException(MalformedConfigurationValueException::class);
+        $this->expectExceptionMessage('"DateTime string 12345" is malformed config');
         new Watchdog(['dates' => [['date' => '12345'], ['hour' => '12345']]]);
     }
 
     public function testIllogicDataExceptionCase()
     {
         $this->expectException(IllogicConfigurationException::class);
+        $this->expectExceptionMessage('start time cannot occur after end time');
         new Watchdog(['dates' => [['start' => '11:00', 'end' => '10:00']]]);
+    }
+
+    public function testIllogicIntervalDataExceptionCase()
+    {
+        $this->expectException(IllogicConfigurationException::class);
+        $this->expectExceptionMessage('start and end times must differ');
+        new Watchdog(['dates' => [['start' => '10:00', 'end' => '10:00']]]);
     }
 
     public function testMalformedStartIntervalDataExceptionCase()
     {
         $this->expectException(MalformedConfigurationValueException::class);
+        $this->expectExceptionMessage('Missing "start" data for interval');
         new Watchdog(['dates' => [['end' => '10:00']]]);
     }
 
     public function testMalformedEndIntervalDataExceptionCase()
     {
         $this->expectException(MalformedConfigurationValueException::class);
+        $this->expectExceptionMessage('Missing "end" data for interval');
         new Watchdog(['dates' => [['start' => '10:00']]]);
     }
 }

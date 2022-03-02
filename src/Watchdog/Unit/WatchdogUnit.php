@@ -2,7 +2,6 @@
 
 namespace Raneomik\WatchdogBundle\Watchdog\Unit;
 
-use Raneomik\WatchdogBundle\Exception\IllogicConfigurationException;
 use Raneomik\WatchdogBundle\Exception\MalformedConfigurationValueException;
 use Raneomik\WatchdogBundle\Exception\NotSupportedConfigurationException;
 
@@ -10,57 +9,57 @@ class WatchdogUnit implements WatchdogUnitInterface
 {
     protected \DateTimeInterface $dateConfig;
 
-    public function __construct(string $dateConfig)
+    public function __construct(string $stringDateConfig)
     {
-        $this->dateConfig = new \DateTime($dateConfig);
+        try {
+            $this->dateConfig = new \DateTime($stringDateConfig);
+        } catch (\Exception $e) {
+            throw new MalformedConfigurationValueException(sprintf('DateTime string %s', $stringDateConfig));
+        }
     }
 
-    public static function create(array $data): ?WatchdogUnitInterface
+    private static function processIntervalConfig(array $data): WatchdogUnitInterface
+    {
+        if (false === key_exists('start', $data)) {
+            throw new MalformedConfigurationValueException('Missing "start" data for interval');
+        }
+
+        if (false === key_exists('end', $data)) {
+            throw new MalformedConfigurationValueException('Missing "end" data for interval');
+        }
+
+        return new Interval($data['start'], $data['end']);
+    }
+
+    private static function processCommonConfig(array $data): WatchdogUnitInterface
     {
         $invalidConfigKey = '<not-supported>';
         $invalidConfigValue = '<invalid>';
 
-        try {
-            foreach ($data as $key => $value) {
-                switch ($key) {
-                    case self::COMPOUND:
-                        return Compound::createFromCompoundConfig($value, true);
-                    case self::DATE_TIME:
-                        return new DateTime($value);
-                    case self::DATE:
-                        return new Date($value);
-                    case self::TIME:
-                        return new Time($value);
-                    case self::HOUR:
-                        return (new Time($value))
-                            ->matchHourOnly()
-                        ;
-                    case self::RELATIVE:
-                        return new RelativeDateTime($value);
-                    default:
-                        $invalidConfigKey = $key;
-                        $invalidConfigValue = $value;
-                }
+        foreach ($data as $key => $value) {
+            switch ($key) {
+                case self::COMPOUND: return new Compound($value, true);
+                case self::DATE_TIME: return new DateTime($value);
+                case self::DATE: return new Date($value);
+                case self::TIME: return new Time($value);
+                case self::HOUR: return new Hour($value);
+                case self::RELATIVE: return new RelativeDateTime($value);
+                default:
+                    $invalidConfigKey = $key;
+                    $invalidConfigValue = $value;
             }
-
-            if (key_exists('start', $data) || key_exists('end', $data)) {
-                if (false === key_exists('start', $data)) {
-                    throw new MalformedConfigurationValueException('missing "start" data for interval');
-                }
-
-                if (false === key_exists('end', $data)) {
-                    throw new MalformedConfigurationValueException('missing "end" data for interval');
-                }
-
-                return Interval::createFromIntervalConfig($data['start'], $data['end']);
-            }
-        } catch (IllogicConfigurationException $e) {
-            throw $e;
-        } catch (\Exception $e) {
-            throw new MalformedConfigurationValueException(sprintf('%s : %s', $invalidConfigKey, $invalidConfigValue));
         }
 
-        throw new NotSupportedConfigurationException($invalidConfigKey);
+        throw new NotSupportedConfigurationException(sprintf('%s : %s', $invalidConfigKey, $invalidConfigValue));
+    }
+
+    public static function create(array $data): WatchdogUnitInterface
+    {
+        if (key_exists('start', $data) || key_exists('end', $data)) {
+            return self::processIntervalConfig($data);
+        }
+
+        return self::processCommonConfig($data);
     }
 
     public function isMatching(): bool

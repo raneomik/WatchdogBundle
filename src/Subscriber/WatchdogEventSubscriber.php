@@ -26,10 +26,12 @@ class WatchdogEventSubscriber implements EventSubscriberInterface
 
     public function onWoofCheck(WatchdogWoofCheckEvent $event): void
     {
-        if ($this->watchdog->isWoofTime()) {
-            foreach ($this->watchdogHandlers as $handler) {
-                $handler->processWoof($event->eventParams());
-            }
+        if (false === $this->watchdog->isWoofTime()) {
+            return;
+        }
+
+        foreach ($this->watchdogHandlers as $handler) {
+            $handler->processWoof($event->eventParams());
         }
     }
 }

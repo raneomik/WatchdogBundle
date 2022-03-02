@@ -10,7 +10,7 @@ class Watchdog
 
     public function __construct(array $watchdogParameters)
     {
-        $this->dateCollectionToWatch = Compound::createFromCompoundConfig(
+        $this->dateCollectionToWatch = new Compound(
             $watchdogParameters['dates'] ?? []
         );
     }

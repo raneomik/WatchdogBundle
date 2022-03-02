@@ -5,11 +5,10 @@ namespace Raneomik\WatchdogBundle\Tests\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Raneomik\WatchdogBundle\DependencyInjection\WatchdogExtension;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\AutowiredStub;
+use Raneomik\WatchdogBundle\Tests\Integration\Stubs\Kernel;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\HttpKernel\Kernel;
 
 class WatchdogDependencyInjectionTest extends TestCase
 {
@@ -51,17 +50,7 @@ class WatchdogDependencyInjectionTest extends TestCase
             'kernel.container_class' => 'AutowiringTestContainer',
         ]));
 
-        $container->set('kernel', new class('test', false) extends Kernel {
-            public function registerBundles(): iterable
-            {
-                return [];
-            }
-
-            public function registerContainerConfiguration(LoaderInterface $loader)
-            {
-            }
-        }
-        );
+        $container->set('kernel', new Kernel('test', false));
 
         $container->registerExtension(new WatchdogExtension());
 

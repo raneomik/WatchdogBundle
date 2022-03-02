@@ -8,10 +8,10 @@ use Raneomik\WatchdogBundle\Tests\Integration\Stubs\Kernel as KernelStub;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class KernelTest extends KernelTestCase
 {
@@ -66,6 +66,8 @@ class KernelTest extends KernelTestCase
         self::bootKernel();
         $dispatcher = self::container()->get(EventDispatcherInterface::class);
         $testHandler = self::container()->get(DummyHandler::class);
+
+        $this->assertEmpty($testHandler->handled);
 
         $dispatcher->dispatch(new WatchdogWoofCheckEvent(['handled' => true]));
 

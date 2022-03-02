@@ -11,13 +11,8 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
 >
     <coverage>
-        <exclude>
-            <file>.php-cs-fixer.php</file>
-            <directory>./vendor</directory>
-            <directory>./tests</directory>
-        </exclude>
         <include>
-            <directory>.</directory>
+            <directory>src/</directory>
         </include>
     </coverage>
 
@@ -28,7 +23,7 @@
     </testsuites>
 
     <php>
-        <server name="SYMFONY_PHPUNIT_VERSION" value="9"/>
+        <server name="SYMFONY_PHPUNIT_VERSION" value="9.5"/>
         <env name="KERNEL_CLASS" value="Raneomik\WatchdogBundle\Tests\Integration\Kernel"/>
         <env name="SYMFONY_DECRYPTION_SECRET" value="$_test"/>
     </php>

@@ -6,7 +6,6 @@ use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
 use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
 use Raneomik\WatchdogBundle\Subscriber\WatchdogEventSubscriber;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class WatchdogEventSubscriberTest extends AbstractWatchdogTest
 {
@@ -23,11 +22,9 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
 
         $subscriber = new WatchdogEventSubscriber(new Watchdog(['dates' => $timeRule]), [$handler]);
 
-        $eventDispatcher = new EventDispatcher();
-        $eventDispatcher->addSubscriber($subscriber);
-        $eventDispatcher->dispatch(
-            new WatchdogWoofCheckEvent()
-        );
+        $this->assertArrayHasKey(WatchdogWoofCheckEvent::class, $events = $subscriber->getSubscribedEvents());
+        $method = $events[WatchdogWoofCheckEvent::class];
+        $subscriber->$method(new WatchdogWoofCheckEvent());
     }
 
     /**
@@ -43,10 +40,8 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
 
         $subscriber = new WatchdogEventSubscriber(new Watchdog(['dates' => $timeRule]), [$handler]);
 
-        $eventDispatcher = new EventDispatcher();
-        $eventDispatcher->addSubscriber($subscriber);
-        $eventDispatcher->dispatch(
-            new WatchdogWoofCheckEvent()
-        );
+        $this->assertArrayHasKey(WatchdogWoofCheckEvent::class, $events = $subscriber->getSubscribedEvents());
+        $method = $events[WatchdogWoofCheckEvent::class];
+        $subscriber->$method(new WatchdogWoofCheckEvent());
     }
 }

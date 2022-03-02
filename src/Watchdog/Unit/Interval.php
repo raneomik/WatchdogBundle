@@ -14,18 +14,21 @@ class Interval implements WatchdogUnitInterface
         $this->start = new \DateTime($start);
         $this->end = new \DateTime($end);
 
-        if ($this->start >= $this->end) {
+        if ($this->start > $this->end) {
             throw new IllogicConfigurationException('start time cannot occur after end time');
         }
-    }
 
-    public static function createFromIntervalConfig(string $start, string $end): self
-    {
-        return new self($start, $end);
+        if ($this->start->getTimestamp() === $this->end->getTimestamp()) {
+            throw new IllogicConfigurationException('start and end times must differ');
+        }
     }
 
     public function isMatching(): bool
     {
-        return $this->start <= ($now = new \DateTime()) && $this->end >= $now;
+        $now = (new \DateTime())->format('YmdHi');
+
+        return $this->start->format('YmdHi') <= $now
+            && $now <= $this->end->format('YmdHi')
+        ;
     }
 }
