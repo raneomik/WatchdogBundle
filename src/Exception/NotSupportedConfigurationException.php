@@ -2,7 +2,7 @@
 
 namespace Raneomik\WatchdogBundle\Exception;
 
-use Raneomik\WatchdogBundle\Watchdog\Unit\WatchdogUnitInterface;
+use Raneomik\WatchdogBundle\Watchdog\Unit\Model\WatchdogUnitInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 class NotSupportedConfigurationException extends InvalidConfigurationException

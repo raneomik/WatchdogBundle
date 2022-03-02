@@ -3,6 +3,7 @@
 namespace Raneomik\WatchdogBundle\Subscriber;
 
 use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
+use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -30,6 +31,7 @@ class WatchdogEventSubscriber implements EventSubscriberInterface
             return;
         }
 
+        /** @var WatchdogHandlerInterface $handler */
         foreach ($this->watchdogHandlers as $handler) {
             $handler->processWoof($event->eventParams());
         }

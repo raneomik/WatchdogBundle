@@ -6,12 +6,13 @@ use Raneomik\WatchdogBundle\Exception\IllogicConfigurationException;
 use Raneomik\WatchdogBundle\Exception\MalformedConfigurationValueException;
 use Raneomik\WatchdogBundle\Exception\NotSupportedConfigurationException;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 class WatchdogTest extends AbstractWatchdogTest
 {
     public function testNoEventCase()
     {
-        $watchDog = new Watchdog([]);
+        $watchDog = new Watchdog(['dates' => []]);
         $this->assertFalse($watchDog->isWoofTime());
     }
 
@@ -31,6 +32,13 @@ class WatchdogTest extends AbstractWatchdogTest
     {
         $watchDog = new Watchdog(['dates' => $timeRule]);
         $this->assertFalse($watchDog->isWoofTime());
+    }
+
+    public function testInvalidConfigurationExceptionCase()
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage('Expected at least an empty array at "dates" key');
+        new Watchdog();
     }
 
     public function testNotSupportedConfigExceptionCase()

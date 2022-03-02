@@ -1,6 +1,6 @@
 <?php
 
-namespace Raneomik\WatchdogBundle\Watchdog\Unit;
+namespace Raneomik\WatchdogBundle\Watchdog\Unit\Model;
 
 interface WatchdogUnitInterface
 {

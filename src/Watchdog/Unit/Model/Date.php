@@ -1,8 +1,8 @@
 <?php
 
-namespace Raneomik\WatchdogBundle\Watchdog\Unit;
+namespace Raneomik\WatchdogBundle\Watchdog\Unit\Model;
 
-class Date extends WatchdogUnit
+class Date extends AbstractSimpleWatchdogUnit
 {
     public function isMatching(): bool
     {

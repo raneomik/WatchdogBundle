@@ -20,11 +20,7 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
             ->method('processWoof')
         ;
 
-        $subscriber = new WatchdogEventSubscriber(new Watchdog(['dates' => $timeRule]), [$handler]);
-
-        $this->assertArrayHasKey(WatchdogWoofCheckEvent::class, $events = $subscriber->getSubscribedEvents());
-        $method = $events[WatchdogWoofCheckEvent::class];
-        $subscriber->$method(new WatchdogWoofCheckEvent());
+        $this->subscribeAndDispatch($timeRule, $handler);
     }
 
     /**
@@ -38,10 +34,16 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
             ->method('processWoof')
         ;
 
+        $this->subscribeAndDispatch($timeRule, $handler);
+    }
+
+    public function subscribeAndDispatch(array $timeRule, WatchdogHandlerInterface $handler)
+    {
         $subscriber = new WatchdogEventSubscriber(new Watchdog(['dates' => $timeRule]), [$handler]);
 
         $this->assertArrayHasKey(WatchdogWoofCheckEvent::class, $events = $subscriber->getSubscribedEvents());
-        $method = $events[WatchdogWoofCheckEvent::class];
+        $this->assertSame('onWoofCheck', $method = $events[WatchdogWoofCheckEvent::class]);
+
         $subscriber->$method(new WatchdogWoofCheckEvent());
     }
 }

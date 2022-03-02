@@ -3,15 +3,15 @@
 namespace Raneomik\WatchdogBundle\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Raneomik\WatchdogBundle\Watchdog\Unit\Compound;
-use Raneomik\WatchdogBundle\Watchdog\Unit\Date;
-use Raneomik\WatchdogBundle\Watchdog\Unit\DateTime as DateTimeUnit;
-use Raneomik\WatchdogBundle\Watchdog\Unit\Hour;
-use Raneomik\WatchdogBundle\Watchdog\Unit\Interval;
-use Raneomik\WatchdogBundle\Watchdog\Unit\RelativeDateTime;
-use Raneomik\WatchdogBundle\Watchdog\Unit\Time;
-use Raneomik\WatchdogBundle\Watchdog\Unit\WatchdogUnit;
-use Raneomik\WatchdogBundle\Watchdog\Unit\WatchdogUnitInterface;
+use Raneomik\WatchdogBundle\Watchdog\Unit\Model\Compound;
+use Raneomik\WatchdogBundle\Watchdog\Unit\Model\Date;
+use Raneomik\WatchdogBundle\Watchdog\Unit\Model\DateTime as DateTimeUnit;
+use Raneomik\WatchdogBundle\Watchdog\Unit\Model\Hour;
+use Raneomik\WatchdogBundle\Watchdog\Unit\Model\Interval;
+use Raneomik\WatchdogBundle\Watchdog\Unit\Model\RelativeDateTime;
+use Raneomik\WatchdogBundle\Watchdog\Unit\Model\Time;
+use Raneomik\WatchdogBundle\Watchdog\Unit\Model\WatchdogUnitInterface;
+use Raneomik\WatchdogBundle\Watchdog\Unit\WatchdogUnitFactory;
 
 class WatchdogUnitTest extends TestCase
 {
@@ -44,7 +44,7 @@ class WatchdogUnitTest extends TestCase
             [WatchdogUnitInterface::TIME => $hour],
         ])];
 
-        yield [WatchdogUnit::create([
+        yield [WatchdogUnitFactory::create([
             WatchdogUnitInterface::TIME => $hour,
             WatchdogUnitInterface::COMPOUND => $atLeastOneCompound,
         ])];
@@ -76,15 +76,14 @@ class WatchdogUnitTest extends TestCase
             [WatchdogUnitInterface::TIME => $hour],
         ])];
 
-        yield [WatchdogUnit::create([
+        yield [WatchdogUnitFactory::create([
             WatchdogUnitInterface::TIME => $hour,
             WatchdogUnitInterface::COMPOUND => $compound,
         ])];
-        yield [WatchdogUnit::create([
+        yield [WatchdogUnitFactory::create([
             WatchdogUnitInterface::TIME => $hour,
             WatchdogUnitInterface::COMPOUND => $noneCompound,
         ])];
-        yield [new WatchdogUnit('tomorrow')];
     }
 
     /**

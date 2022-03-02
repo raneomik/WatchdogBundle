@@ -15,15 +15,16 @@ class WatchdogExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('watchdog_config', $config);
 
-        $phpLoader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
-        $phpLoader->load('services.yml');
+        $fileLoader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
+        /* @psalm-var string */
+        $fileLoader->load('services.yml');
 
         $container->registerForAutoconfiguration(WatchdogHandlerInterface::class)
             ->addTag(self::HANDLER_SERVICE_TAG)
