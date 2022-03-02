@@ -6,7 +6,10 @@
     },
     "logs": {
         "text": "log\/infection.log",
-        "html": "log\/infection.html"
+        "html": "log\/infection.html",
+        "stryker": {
+            "badge": "main"
+        }
     },
     "mutators": {
         "@default": true
