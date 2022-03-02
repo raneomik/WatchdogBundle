@@ -33,9 +33,9 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          coverage: "none"
+          coverage: "pcov"
           php-version: "${{ matrix.php-version }}"
-          tools: cs2pr
+          ini-values: zend.assertions=1
 
       - name: "Get composer cache directory"
         id: composercache
@@ -77,13 +77,20 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          coverage: "none"
+          coverage: "pcov"
           php-version: "${{ matrix.php-version }}"
-          tools: cs2pr
+          ini-values: zend.assertions=1
 
       - name: "Get composer cache directory"
         id: composercache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: "Cache dependencies"
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composercache.outputs.dir }}
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ matrix.dependencies }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ matrix.dependencies }}-composer-${{ hashFiles('**/composer.json') }}
 
       - name: "Cache dependencies"
         uses: actions/cache@v2
@@ -97,7 +104,7 @@ jobs:
 
       - name: "Run tests"
         timeout-minutes: 3
-        run: XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover=coverage.xml --coverage-xml=coverage/coverage-xml --log-junit=coverage/junit.xml
+        run: vendor/bin/phpunit --coverage-clover=coverage.xml --coverage-xml=coverage/coverage-xml --log-junit=coverage/junit.xml
 
       - name: "Send code coverage report to Codecov.io"
         uses: codecov/codecov-action@v1
@@ -126,6 +133,27 @@ jobs:
           - "8.1"
 
     steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: "none"
+          php-version: "${{ matrix.php-version }}"
+          tools: cs2pr
+
+      - name: "Get composer cache directory"
+        id: composercache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: "Cache dependencies"
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composercache.outputs.dir }}
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ matrix.dependencies }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ matrix.dependencies }}-composer-
+
       - name: "Install dependencies"
         run: composer update --no-interaction --no-progress
 
