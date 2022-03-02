@@ -2,9 +2,19 @@
 SF = symfony
 
 up-deps:
+	 $(SF) composer require --no-progress --no-update --no-scripts --dev \
+              symplify/coding-standard:* symplify/phpstan-rules:* \
+              phpstan/phpstan-symfony:* ekino/phpstan-banned-code:* phpstan/phpstan-phpunit:* phpstan/extension-installer:* phpstan/phpstan:* \
+              psalm/plugin-symfony:* vimeo/psalm:* \
+              infection/infection:*
 	$(SF) composer update --no-interaction --no-progress -W
 
 down-deps:
+	 $(SF) composer remove --no-progress --no-update --no-scripts --dev \
+              symplify/coding-standard symplify/phpstan-rules \
+              phpstan/phpstan-symfony ekino/phpstan-banned-code phpstan/phpstan-phpunit phpstan/extension-installer phpstan/phpstan \
+              psalm/plugin-symfony vimeo/psalm \
+              infection/infection
 	$(SF) composer update --no-interaction --no-progress --prefer-lowest -W
 
 check: cs psalm stan

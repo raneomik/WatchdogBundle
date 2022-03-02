@@ -1,9 +1,8 @@
 WatchdogBundle
 ==============
 
-[![Build Status](https://travis-ci.com/raneomik/WatchdogBundle.svg?branch=main)](https://travis-ci.com/raneomik/WatchdogBundle)
-[![Coverage Status](https://coveralls.io/repos/github/raneomik/WatchdogBundle/badge.svg?branch=main)](https://coveralls.io/github/raneomik/WatchdogBundle?branch=main)
-[![SymfonyInsight](https://insight.symfony.com/projects/0dfb702d-f1fc-41b8-b56b-7b1a447a995e/mini.svg)](https://insight.symfony.com/projects/0dfb702d-f1fc-41b8-b56b-7b1a447a995e)
+[![codecov](https://codecov.io/gh/raneomik/WatchdogBundle/branch/main/graph/badge.svg?token=CAJ62EG1GB)](https://codecov.io/gh/raneomik/WatchdogBundle)
+[![SymfonyInsight](https://insight.symfony.com/projects/2fc0de74-a97a-44df-ad48-c5534a2e8065/mini.svg)](https://insight.symfony.com/projects/2fc0de74-a97a-44df-ad48-c5534a2e8065)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Franeomik%2FWatchdogBundle%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/raneomik/WatchdogBundle/main)
 A widget bundle providing a watchdog watching over time and which "woofs" if current time matches provided configuration.
 
