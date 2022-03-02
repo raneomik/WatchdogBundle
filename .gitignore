@@ -1,8 +1,8 @@
 phpunit.xml
-phpunit-coverage
 .phpunit.result.cache
 
 cov
+log
 
 vendor
 composer.lock
@@ -10,3 +10,4 @@ composer.phar
 
 Makefile
 .php-cs-fixer.cache
+.php-version

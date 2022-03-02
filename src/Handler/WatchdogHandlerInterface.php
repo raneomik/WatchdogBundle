@@ -4,5 +4,5 @@ namespace Raneomik\WatchdogBundle\Handler;
 
 interface WatchdogHandlerInterface
 {
-    public function processWoof(array $parameters = []);
+    public function processWoof(array $parameters = []): void;
 }

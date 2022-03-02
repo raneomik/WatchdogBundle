@@ -1,6 +1,6 @@
 <?php
 
-namespace Raneomik\WatchdogBundle\Test\Unit;
+namespace Raneomik\WatchdogBundle\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
@@ -49,7 +49,7 @@ abstract class AbstractWatchdogTest extends TestCase
         yield [[[
             'compound' => [
                 ['relative' => 'tomorrow'],
-                ['start' => (new \DateTime('-1 hour'))->format('H:i'), 'end' => $plus3Hours->format('H:i')],
+                ['start' => (new \DateTime())->format('H:i'), 'end' => $plus3Hours->format('H:i')],
             ],
         ]]];
         yield [[

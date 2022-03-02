@@ -3,10 +3,11 @@
 namespace Raneomik\WatchdogBundle\Subscriber;
 
 use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
+use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class WatchdogSubscriber implements EventSubscriberInterface
+class WatchdogEventSubscriber implements EventSubscriberInterface
 {
     private Watchdog $watchdog;
     private iterable $watchdogHandlers;
@@ -24,12 +25,15 @@ class WatchdogSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onWoofCheck(WatchdogWoofCheckEvent $event)
+    public function onWoofCheck(WatchdogWoofCheckEvent $event): void
     {
-        if ($this->watchdog->isWoofTime()) {
-            foreach ($this->watchdogHandlers as $handler) {
-                $handler->processWoof($event->eventParams());
-            }
+        if (false === $this->watchdog->isWoofTime()) {
+            return;
+        }
+
+        /** @var WatchdogHandlerInterface $handler */
+        foreach ($this->watchdogHandlers as $handler) {
+            $handler->processWoof($event->eventParams());
         }
     }
 }

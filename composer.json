@@ -12,23 +12,43 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "symfony/framework-bundle":  "^4.4|^5.3",
-        "symfony/yaml": "^4.4|^5.3"
+        "symfony/framework-bundle":  "^4.4|^5.4|^6.0",
+        "symfony/yaml": "^4.4|^5.4|^6.0"
     },
     "require-dev": {
+        "ekino/phpstan-banned-code": "*",
         "friendsofphp/php-cs-fixer": "^3.0",
-        "symfony/test-pack": "*",
-        "symfony/debug-pack": "*"
+        "infection/infection": "*",
+        "phpstan/extension-installer": "*",
+        "phpstan/phpstan": "*",
+        "phpstan/phpstan-phpunit": "*",
+        "phpstan/phpstan-symfony": "*",
+        "phpunit/phpunit": "^9.5",
+        "psalm/plugin-symfony": "*",
+        "symfony/phpunit-bridge": "^6.0.0",
+        "symplify/coding-standard": "*",
+        "symplify/phpstan-rules": "*",
+        "vimeo/psalm": "*"
     },
     "autoload": {
         "psr-4": { "Raneomik\\WatchdogBundle\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "Raneomik\\WatchdogBundle\\Test\\": "tests/" }
+        "psr-4": { "Raneomik\\WatchdogBundle\\Tests\\": "tests/" }
     },
-    "scripts": {
-        "test": [
-            "vendor/bin/simple-phpunit"
-        ]
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true,
+            "infection/extension-installer": true,
+            "symfony/flex": true
+        },
+        "phpstan": {
+            "includes": [
+                "extension.neon"
+            ]
+        }
     }
 }

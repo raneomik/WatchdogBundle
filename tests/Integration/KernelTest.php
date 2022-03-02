@@ -1,16 +1,43 @@
 <?php
 
-namespace Raneomik\WatchdogBundle\Test\Integration;
+namespace Raneomik\WatchdogBundle\Tests\Integration;
 
-use Psr\Container\ContainerInterface;
 use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
-use Raneomik\WatchdogBundle\Test\Integration\Stubs\StubHandler;
+use Raneomik\WatchdogBundle\Tests\Integration\Stubs\DummyHandler;
+use Raneomik\WatchdogBundle\Tests\Integration\Stubs\Kernel as KernelStub;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class KernelTest extends TestCase
+class KernelTest extends KernelTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $fs = new Filesystem();
+        $fs->remove(sys_get_temp_dir().'/WatchdogBundle/');
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        static::ensureKernelShutdown();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function createKernel(array $options = []): KernelInterface
+    {
+        return new KernelStub('test', true, $options['config'] ?? 'base');
+    }
+
     public function testLoadedBaseConfig()
     {
         self::bootKernel();
@@ -38,7 +65,9 @@ class KernelTest extends TestCase
     {
         self::bootKernel();
         $dispatcher = self::container()->get(EventDispatcherInterface::class);
-        $testHandler = self::container()->get(StubHandler::class);
+        $testHandler = self::container()->get(DummyHandler::class);
+
+        $this->assertEmpty($testHandler->handled);
 
         $dispatcher->dispatch(new WatchdogWoofCheckEvent(['handled' => true]));
 
@@ -48,8 +77,9 @@ class KernelTest extends TestCase
 
     private static function container(): ContainerInterface
     {
+        /* @phpstan-ignore-next-line */
         if (Kernel::MAJOR_VERSION < 5) {
-            return self::$container;
+            return self::$container; /* @phpstan-ignore-line */
         }
 
         return self::getContainer();
