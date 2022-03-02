@@ -13,13 +13,13 @@
     "require": {
         "php": "^7.4|^8.0",
         "symfony/framework-bundle":  "^4.4|^5.4|^6.0",
-        "symfony/yaml": "^4.4|^5.4",
-        "ext-json": "*"
+        "symfony/yaml": "^4.4|^5.4"
     },
     "require-dev": {
+        "symfony/phpunit-bridge": "^6.0.0",
+        "symfony/debug-pack": "v1.0.10",
         "friendsofphp/php-cs-fixer": "^3.0",
-        "symfony/test-pack": "*",
-        "symfony/debug-pack": "*",
+        "phpunit/phpunit": "^9.5",
         "vimeo/psalm": "*",
         "phpstan/phpstan": "*",
         "phpstan/phpstan-phpunit": "*",

@@ -20,11 +20,11 @@ class WatchdogUnit implements WatchdogUnitInterface
 
     private static function processIntervalConfig(array $data): WatchdogUnitInterface
     {
-        if (false === key_exists('start', $data)) {
+        if (false === \array_key_exists('start', $data)) {
             throw new MalformedConfigurationValueException('Missing "start" data for interval');
         }
 
-        if (false === key_exists('end', $data)) {
+        if (false === \array_key_exists('end', $data)) {
             throw new MalformedConfigurationValueException('Missing "end" data for interval');
         }
 
@@ -55,7 +55,7 @@ class WatchdogUnit implements WatchdogUnitInterface
 
     public static function create(array $data): WatchdogUnitInterface
     {
-        if (key_exists('start', $data) || key_exists('end', $data)) {
+        if (\array_key_exists('start', $data) || \array_key_exists('end', $data)) {
             return self::processIntervalConfig($data);
         }
 
