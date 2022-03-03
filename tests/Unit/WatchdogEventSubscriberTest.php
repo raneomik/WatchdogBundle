@@ -12,7 +12,7 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
     /**
      * @dataProvider woofMatchCasesProvider
      */
-    public function testSubscriberOnWoof(array $timeRule)
+    public function testSubscriberOnWoof(array $timeRule): void
     {
         $handler = $this->createMock(WatchdogHandlerInterface::class);
         $handler
@@ -26,7 +26,7 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
     /**
      * @dataProvider notWoofMatchCasesProvider
      */
-    public function testSubscriberOnNotWoof(array $timeRule)
+    public function testSubscriberOnNotWoof(array $timeRule): void
     {
         $handler = $this->createMock(WatchdogHandlerInterface::class);
         $handler
@@ -37,7 +37,7 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
         $this->subscribeAndDispatch($timeRule, $handler);
     }
 
-    public function subscribeAndDispatch(array $timeRule, WatchdogHandlerInterface $handler)
+    public function subscribeAndDispatch(array $timeRule, WatchdogHandlerInterface $handler): void
     {
         $subscriber = new WatchdogEventSubscriber(new Watchdog(['dates' => $timeRule]), [$handler]);
 

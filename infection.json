@@ -5,7 +5,8 @@
         ]
     },
     "logs": {
-        "text": "infection.log",
+        "text": "log\/infection.log",
+        "html": "log\/infection.html",
         "stryker": {
             "badge": "main"
         }

@@ -89,7 +89,7 @@ class WatchdogUnitTest extends TestCase
     /**
      * @dataProvider matchingUnitProvider
      */
-    public function testOkCases(WatchdogUnitInterface $watchDogUnit)
+    public function testOkCases(WatchdogUnitInterface $watchDogUnit): void
     {
         $this->assertTrue($watchDogUnit->isMatching());
     }
@@ -97,7 +97,7 @@ class WatchdogUnitTest extends TestCase
     /**
      * @dataProvider notMatchingUnitProvider
      */
-    public function testKoCases(WatchdogUnitInterface $watchDogUnit)
+    public function testKoCases(WatchdogUnitInterface $watchDogUnit): void
     {
         $this->assertFalse($watchDogUnit->isMatching());
     }
