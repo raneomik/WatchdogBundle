@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class WatchdogDependencyInjectionTest extends TestCase
 {
-    public function testLoadConfiguration()
+    public function testLoadConfiguration(): void
     {
         $container = $this->createContainer([
             'watchdog' => [
@@ -32,7 +32,9 @@ class WatchdogDependencyInjectionTest extends TestCase
 
         $container->compile();
 
-        $this->assertInstanceOf(Watchdog::class, $watchdog = $container->get('test.autowired')->watchdog());
+        /** @var AutowiredStub $stub */
+        $stub = $container->get('test.autowired');
+        $this->assertInstanceOf(Watchdog::class, $watchdog = $stub->watchdog());
         $this->assertTrue($watchdog->isWoofTime());
     }
 

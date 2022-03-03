@@ -38,33 +38,41 @@ class KernelTest extends KernelTestCase
         return new KernelStub('test', true, $options['config'] ?? 'base');
     }
 
-    public function testLoadedBaseConfig()
+    public function testLoadedBaseConfig(): void
     {
         self::bootKernel();
+        /** @var array $config */
         $config = self::container()->getParameter('watchdog_config');
+        /** @var Watchdog $watchdog */
+        $watchdog = self::container()->get(Watchdog::class);
 
         $this->assertArrayHasKey('dates', $config);
 
         $this->assertArrayHasKey('relative', $config['dates'][0]);
         $this->assertArrayHasKey('compound', $config['dates'][1]);
 
-        $this->assertTrue(self::container()->get(Watchdog::class)->isWoofTime());
+        $this->assertTrue($watchdog->isWoofTime());
     }
 
-    public function testLoadedEmptyConfig()
+    public function testLoadedEmptyConfig(): void
     {
         self::bootKernel(['config' => 'empty']);
+        /** @var array $config */
         $config = self::container()->getParameter('watchdog_config');
+        /** @var Watchdog $watchdog */
+        $watchdog = self::container()->get(Watchdog::class);
 
         $this->assertEmpty($config['dates']);
 
-        $this->assertFalse(self::container()->get(Watchdog::class)->isWoofTime());
+        $this->assertFalse($watchdog->isWoofTime());
     }
 
-    public function testDispatchedEvent()
+    public function testDispatchedEvent(): void
     {
         self::bootKernel();
+        /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = self::container()->get(EventDispatcherInterface::class);
+        /** @var DummyHandler $testHandler */
         $testHandler = self::container()->get(DummyHandler::class);
 
         $this->assertEmpty($testHandler->handled);

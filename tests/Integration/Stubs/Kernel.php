@@ -48,7 +48,7 @@ class Kernel extends BaseKernel
         return sys_get_temp_dir().'/WatchdogBundle/logs';
     }
 
-    protected function build(ContainerBuilder $container)
+    protected function build(ContainerBuilder $container): void
     {
         $container->register('logger', NullLogger::class);
     }
@@ -56,7 +56,7 @@ class Kernel extends BaseKernel
     /**
      * Loads the container configuration.
      */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(sprintf(__DIR__.'/../config/%s_config.yml', $this->config));
     }
