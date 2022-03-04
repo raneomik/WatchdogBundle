@@ -8,7 +8,7 @@
         "text": "log\/infection.log",
         "html": "log\/infection.html",
         "stryker": {
-            "badge": "main"
+            "report": "main"
         }
     },
     "mutators": {
