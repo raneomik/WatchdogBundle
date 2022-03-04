@@ -161,7 +161,7 @@ jobs:
         timeout-minutes: 10
         run: vendor/bin/infection --ansi --threads=$(nproc) --coverage=coverage --skip-initial-tests
         env:
-          INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
+          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
 
       - name: "Output infection"
         run: cat log/infection.log
