@@ -21,12 +21,7 @@ class UnitProcessor
             return $this->intervalUnit($data);
         }
 
-        return $this->watchdogUnit($data);
-    }
-
-    private static function compoundUnit(array $data): Compound
-    {
-        return new Compound($data, true);
+        return $this->unit($data);
     }
 
     private static function intervalUnit(array $data): Interval
@@ -42,7 +37,12 @@ class UnitProcessor
         return new Interval($start, $end);
     }
 
-    private static function commonUnit(string $key, string $value): ?WatchdogUnitInterface
+    private static function compoundUnit(array $data): Compound
+    {
+        return new Compound($data, true);
+    }
+
+    private static function simpleUnit(string $key, string $value): ?WatchdogUnitInterface
     {
         if (WatchdogUnitInterface::RELATIVE === $key) {
             return new RelativeDateTime($value);
@@ -67,7 +67,7 @@ class UnitProcessor
         return null;
     }
 
-    private function watchdogUnit(array $data): WatchdogUnitInterface
+    private function unit(array $data): WatchdogUnitInterface
     {
         $invalidConfigKey = '<not-supported>';
         $invalidConfigValue = '<invalid>';
@@ -81,7 +81,7 @@ class UnitProcessor
                 return $this->compoundUnit($value);
             }
 
-            if (null !== $unit = $this->commonUnit($key, $value)) {
+            if (null !== $unit = $this->simpleUnit($key, $value)) {
                 return $unit;
             }
 

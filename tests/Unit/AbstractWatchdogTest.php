@@ -36,8 +36,8 @@ abstract class AbstractWatchdogTest extends TestCase
 
     public function notWoofMatchCasesProvider(): \Generator
     {
-        $plus2Hours = new \DateTime('+2 hours');
-        $plus3Hours = new \DateTime('+3 hours');
+        $plus2Hours = new \DateTime('+1 hours');
+        $plus3Hours = new \DateTime('+2 hours');
 
         yield [[['date_time' => $plus2Hours->format('Y-m-d H:i')]]];
         yield [[['hour' => $plus2Hours->format('H:i')]]];
