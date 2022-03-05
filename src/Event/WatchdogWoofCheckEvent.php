@@ -5,12 +5,12 @@ namespace Raneomik\WatchdogBundle\Event;
 class WatchdogWoofCheckEvent
 {
     private array $parameters;
-    private ?string $watchdog;
+    private ?string $watchdogId;
 
-    public function __construct(array $parameters = [], ?string $watchdog = null)
+    public function __construct(array $parameters = [], ?string $watchdogId = null)
     {
         $this->parameters = $parameters;
-        $this->watchdog = $watchdog;
+        $this->watchdogId = $watchdogId;
     }
 
     public function eventParams(): array
@@ -18,8 +18,8 @@ class WatchdogWoofCheckEvent
         return $this->parameters;
     }
 
-    public function concernedWatchdog(): ?string
+    public function concernedWatchdogId(): ?string
     {
-        return $this->watchdog;
+        return $this->watchdogId;
     }
 }

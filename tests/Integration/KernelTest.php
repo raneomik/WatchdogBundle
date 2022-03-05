@@ -40,9 +40,18 @@ class KernelTest extends KernelTestCase
         return new KernelStub('test', true, $options['config'] ?? 'base');
     }
 
-    public function testLoadedBaseConfig(): void
+    public function baseConfigsProvider(): \Generator
     {
-        self::bootKernel();
+        yield ['base'];
+        yield ['base_alt'];
+    }
+
+    /**
+     * @dataProvider baseConfigsProvider
+     */
+    public function testLoadedBaseConfig(string $baseConfig): void
+    {
+        self::bootKernel(['config' => $baseConfig]);
         /** @var array $config */
         $config = self::container()->getParameter('watchdog_config');
         /** @var WatchdogInterface $watchdog */

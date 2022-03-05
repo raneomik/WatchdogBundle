@@ -1,0 +1,10 @@
+framework:
+  test: true
+  secret: secret
+
+watchdog:
+  default:
+  - relative: 'now'
+  - compound:
+      - relative: 'monday'
+      - { start: '20:00', end: '22:30' }
