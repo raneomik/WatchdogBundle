@@ -40,6 +40,7 @@
         "sort-packages": true
     },
     "extra": {
+        "sort-packages": true,
         "allow-plugins": {
             "phpstan/extension-installer": true,
             "infection/extension-installer": true,

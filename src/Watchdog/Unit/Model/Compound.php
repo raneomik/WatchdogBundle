@@ -14,7 +14,7 @@ class Compound implements WatchdogUnitInterface
         $this->logicalAndMode = $logicalAnd;
 
         /** @var array|string $value */
-        foreach ($data as $key => $value) {
+        foreach ($data as $value) {
             $this->unitCollection[] = WatchdogUnitFactory::create(
                 \is_string($value) ? $data : $value
             );
