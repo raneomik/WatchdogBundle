@@ -23,7 +23,7 @@ class WatchdogExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('watchdog_config', $config);
+        $container->setParameter('watchdog_config', $config['default'] ?? $config);
 
         $container->registerForAutoconfiguration(WatchdogHandlerInterface::class)
             ->addTag(self::HANDLER_SERVICE_TAG)
