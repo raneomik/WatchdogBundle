@@ -9,7 +9,7 @@ class SimplewiredStub
     private WatchdogInterface $watchdog;
 
     public function __construct(
-        WatchdogInterface $watchdog,
+        WatchdogInterface $watchdog
     ) {
         $this->watchdog = $watchdog;
     }

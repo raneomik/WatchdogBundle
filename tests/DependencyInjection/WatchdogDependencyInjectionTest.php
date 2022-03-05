@@ -11,6 +11,7 @@ use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\HttpKernel\Kernel as SymfonyKernel;
 
 class WatchdogDependencyInjectionTest extends TestCase
 {
@@ -68,8 +69,11 @@ class WatchdogDependencyInjectionTest extends TestCase
         /** @var Definition $testTwoDef */
         $testTwoDef = $container->getDefinition('test.autowired')->getArgument(1);
 
-        $this->assertContains('test_one', $testOneDef->getTag(WatchdogExtension::SERVICE_TAG)[0]);
-        $this->assertContains('test_two', $testTwoDef->getTag(WatchdogExtension::SERVICE_TAG)[0]);
+
+        if (SymfonyKernel::MAJOR_VERSION >= 5) {
+            $this->assertContains('test_one', $testOneDef->getTag(WatchdogExtension::SERVICE_TAG)[0]);
+            $this->assertContains('test_two', $testTwoDef->getTag(WatchdogExtension::SERVICE_TAG)[0]);
+        }
 
         /** @var MultiwiredStub $stub */
         $stub = $container->get('test.autowired');

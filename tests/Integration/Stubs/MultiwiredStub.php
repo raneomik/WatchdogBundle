@@ -11,7 +11,7 @@ class MultiwiredStub
 
     public function __construct(
         WatchdogInterface $testOne,
-        WatchdogInterface $testTwo,
+        WatchdogInterface $testTwo
     ) {
         $this->testOne = $testOne;
         $this->testTwo = $testTwo;
