@@ -25,6 +25,7 @@
         "phpstan/phpstan-symfony": "*",
         "phpunit/phpunit": "^9.5",
         "psalm/plugin-symfony": "*",
+        "symfony/http-client": "^6.0",
         "symfony/phpunit-bridge": "^6.0.0",
         "symplify/coding-standard": "*",
         "symplify/phpstan-rules": "*",

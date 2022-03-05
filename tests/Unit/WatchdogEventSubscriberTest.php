@@ -39,7 +39,7 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
 
     public function subscribeAndDispatch(array $timeRule, WatchdogHandlerInterface $handler): void
     {
-        $subscriber = new WatchdogEventSubscriber(new Watchdog(['dates' => $timeRule]), [$handler]);
+        $subscriber = new WatchdogEventSubscriber(['default' => new Watchdog($timeRule)], [$handler]);
 
         $this->assertArrayHasKey(WatchdogWoofCheckEvent::class, $events = $subscriber->getSubscribedEvents());
         $this->assertSame('onWoofCheck', $method = $events[WatchdogWoofCheckEvent::class]);

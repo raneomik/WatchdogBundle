@@ -12,10 +12,8 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('watchdog');
 
         $treeBuilder->getRootNode()
-            ->children()
-                ->arrayNode('dates')
-                    ->variablePrototype()->end()
-                ->end()
+            ->fixXmlConfig('watchdog')
+                ->variablePrototype()->end()
             ->end();
 
         return $treeBuilder;
