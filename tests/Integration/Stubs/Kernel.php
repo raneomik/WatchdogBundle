@@ -11,6 +11,9 @@ use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 
 class Kernel extends BaseKernel
 {
+    /* @phpstan-ignore-next-line */
+    public const IS_LEGACY = 5 > BaseKernel::MAJOR_VERSION;
+
     private string $config;
 
     public function __construct(string $environment, bool $debug, string $config = 'base')

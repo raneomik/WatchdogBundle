@@ -26,7 +26,7 @@ class WatchdogUnitTest extends TestCase
 
         yield [new Time($now->format('H:i'))];
 
-        yield [new Date($now->format('Y-m-d'))];
+        yield [new Date($date = $now->format('Y-m-d'))];
         yield [new DateTimeUnit($nowString = $now->format('Y-m-d H:i'))];
 
         yield [new Interval($nowString, $nowPlus2Minutes->format('Y-m-d H:i'))];
@@ -38,6 +38,8 @@ class WatchdogUnitTest extends TestCase
         yield [new Compound([
             [WatchdogUnitInterface::RELATIVE => 'now'],
             [WatchdogUnitInterface::TIME => $hour],
+            [WatchdogUnitInterface::DATE => $date],
+            [WatchdogUnitInterface::DATE_TIME => $nowString],
         ], true)];
         yield [new Compound($atLeastOneCompound = [
             [WatchdogUnitInterface::RELATIVE => 'tomorrow'],
@@ -52,16 +54,22 @@ class WatchdogUnitTest extends TestCase
 
     public function notMatchingUnitProvider(): \Generator
     {
+        $now = new \DateTime();
         $notNow = new \DateTime('+1 day +1 hour');
         $nowPlus2Minutes = new \DateTime('+2 minutes');
+
+        if (0 !== (int) ($nowPlus2Minutes->format('d') - $now->format('d'))) {
+            $now->modify('+1 hours');
+            $nowPlus2Minutes->modify('+1 hours');
+        }
 
         yield [new Hour($hour = $notNow->format('H:i'))];
 
         yield [new Time($notNow->format('H:i'))];
         yield [new Time($nowPlus2Minutes->format('H:i'))];
 
-        yield [new Date($notNow->format('Y-m-d'))];
-        yield [new DateTimeUnit($notNow->format('Y-m-d H:i'))];
+        yield [new Date($date = $notNow->format('Y-m-d'))];
+        yield [new DateTimeUnit($dateTime = $notNow->format('Y-m-d H:i'))];
 
         yield [new Interval($nowPlus2Minutes->format('Y-m-d H:i'), $notNow->format('Y-m-d H:i'))];
 
@@ -70,6 +78,8 @@ class WatchdogUnitTest extends TestCase
         yield [new Compound($compound = [
             [WatchdogUnitInterface::RELATIVE => 'now'],
             [WatchdogUnitInterface::TIME => $hour],
+            [WatchdogUnitInterface::DATE => $date],
+            [WatchdogUnitInterface::DATE_TIME => $dateTime],
         ], true)];
         yield [new Compound($noneCompound = [
             [WatchdogUnitInterface::RELATIVE => 'tomorrow'],
