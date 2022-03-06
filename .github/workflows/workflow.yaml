@@ -158,6 +158,7 @@ jobs:
           fail_ci_if_error: true
 
       - name: "Infection"
+        continue-on-error: true
         timeout-minutes: 10
         run: vendor/bin/infection --ansi --threads=$(nproc) --coverage=coverage --skip-initial-tests
         env:

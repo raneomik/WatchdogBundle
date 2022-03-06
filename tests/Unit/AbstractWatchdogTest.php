@@ -9,20 +9,20 @@ abstract class AbstractWatchdogTest extends TestCase
     public function woofMatchCasesProvider(): \Generator
     {
         $now = new \DateTime();
-        $minus2Mins = new \DateTime('-2 minutes');
-        $plus2Mins = new \DateTime('+2 minutes');
+        $minus1Mins = new \DateTime('-1 minutes');
+        $plus1Mins = new \DateTime('+1 minutes');
 
         yield [[['date_time' => $now->format('Y-m-d H:i')]]];
         yield [[['hour' => $now->format('H:i')]]];
         yield [[['time' => $now->format('H:i')]]];
         yield [[['date' => $now->format('Y-m-d')]]];
-        yield [[['start' => $minus2Mins->format('H:i'), 'end' => $plus2Mins->format('H:i')]]];
+        yield [[['start' => $minus1Mins->format('H:i'), 'end' => $plus1Mins->format('H:i')]]];
         yield [[['start' => (new \DateTime('-1 day'))->format('Y-m-d'), 'end' => (new \DateTime('+1 day'))->format('Y-m-d')]]];
         yield [[['relative' => 'today']]];
         yield [[[
             'compound' => [
                 ['relative' => 'today'],
-                ['start' => $minus2Mins->format('H:i'), 'end' => $plus2Mins->format('H:i')],
+                ['start' => $minus1Mins->format('H:i'), 'end' => $plus1Mins->format('H:i')],
                 ['hour' => $now->format('H:i')],
                 ['time' => $now->format('H:i')],
                 ['date' => $now->format('Y-m-d')],
@@ -32,7 +32,7 @@ abstract class AbstractWatchdogTest extends TestCase
         //global config wth 1 ok rule
         yield [[
             ['relative' => 'tomorrow'],
-            ['start' => $minus2Mins->format('H:i'), 'end' => $plus2Mins->format('H:i')], //ok
+            ['start' => $minus1Mins->format('H:i'), 'end' => $plus1Mins->format('H:i')], //ok
             ['hour' => (new \DateTime('+2 hours'))->format('H:i')],
             ['date' => (new \DateTime('+2 days'))->format('Y-m-d')],
         ]];
