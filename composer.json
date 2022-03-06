@@ -12,8 +12,7 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "symfony/framework-bundle":  "^4.4|^5.4|^6.0",
-        "symfony/yaml": "^4.4|^5.4|^6.0"
+        "symfony/framework-bundle":  "^4.4|^5.4|^6.0"
     },
     "require-dev": {
         "ekino/phpstan-banned-code": "*",
@@ -26,6 +25,7 @@
         "phpunit/phpunit": "^9.5",
         "psalm/plugin-symfony": "*",
         "symfony/phpunit-bridge": "^6.0.0",
+        "symfony/yaml": "^4.4|^5.4|^6.0",
         "symplify/coding-standard": "*",
         "symplify/phpstan-rules": "*",
         "vimeo/psalm": "*"
@@ -40,6 +40,7 @@
         "sort-packages": true
     },
     "extra": {
+        "sort-packages": true,
         "allow-plugins": {
             "phpstan/extension-installer": true,
             "infection/extension-installer": true,

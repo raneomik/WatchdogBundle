@@ -29,7 +29,7 @@ check-deps:
 check-code: cs psalm stan
 
 cs:
-	$(SF) php vendor/bin/php-cs-fixer fix --verbose --allow-risky=yes
+	vendor/bin/php-cs-fixer fix --verbose --allow-risky=yes
 psalm:
 	$(SF) php vendor/bin/psalm --no-progress --show-info=true --no-cache
 stan:
@@ -37,7 +37,7 @@ stan:
 
 lint:
 	vendor/bin/neon-lint .
-	vendor/bin/yaml-lint config tests --parse-tags
+	vendor/bin/yaml-lint tests --parse-tags
 
 test:
 ifdef FILTER
@@ -50,4 +50,4 @@ cover:
 	XDEBUG_MODE=coverage $(SF) php vendor/bin/simple-phpunit --coverage-xml=cov/xml --coverage-html=cov/html --log-junit=cov/junit.xml
 
 infection:
-	XDEBUG_MODE=coverage vendor/bin/infection --ansi --threads=$(nproc)
+	XDEBUG_MODE=coverage vendor/bin/infection --ansi

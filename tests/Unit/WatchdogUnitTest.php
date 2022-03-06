@@ -18,26 +18,28 @@ class WatchdogUnitTest extends TestCase
     public function matchingUnitProvider(): \Generator
     {
         $now = new \DateTime();
-        $nowPlus2Minutes = new \DateTime('+2 minutes');
-        $nowMinus2Minutes = new \DateTime('-2 minutes');
+        $nowPlus1Minutes = new \DateTime('+1 minutes');
+        $nowMinus1Minutes = new \DateTime('-1 minutes');
 
         yield [new Hour($hour = $now->format('H:i'))];
-        yield [new Hour($nowPlus2Minutes->format('H:i'))];
+        yield [new Hour($nowPlus1Minutes->format('H:i'))];
 
         yield [new Time($now->format('H:i'))];
 
-        yield [new Date($now->format('Y-m-d'))];
+        yield [new Date($date = $now->format('Y-m-d'))];
         yield [new DateTimeUnit($nowString = $now->format('Y-m-d H:i'))];
 
-        yield [new Interval($nowString, $nowPlus2Minutes->format('Y-m-d H:i'))];
-        yield [new Interval($nowMinus2Minutes->format('Y-m-d H:i'), $nowString)];
-        yield [new Interval($nowMinus2Minutes->format('Y-m-d H:i'), $nowPlus2Minutes->format('Y-m-d H:i'))];
+        yield [new Interval($nowString, $nowPlus1Minutes->format('Y-m-d H:i'))];
+        yield [new Interval($nowMinus1Minutes->format('Y-m-d H:i'), $nowString)];
+        yield [new Interval($nowMinus1Minutes->format('Y-m-d H:i'), $nowPlus1Minutes->format('Y-m-d H:i'))];
 
         yield [new RelativeDateTime('now')];
 
         yield [new Compound([
             [WatchdogUnitInterface::RELATIVE => 'now'],
             [WatchdogUnitInterface::TIME => $hour],
+            [WatchdogUnitInterface::DATE => $date],
+            [WatchdogUnitInterface::DATE_TIME => $nowString],
         ], true)];
         yield [new Compound($atLeastOneCompound = [
             [WatchdogUnitInterface::RELATIVE => 'tomorrow'],
@@ -52,16 +54,22 @@ class WatchdogUnitTest extends TestCase
 
     public function notMatchingUnitProvider(): \Generator
     {
+        $now = new \DateTime();
         $notNow = new \DateTime('+1 day +1 hour');
         $nowPlus2Minutes = new \DateTime('+2 minutes');
+
+        if (0 !== (int) ($nowPlus2Minutes->format('d') - $now->format('d'))) {
+            $now->modify('+1 hours');
+            $nowPlus2Minutes->modify('+1 hours');
+        }
 
         yield [new Hour($hour = $notNow->format('H:i'))];
 
         yield [new Time($notNow->format('H:i'))];
         yield [new Time($nowPlus2Minutes->format('H:i'))];
 
-        yield [new Date($notNow->format('Y-m-d'))];
-        yield [new DateTimeUnit($notNow->format('Y-m-d H:i'))];
+        yield [new Date($date = $notNow->format('Y-m-d'))];
+        yield [new DateTimeUnit($dateTime = $notNow->format('Y-m-d H:i'))];
 
         yield [new Interval($nowPlus2Minutes->format('Y-m-d H:i'), $notNow->format('Y-m-d H:i'))];
 
@@ -70,6 +78,8 @@ class WatchdogUnitTest extends TestCase
         yield [new Compound($compound = [
             [WatchdogUnitInterface::RELATIVE => 'now'],
             [WatchdogUnitInterface::TIME => $hour],
+            [WatchdogUnitInterface::DATE => $date],
+            [WatchdogUnitInterface::DATE_TIME => $dateTime],
         ], true)];
         yield [new Compound($noneCompound = [
             [WatchdogUnitInterface::RELATIVE => 'tomorrow'],
@@ -100,5 +110,39 @@ class WatchdogUnitTest extends TestCase
     public function testKoCases(WatchdogUnitInterface $watchDogUnit): void
     {
         $this->assertFalse($watchDogUnit->isMatching());
+    }
+
+    public function testComplexCompoundUnit(): void
+    {
+        $now = new \DateTime();
+        $notNow = new \DateTime('-1 day -1 hour');
+
+        $unit = new Compound([
+             WatchdogUnitInterface::COMPOUND => [
+                WatchdogUnitInterface::COMPOUND => [
+                    WatchdogUnitInterface::COMPOUND => [
+                        WatchdogUnitInterface::COMPOUND => [
+                            WatchdogUnitInterface::COMPOUND => [
+                                WatchdogUnitInterface::RELATIVE => 'now',
+                                WatchdogUnitInterface::TIME => $now->format('H:i'),
+                                WatchdogUnitInterface::DATE => $now->format('d-m-Y'),
+                                WatchdogUnitInterface::DATE_TIME => $now->format('d-m-Y H:i'),
+                                $interval = [
+                                    WatchdogUnitInterface::START => (new \DateTime('-1 mins'))->format('d-m-Y H:i'),
+                                    WatchdogUnitInterface::END => (new \DateTime('+1 mins'))->format('d-m-Y H:i'),
+                                ],
+                            ],
+                            $interval,
+                        ],
+                        WatchdogUnitInterface::RELATIVE => 'now',
+                    ],
+                    WatchdogUnitInterface::DATE_TIME => $now->format('d-m-Y H:i'),
+                ],
+                WatchdogUnitInterface::DATE => $now->format('d-m-Y'),
+             ],
+            WatchdogUnitInterface::TIME => $notNow->format('H:i'),
+        ]);
+
+        $this->assertTrue($unit->isMatching());
     }
 }

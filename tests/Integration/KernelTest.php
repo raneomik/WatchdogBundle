@@ -2,14 +2,17 @@
 
 namespace Raneomik\WatchdogBundle\Tests\Integration;
 
+use Raneomik\WatchdogBundle\DependencyInjection\SymfonyVersionChecker\LegacyChecker;
 use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\DummyHandler;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\Kernel as KernelStub;
-use Raneomik\WatchdogBundle\Watchdog\Watchdog;
+use Raneomik\WatchdogBundle\Tests\Integration\Stubs\MultiwiredStub;
+use Raneomik\WatchdogBundle\Tests\Integration\Stubs\SimplewiredStub;
+use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -40,18 +43,46 @@ class KernelTest extends KernelTestCase
 
     public function testLoadedBaseConfig(): void
     {
+        if (self::isLegacy()) {
+            $this->expectException(InvalidConfigurationException::class);
+            $this->expectExceptionMessage('Your watchdog configuration needs to be set under "default"');
+        }
+
         self::bootKernel();
+        $this->assertCorrectBaseConfig();
+    }
+
+    public function testLoadedLegacyBaseConfig(): void
+    {
+        self::bootKernel(['config' => 'base_alt']);
+        $this->assertCorrectBaseConfig();
+    }
+
+    private function assertCorrectBaseConfig(): void
+    {
         /** @var array $config */
         $config = self::container()->getParameter('watchdog_config');
-        /** @var Watchdog $watchdog */
-        $watchdog = self::container()->get(Watchdog::class);
+        /** @var WatchdogInterface $watchdog */
+        $watchdog = self::container()->get(WatchdogInterface::class);
 
-        $this->assertArrayHasKey('dates', $config);
+        /** @var SimplewiredStub $simpleWired */
+        $simpleWired = self::container()->get(SimplewiredStub::class);
 
-        $this->assertArrayHasKey('relative', $config['dates'][0]);
-        $this->assertArrayHasKey('compound', $config['dates'][1]);
+        $this->assertArrayHasKey('relative', $config[0]);
+        $this->assertArrayHasKey('compound', $config[1]);
 
         $this->assertTrue($watchdog->isWoofTime());
+        $this->assertSame($watchdog, $simpleWired->watchdog());
+    }
+
+    public function testLoadedMultiConfig(): void
+    {
+        self::bootKernel(['config' => 'multi']);
+        /** @var MultiwiredStub $stub */
+        $stub = self::container()->get(MultiwiredStub::class);
+
+        $this->assertTrue($stub->testOne()->isWoofTime());
+        $this->assertFalse($stub->testTwo()->isWoofTime());
     }
 
     public function testLoadedEmptyConfig(): void
@@ -59,17 +90,18 @@ class KernelTest extends KernelTestCase
         self::bootKernel(['config' => 'empty']);
         /** @var array $config */
         $config = self::container()->getParameter('watchdog_config');
-        /** @var Watchdog $watchdog */
-        $watchdog = self::container()->get(Watchdog::class);
+        /** @var WatchdogInterface $watchdog */
+        $watchdog = self::container()->get(WatchdogInterface::class);
 
-        $this->assertEmpty($config['dates']);
+        $this->assertEmpty($config);
 
         $this->assertFalse($watchdog->isWoofTime());
     }
 
-    public function testDispatchedEvent(): void
+    public function testDispatchedSimpleEvent(): void
     {
-        self::bootKernel();
+        self::bootKernel(['config' => self::isLegacy() ? 'base_alt' : 'base']);
+
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = self::container()->get(EventDispatcherInterface::class);
         /** @var DummyHandler $testHandler */
@@ -83,13 +115,52 @@ class KernelTest extends KernelTestCase
         $this->assertTrue($testHandler->handled['handled']);
     }
 
+    public function testDispatchedMultiEvents(): void
+    {
+        self::bootKernel(['config' => 'multi']);
+        /** @var EventDispatcherInterface $dispatcher */
+        $dispatcher = self::container()->get(EventDispatcherInterface::class);
+        /** @var DummyHandler $testHandler */
+        $testHandler = self::container()->get(DummyHandler::class);
+
+        $this->assertEmpty($testHandler->handled);
+
+        $dispatcher->dispatch(new WatchdogWoofCheckEvent(['handledOne' => true], 'test_one'));
+        $this->assertArrayHasKey('handledOne', $testHandler->handled);
+        $this->assertTrue($testHandler->handled['handledOne']);
+
+        $dispatcher->dispatch(new WatchdogWoofCheckEvent(['handledTwo' => true], 'test_two'));
+        $this->assertArrayNotHasKey('handledTwo', $testHandler->handled);
+
+        $dispatcher->dispatch(new WatchdogWoofCheckEvent(['handledOneMoreTime' => true], 'test_one'));
+        $this->assertArrayHasKey('handledOneMoreTime', $testHandler->handled);
+        $this->assertTrue($testHandler->handled['handledOneMoreTime']);
+
+        $dispatcher->dispatch(new WatchdogWoofCheckEvent(['handledAll' => true]));
+        $this->assertArrayHasKey('handledAll', $testHandler->handled);
+        $this->assertTrue($testHandler->handled['handledAll']);
+    }
+
     private static function container(): ContainerInterface
     {
         /* @phpstan-ignore-next-line */
-        if (Kernel::MAJOR_VERSION < 5) {
+        if (KernelStub::IS_LEGACY) {
             return self::$container; /* @phpstan-ignore-line */
         }
 
         return self::getContainer();
+    }
+
+    private static function isLegacy(): bool
+    {
+        /* @phpstan-ignore-next-line */
+        if (KernelStub::IS_LEGACY) {
+            return true;
+        }
+
+        /** @var LegacyChecker $checker */
+        $checker = self::container()->get(LegacyChecker::class);
+
+        return $checker->isLegacy();
     }
 }

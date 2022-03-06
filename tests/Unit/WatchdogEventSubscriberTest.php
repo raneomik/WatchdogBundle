@@ -39,11 +39,35 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
 
     public function subscribeAndDispatch(array $timeRule, WatchdogHandlerInterface $handler): void
     {
-        $subscriber = new WatchdogEventSubscriber(new Watchdog(['dates' => $timeRule]), [$handler]);
+        $subscriber = new WatchdogEventSubscriber(
+            new \ArrayIterator(['default' => new Watchdog($timeRule)]),
+            new \ArrayIterator([$handler])
+        );
 
         $this->assertArrayHasKey(WatchdogWoofCheckEvent::class, $events = $subscriber->getSubscribedEvents());
         $this->assertSame('onWoofCheck', $method = $events[WatchdogWoofCheckEvent::class]);
 
         $subscriber->$method(new WatchdogWoofCheckEvent());
+    }
+
+    public function testUnknownWatchdog(): void
+    {
+        $handler = $this->createMock(WatchdogHandlerInterface::class);
+        $handler
+            ->expects($this->never())
+            ->method('processWoof')
+        ;
+
+        $subscriber = new WatchdogEventSubscriber(
+            new \ArrayIterator(['known' => new Watchdog(['relative' => 'now'])]),
+            new \ArrayIterator([$handler])
+        );
+
+        $this->assertArrayHasKey(WatchdogWoofCheckEvent::class, $events = $subscriber->getSubscribedEvents());
+        $this->assertSame('onWoofCheck', $method = $events[WatchdogWoofCheckEvent::class]);
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Unknown "unknown" watchdog');
+        $subscriber->$method(new WatchdogWoofCheckEvent([], 'unknown'));
     }
 }

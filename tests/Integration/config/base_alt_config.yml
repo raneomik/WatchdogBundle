@@ -3,11 +3,8 @@ framework:
   secret: secret
 
 watchdog:
+  default:
   - relative: 'now'
   - compound:
       - relative: 'monday'
       - { start: '20:00', end: '22:30' }
-  - { start: '19:00', end: '22:30' }
-  - compound:
-      - relative: 'third saturday of'
-      - { start: '16:00', end: '22:30' }
