@@ -1,8 +1,57 @@
+.DEFAULT_GLOBAL = help
+SHELL:=/bin/bash
+
 LOW_PHP = 7.4
 HIGH_PHP = 8.1
 SF = symfony
 
-up-deps:
+help:	## Shows this help hint
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+
+
+##---------------------------------------------------------------------------
+##
+## Tests - Unit/Integration/Application/Mutation & Static code
+##
+full-test:	## Full bundle test
+full-test: check-deps check-code lint infection
+
+check-deps:	## Check php dependencies
+	$(SF) composer outdated
+	$(SF) composer validate
+	$(SF) security:check
+
+check-code:	## Static code analysis
+check-code: cs psalm stan
+
+cs:		## Code Sniff fixer
+	vendor/bin/php-cs-fixer fix --verbose --allow-risky=yes
+psalm:		## Psalm analysis
+	$(SF) php vendor/bin/psalm --no-progress --show-info=true --no-cache
+stan:		## phpstan analysis
+	$(SF) php vendor/bin/phpstan --no-progress
+
+lint: 		## Config files lints
+	vendor/bin/neon-lint .
+
+test: 		## Unit tests
+ifdef FILTER
+	$(SF) php vendor/bin/phpunit --filter $(FILTER)
+else
+	$(SF) php vendor/bin/phpunit
+endif
+
+cover: 		## Unit tests with coverage
+	XDEBUG_MODE=coverage $(SF) php vendor/bin/simple-phpunit --coverage-xml=cov/xml --coverage-html=cov/html --log-junit=cov/junit.xml
+
+infection: 	## Mutation tests
+	XDEBUG_MODE=coverage vendor/bin/infection --ansi
+
+##---------------------------------------------------------------------------
+##
+## Dependencies
+##
+up-deps:	## Update to latest dependencies
 	 $(SF) composer require --no-progress --no-update --no-scripts --dev \
               symplify/coding-standard:* symplify/phpstan-rules:* \
               phpstan/phpstan-symfony:* ekino/phpstan-banned-code:* phpstan/phpstan-phpunit:* phpstan/extension-installer:* phpstan/phpstan:* \
@@ -11,43 +60,10 @@ up-deps:
 	echo $(HIGH_PHP) > .php-version
 	$(SF) composer update --no-interaction --no-progress -W
 
-down-deps:
+down-deps:	## Downgrade to least supported dependencies
 	 $(SF) composer remove --no-progress --no-update --no-scripts --dev \
               symplify/* phpstan/* ekino/phpstan-banned-code \
               psalm/plugin-symfony vimeo/psalm \
               infection/infection
 	echo $(LOW_PHP) > .php-version
 	$(SF) composer update --no-interaction --no-progress --prefer-lowest --prefer-stable -W
-
-full-test: check-deps check-code lint infection
-
-check-deps:
-	$(SF) composer outdated
-	$(SF) composer validate
-	$(SF) security:check
-
-check-code: cs psalm stan
-
-cs:
-	vendor/bin/php-cs-fixer fix --verbose --allow-risky=yes
-psalm:
-	$(SF) php vendor/bin/psalm --no-progress --show-info=true --no-cache
-stan:
-	$(SF) php vendor/bin/phpstan --no-progress
-
-lint:
-	vendor/bin/neon-lint .
-	vendor/bin/yaml-lint tests --parse-tags
-
-test:
-ifdef FILTER
-	$(SF) php vendor/bin/phpunit --filter $(FILTER)
-else
-	$(SF) php vendor/bin/phpunit
-endif
-
-cover:
-	XDEBUG_MODE=coverage $(SF) php vendor/bin/simple-phpunit --coverage-xml=cov/xml --coverage-html=cov/html --log-junit=cov/junit.xml
-
-infection:
-	XDEBUG_MODE=coverage vendor/bin/infection --ansi
