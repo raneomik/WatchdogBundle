@@ -63,5 +63,4 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
 
         $subscriber->$method(new WatchdogWoofCheckEvent([], $watchdogId));
     }
-
 }

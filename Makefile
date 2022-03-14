@@ -67,4 +67,3 @@ down-deps:	## Downgrade to least supported dependencies
               infection/infection
 	echo $(LOW_PHP) > .php-version
 	$(SF) composer update --no-interaction --no-progress --prefer-lowest --prefer-stable -W
-
