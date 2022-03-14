@@ -32,7 +32,7 @@ class WatchdogExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         try {
-            $configuration = new Configuration($this->symfonyVersionChecker);
+            $configuration = $this->getConfiguration($configs, $container);
             $config = $this->processConfiguration($configuration, $configs);
 
             $container->setParameter('watchdog_config', $config['default'] ?? $config);
@@ -85,5 +85,10 @@ class WatchdogExtension extends Extension
             $container,
             new FileLocator(\dirname(__DIR__).'/../Resources/config')
         ))->load('watchdog.php');
+    }
+
+    public function getConfiguration(array $config, ContainerBuilder $container): Configuration
+    {
+        return new Configuration($this->symfonyVersionChecker);
     }
 }

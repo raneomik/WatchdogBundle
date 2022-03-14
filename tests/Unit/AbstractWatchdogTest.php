@@ -29,10 +29,10 @@ abstract class AbstractWatchdogTest extends TestCase
             ],
         ]]];
 
-        //global config wth 1 ok rule
+        // global config wth 1 ok rule
         yield [[
             ['relative' => 'tomorrow'],
-            ['start' => $minus1Mins->format('H:i'), 'end' => $plus1Mins->format('H:i')], //ok
+            ['start' => $minus1Mins->format('H:i'), 'end' => $plus1Mins->format('H:i')], // ok
             ['hour' => (new \DateTime('+2 hours'))->format('H:i')],
             ['date' => (new \DateTime('+2 days'))->format('Y-m-d')],
         ]];
