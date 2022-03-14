@@ -37,7 +37,21 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
         $this->subscribeAndDispatch($timeRule, $handler);
     }
 
-    public function subscribeAndDispatch(array $timeRule, WatchdogHandlerInterface $handler): void
+    public function testUnknownWatchdog(): void
+    {
+        $handler = $this->createMock(WatchdogHandlerInterface::class);
+        $handler
+            ->expects($this->never())
+            ->method('processWoof')
+        ;
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Unknown "unknown" watchdog');
+
+        $this->subscribeAndDispatch(['relative' => 'now'], $handler, 'unknown');
+    }
+
+    public function subscribeAndDispatch(array $timeRule, WatchdogHandlerInterface $handler, ?string $watchdogId = null): void
     {
         $subscriber = new WatchdogEventSubscriber(
             new \ArrayIterator(['default' => new Watchdog($timeRule)]),
@@ -47,27 +61,7 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
         $this->assertArrayHasKey(WatchdogWoofCheckEvent::class, $events = $subscriber->getSubscribedEvents());
         $this->assertSame('onWoofCheck', $method = $events[WatchdogWoofCheckEvent::class]);
 
-        $subscriber->$method(new WatchdogWoofCheckEvent());
+        $subscriber->$method(new WatchdogWoofCheckEvent([], $watchdogId));
     }
 
-    public function testUnknownWatchdog(): void
-    {
-        $handler = $this->createMock(WatchdogHandlerInterface::class);
-        $handler
-            ->expects($this->never())
-            ->method('processWoof')
-        ;
-
-        $subscriber = new WatchdogEventSubscriber(
-            new \ArrayIterator(['known' => new Watchdog(['relative' => 'now'])]),
-            new \ArrayIterator([$handler])
-        );
-
-        $this->assertArrayHasKey(WatchdogWoofCheckEvent::class, $events = $subscriber->getSubscribedEvents());
-        $this->assertSame('onWoofCheck', $method = $events[WatchdogWoofCheckEvent::class]);
-
-        $this->expectException(\UnexpectedValueException::class);
-        $this->expectExceptionMessage('Unknown "unknown" watchdog');
-        $subscriber->$method(new WatchdogWoofCheckEvent([], 'unknown'));
-    }
 }

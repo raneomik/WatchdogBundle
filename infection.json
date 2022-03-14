@@ -9,6 +9,7 @@
     },
     "logs": {
         "text": "log\/infection.log",
+        "html": "log\/infection.html",
         "stryker": {
             "report": "main"
         }
