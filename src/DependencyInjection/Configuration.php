@@ -22,10 +22,17 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('watchdog');
 
+        /**
+         * @psalm-suppress ReservedWord
+         * @psalm-suppress PossiblyNullReference
+         * @psalm-suppress UnusedMethodCall
+         * @psalm-suppress PossiblyUndefinedMethod
+         */
         $this->configureLegacyPartIfNeeded($treeBuilder->getRootNode())
             ->fixXmlConfig('watchdog')
                 ->variablePrototype()->end()
-            ->end();
+            ->end()
+        ;
 
         return $treeBuilder;
     }

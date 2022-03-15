@@ -6,9 +6,9 @@ class LegacyFaker extends LegacyChecker
 {
     private bool $isLegacy;
 
-    public function __construct(bool $isLegacy = false)
+    public function __construct(bool $forceLegacy = false)
     {
-        $this->isLegacy = $isLegacy;
+        $this->isLegacy = $forceLegacy;
     }
 
     public function isLegacy(): bool

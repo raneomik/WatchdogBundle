@@ -25,5 +25,6 @@ return (new PhpCsFixer\Config())
         'ordered_imports' => true,
         'phpdoc_summary' => false,
         'strict_comparison' => true,
+        'phpdoc_to_comment' => ['ignored_tags' => ['psalm-suppress']],
     ])
 ;

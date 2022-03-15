@@ -33,6 +33,7 @@ class WatchdogExtension extends Extension
     {
         try {
             $configuration = $this->getConfiguration($configs, $container);
+            /** @var array<string,array> $config */
             $config = $this->processConfiguration($configuration, $configs);
 
             $container->setParameter('watchdog_config', $config['default'] ?? $config);
@@ -61,6 +62,7 @@ class WatchdogExtension extends Extension
             return;
         }
 
+        /** @var array<string,array> $config */
         foreach ($config as $name => $scopeConfig) {
             $container
                 ->register($name, Watchdog::class)
@@ -73,6 +75,7 @@ class WatchdogExtension extends Extension
 
     private function registerLegacyServiceDefinitions(ContainerBuilder $container): void
     {
+        /** @psalm-suppress ReservedWord */
         (new XmlFileLoader(
             $container,
             new FileLocator(\dirname(__DIR__).'/../Resources/config')
@@ -81,6 +84,7 @@ class WatchdogExtension extends Extension
 
     private function registerServiceDefinitions(ContainerBuilder $container): void
     {
+        /** @psalm-suppress ReservedWord */
         (new PhpFileLoader(
             $container,
             new FileLocator(\dirname(__DIR__).'/../Resources/config')
