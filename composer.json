@@ -15,20 +15,10 @@
         "symfony/framework-bundle":  "^4.4|^5.4|^6.0"
     },
     "require-dev": {
-        "ekino/phpstan-banned-code": "*",
         "friendsofphp/php-cs-fixer": "^3.0",
-        "infection/infection": "*",
-        "phpstan/extension-installer": "*",
-        "phpstan/phpstan": "*",
-        "phpstan/phpstan-phpunit": "*",
-        "phpstan/phpstan-symfony": "*",
         "phpunit/phpunit": "^9.5",
-        "psalm/plugin-symfony": "*",
         "symfony/phpunit-bridge": "^6.0.0",
-        "symfony/yaml": "^4.4|^5.4|^6.0",
-        "symplify/coding-standard": "*",
-        "symplify/phpstan-rules": "*",
-        "vimeo/psalm": "*"
+        "symfony/yaml": "^4.4|^5.4|^6.0"
     },
     "autoload": {
         "psr-4": { "Raneomik\\WatchdogBundle\\": "src/" }

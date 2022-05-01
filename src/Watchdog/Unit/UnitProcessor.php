@@ -17,18 +17,13 @@ class UnitProcessor
 {
     public function process(array $data): WatchdogUnitInterface
     {
-        if ($this->isInterval($data)) {
+        if (\array_key_exists(WatchdogUnitInterface::START, $data)
+            || \array_key_exists(WatchdogUnitInterface::END, $data)
+        ) {
             return $this->intervalUnit($data);
         }
 
         return $this->unit($data);
-    }
-
-    private function isInterval(array $data): bool
-    {
-        return \array_key_exists(WatchdogUnitInterface::START, $data)
-            || \array_key_exists(WatchdogUnitInterface::END, $data)
-        ;
     }
 
     private function intervalUnit(array $data): Interval
