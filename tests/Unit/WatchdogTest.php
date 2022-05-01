@@ -34,7 +34,7 @@ class WatchdogTest extends AbstractWatchdogTest
     }
 
     /**
-     * @dataProvider diverseFormatsProvider
+     * @dataProvider compoundIntervalInYamlProvider
      */
     public function testYamlToArrayConfig(array $yamlConfig, array $arrayConfig, bool $watchdogWoof): void
     {
