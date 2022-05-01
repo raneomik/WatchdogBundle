@@ -3,6 +3,8 @@
 namespace Raneomik\WatchdogBundle\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use Raneomik\WatchdogBundle\Watchdog\Unit\Model\WatchdogUnitInterface;
+use Symfony\Component\Yaml\Yaml;
 
 abstract class AbstractWatchdogTest extends TestCase
 {
@@ -69,5 +71,76 @@ abstract class AbstractWatchdogTest extends TestCase
             ['hour' => $plus1Hour->format('H:i')],
             ['date' => (new \DateTime('+2 days'))->format('Y-m-d')],
         ]];
+    }
+
+    public function diverseFormatsProvider(): \Generator
+    {
+        $nowMinus1Minutes = (new \DateTime('-1 minutes'))->format('H:i');
+        $nowPlus1Minutes = (new \DateTime('+1 minutes'))->format('H:i');
+        $nowPlus2Minutes = (new \DateTime('+2 minutes'))->format('H:i');
+
+        $matchingYamlConfig = <<<YAML
+---
+- { start: '16:00', end: '18:00' }
+- compound:
+    - relative: 'today'
+    - { start: '{minus1Minute}', end: '{plus1Minute}' }
+YAML;
+
+        $yamlConfig = Yaml::parse(str_replace(
+            ['{minus1Minute}', '{plus1Minute}'],
+            [$nowMinus1Minutes, $nowPlus1Minutes],
+            $matchingYamlConfig
+        ));
+
+        $arrayConfig = [
+            [
+                WatchdogUnitInterface::START => '16:00',
+                WatchdogUnitInterface::END => '18:00',
+            ],
+            [
+                WatchdogUnitInterface::COMPOUND => [
+                    [WatchdogUnitInterface::RELATIVE => 'today'],
+                    [
+                        WatchdogUnitInterface::START => $nowMinus1Minutes,
+                        WatchdogUnitInterface::END => $nowPlus1Minutes,
+                    ],
+                ],
+            ],
+        ];
+
+        yield [$yamlConfig, $arrayConfig, true];
+
+        $notMatchingYamlConfig = <<<YAML
+---
+- { start: '{plus1Minute}', end: '{plus2Minutes}' }
+- compound:
+    - relative: 'tomorrow'
+    - { start: '{minus1Minute}', end: '{plus1Minute}' }
+YAML;
+
+        $yamlConfig = Yaml::parse(str_replace(
+            ['{minus1Minute}', '{plus1Minute}', '{plus2Minutes}'],
+            [$nowMinus1Minutes, $nowPlus1Minutes, $nowPlus2Minutes],
+            $notMatchingYamlConfig
+        ));
+
+        $arrayConfig = [
+            [
+                WatchdogUnitInterface::START => $nowPlus1Minutes,
+                WatchdogUnitInterface::END => $nowPlus2Minutes,
+            ],
+            [
+                WatchdogUnitInterface::COMPOUND => [
+                    [WatchdogUnitInterface::RELATIVE => 'tomorrow'],
+                    [
+                        WatchdogUnitInterface::START => $nowMinus1Minutes,
+                        WatchdogUnitInterface::END => $nowPlus1Minutes,
+                    ],
+                ],
+            ],
+        ];
+
+        yield [$yamlConfig, $arrayConfig, false];
     }
 }

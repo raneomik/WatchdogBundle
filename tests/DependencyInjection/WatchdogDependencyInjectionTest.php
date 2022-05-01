@@ -111,10 +111,10 @@ class WatchdogDependencyInjectionTest extends TestCase
                         'start' => (new \DateTime('-5mins'))->format('Y-m-d H:i'),
                         'end' => (new \DateTime('+5mins'))->format('Y-m-d H:i'),
                     ],
-                    'relative' => 'now',
+                    ['relative' => 'now'],
                 ],
                 'test_two' => [
-                    'relative' => 'tomorrow',
+                    ['relative' => 'tomorrow'],
                 ],
             ],
         ]);

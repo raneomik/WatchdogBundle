@@ -17,14 +17,21 @@ class UnitProcessor
 {
     public function process(array $data): WatchdogUnitInterface
     {
-        if (\array_key_exists('start', $data) || \array_key_exists('end', $data)) {
+        if ($this->isInterval($data)) {
             return $this->intervalUnit($data);
         }
 
         return $this->unit($data);
     }
 
-    private static function intervalUnit(array $data): Interval
+    private function isInterval(array $data): bool
+    {
+        return \array_key_exists(WatchdogUnitInterface::START, $data)
+            || \array_key_exists(WatchdogUnitInterface::END, $data)
+        ;
+    }
+
+    private function intervalUnit(array $data): Interval
     {
         if (false === \is_string($start = $data['start'] ?? null)) {
             throw new MalformedConfigurationValueException('Missing "start" data for interval');
@@ -37,12 +44,12 @@ class UnitProcessor
         return new Interval($start, $end);
     }
 
-    private static function compoundUnit(array $data): Compound
+    private function compoundUnit(array $data): Compound
     {
         return new Compound($data, true);
     }
 
-    private static function simpleUnit(string $key, string $value): ?WatchdogUnitInterface
+    private function simpleUnit(string $key, string $value): ?WatchdogUnitInterface
     {
         if (WatchdogUnitInterface::RELATIVE === $key) {
             return new RelativeDateTime($value);
@@ -78,7 +85,11 @@ class UnitProcessor
          */
         foreach ($data as $key => $value) {
             if (\is_array($value)) {
-                return $this->compoundUnit($value);
+                if (WatchdogUnitInterface::COMPOUND === $key) {
+                    return $this->compoundUnit($value);
+                }
+
+                return $this->process($value);
             }
 
             if (null !== $unit = $this->simpleUnit($key, $value)) {
