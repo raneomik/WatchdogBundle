@@ -6,7 +6,7 @@ use Raneomik\WatchdogBundle\Watchdog\Unit\WatchdogUnitFactory;
 
 class Compound implements WatchdogUnitInterface
 {
-    private bool $logicalAndMode = false;
+    private bool $logicalAndMode;
     private array $unitCollection = [];
 
     public function __construct(array $data, bool $logicalAnd = false)

@@ -33,6 +33,19 @@ class WatchdogTest extends AbstractWatchdogTest
         $this->assertFalse($watchDog->isWoofTime());
     }
 
+    /**
+     * @dataProvider compoundIntervalInYamlProvider
+     */
+    public function testYamlToArrayConfig(array $yamlConfig, array $arrayConfig, bool $watchdogWoof): void
+    {
+        $this->assertSame($arrayConfig, $yamlConfig);
+
+        $yamlWatchdog = new Watchdog($yamlConfig);
+        $this->assertSame($watchdogWoof, $yamlWatchdog->isWoofTime());
+        $arrayWatchdog = new Watchdog($arrayConfig);
+        $this->assertSame($watchdogWoof, $arrayWatchdog->isWoofTime());
+    }
+
     public function testNotSupportedConfigExceptionCase(): void
     {
         $this->expectException(NotSupportedConfigurationException::class);

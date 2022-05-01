@@ -36,10 +36,11 @@ class WatchdogUnitTest extends TestCase
         yield [new RelativeDateTime('now')];
 
         yield [new Compound([
-            [WatchdogUnitInterface::RELATIVE => 'now'],
-            [WatchdogUnitInterface::TIME => $hour],
-            [WatchdogUnitInterface::DATE => $date],
-            [WatchdogUnitInterface::DATE_TIME => $nowString],
+            [WatchdogUnitInterface::RELATIVE => 'today'],
+            [
+                WatchdogUnitInterface::START => $nowMinus1Minutes->format('Y-m-d H:i'),
+                WatchdogUnitInterface::END => $nowPlus1Minutes->format('Y-m-d H:i'),
+            ],
         ], true)];
         yield [new Compound($atLeastOneCompound = [
             [WatchdogUnitInterface::RELATIVE => 'tomorrow'],
@@ -56,6 +57,7 @@ class WatchdogUnitTest extends TestCase
     {
         $now = new \DateTime();
         $notNow = new \DateTime('+1 day +1 hour');
+        $nowMinus2Minutes = new \DateTime('-2 minutes');
         $nowPlus2Minutes = new \DateTime('+2 minutes');
 
         if (0 !== (int) ($nowPlus2Minutes->format('d') - $now->format('d'))) {
@@ -80,6 +82,10 @@ class WatchdogUnitTest extends TestCase
             [WatchdogUnitInterface::TIME => $hour],
             [WatchdogUnitInterface::DATE => $date],
             [WatchdogUnitInterface::DATE_TIME => $dateTime],
+            [
+                WatchdogUnitInterface::START => $nowPlus2Minutes->format('Y-m-d H:i'),
+                WatchdogUnitInterface::END => $notNow->format('Y-m-d H:i'),
+            ],
         ], true)];
         yield [new Compound($noneCompound = [
             [WatchdogUnitInterface::RELATIVE => 'tomorrow'],
@@ -93,6 +99,16 @@ class WatchdogUnitTest extends TestCase
         yield [WatchdogUnitFactory::create([
             WatchdogUnitInterface::TIME => $hour,
             WatchdogUnitInterface::COMPOUND => $noneCompound,
+        ])];
+        yield [WatchdogUnitFactory::create([
+            WatchdogUnitInterface::TIME => $hour,
+            WatchdogUnitInterface::COMPOUND => new Compound([
+                [WatchdogUnitInterface::RELATIVE => 'today'],
+                [
+                    WatchdogUnitInterface::START => $nowMinus2Minutes->format('Y-m-d H:i'),
+                    WatchdogUnitInterface::END => $nowPlus2Minutes->format('Y-m-d H:i'),
+                ],
+            ], true),
         ])];
     }
 

@@ -11,6 +11,9 @@ watchdog:
         - { start: '20:00', end: '22:30' }
 
   test_two:
+    - date_time: '2019-12-01 11:00'
     - compound:
         - date_time: '2019-12-01 11:00'
-        - { start: '16:00', end: '22:30' }
+        - relative: 'today'
+        - start: '16:00'
+          end: '22:30'
