@@ -8,9 +8,12 @@ class Interval implements WatchdogUnitInterface
 {
     private \DateTimeInterface $start;
     private \DateTimeInterface $end;
+    private string $originalConfig;
 
     public function __construct(string $start, string $end)
     {
+        $this->originalConfig = sprintf('start : %s / end : %s', $start, $end);
+
         $this->start = new \DateTime($start);
         $this->end = new \DateTime($end);
 
@@ -40,5 +43,10 @@ class Interval implements WatchdogUnitInterface
     public function __toString()
     {
         return sprintf('Interval : %s - %s', $this->start->format('Y-m-d H:i'), $this->end->format('Y-m-d H:i'));
+    }
+
+    public function originalConfig(): string
+    {
+        return $this->originalConfig;
     }
 }
