@@ -31,4 +31,14 @@ class Interval implements WatchdogUnitInterface
             && $now <= $this->end->format('YmdHi')
         ;
     }
+
+    public function type(): string
+    {
+        return 'interval';
+    }
+
+    public function __toString()
+    {
+        return sprintf('Interval : %s - %s', $this->start->format('Y-m-d H:i'), $this->end->format('Y-m-d H:i'));
+    }
 }

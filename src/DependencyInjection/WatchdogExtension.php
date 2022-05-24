@@ -18,6 +18,7 @@ class WatchdogExtension extends Extension
 {
     public const SERVICE_TAG = 'raneomik_watchdog';
     public const HANDLER_SERVICE_TAG = 'raneomik_watchdog.handler';
+    public const DATA_COLLECTOR_SERVICE_TAG = 'raneomik_watchdog.Collector';
 
     private LegacyChecker $symfonyVersionChecker;
 
@@ -78,7 +79,7 @@ class WatchdogExtension extends Extension
         /** @psalm-suppress ReservedWord */
         (new XmlFileLoader(
             $container,
-            new FileLocator(\dirname(__DIR__).'/../Resources/config')
+            new FileLocator(\dirname(__DIR__).'/../config')
         ))->load('watchdog.xml');
     }
 
@@ -87,7 +88,7 @@ class WatchdogExtension extends Extension
         /** @psalm-suppress ReservedWord */
         (new PhpFileLoader(
             $container,
-            new FileLocator(\dirname(__DIR__).'/../Resources/config')
+            new FileLocator(\dirname(__DIR__).'/../config')
         ))->load('watchdog.php');
     }
 

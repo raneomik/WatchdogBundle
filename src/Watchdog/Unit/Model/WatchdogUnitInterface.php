@@ -25,4 +25,8 @@ interface WatchdogUnitInterface
     ];
 
     public function isMatching(): bool;
+
+    public function type(): string;
+
+    public function originalConfig(): string;
 }

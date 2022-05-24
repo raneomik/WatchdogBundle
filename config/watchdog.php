@@ -2,6 +2,7 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Raneomik\WatchdogBundle\DataCollector\WatchdogDataCollector;
 use Raneomik\WatchdogBundle\DependencyInjection\WatchdogExtension;
 use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
 use Raneomik\WatchdogBundle\Subscriber\WatchdogEventSubscriber;
@@ -28,5 +29,15 @@ return static function (ContainerConfigurator $container) {
             ->arg('$watchdogCollection', tagged_iterator(WatchdogExtension::SERVICE_TAG, 'id'))
             ->arg('$watchdogHandlers', tagged_iterator(WatchdogExtension::HANDLER_SERVICE_TAG))
         ->tag('kernel.event_subscriber')
+    ;
+
+    $container->services()
+        ->set(WatchdogExtension::DATA_COLLECTOR_SERVICE_TAG, WatchdogDataCollector::class)
+            ->arg('$watchdogCollection', tagged_iterator(WatchdogExtension::SERVICE_TAG, 'id'))
+            ->arg('$watchdogHandlerCollection', tagged_iterator(WatchdogExtension::HANDLER_SERVICE_TAG))
+        ->tag('data_collector', [
+            'id' => WatchdogExtension::SERVICE_TAG,
+            'template' => '@Watchdog/Collector/template.html.twig',
+        ])
     ;
 };
