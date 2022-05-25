@@ -6,7 +6,6 @@ use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
 use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
 use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Traversable;
 
 class WatchdogEventSubscriber implements EventSubscriberInterface
 {
@@ -15,10 +14,10 @@ class WatchdogEventSubscriber implements EventSubscriberInterface
     private iterable $watchdogHandlerCollection;
 
     /**
-     * @param Traversable<string, WatchdogInterface>     $watchdogCollection
-     * @param Traversable<int, WatchdogHandlerInterface> $watchdogHandlerCollection
+     * @param \Traversable<string, WatchdogInterface>     $watchdogCollection
+     * @param \Traversable<int, WatchdogHandlerInterface> $watchdogHandlerCollection
      */
-    public function __construct(Traversable $watchdogCollection, Traversable $watchdogHandlerCollection)
+    public function __construct(\Traversable $watchdogCollection, \Traversable $watchdogHandlerCollection)
     {
         $this->watchdogCollection = iterator_to_array($watchdogCollection);
         $this->watchdogHandlerCollection = $watchdogHandlerCollection;

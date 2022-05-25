@@ -5,12 +5,11 @@ namespace Raneomik\WatchdogBundle\DataCollector;
 use Raneomik\WatchdogBundle\DependencyInjection\WatchdogExtension;
 use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
 use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
-use Symfony\Bundle\FrameworkBundle\DataCollector\AbstractDataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Traversable;
+use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
-class WatchdogDataCollector extends AbstractDataCollector
+class WatchdogDataCollector extends DataCollector
 {
     /** @var array<string, WatchdogInterface> */
     private array $watchdogCollection;
@@ -18,10 +17,10 @@ class WatchdogDataCollector extends AbstractDataCollector
     private array $watchdogHandlerCollection;
 
     /**
-     * @param Traversable<string, WatchdogInterface>     $watchdogCollection
-     * @param Traversable<int, WatchdogHandlerInterface> $watchdogHandlerCollection
+     * @param \Traversable<string, WatchdogInterface>     $watchdogCollection
+     * @param \Traversable<int, WatchdogHandlerInterface> $watchdogHandlerCollection
      */
-    public function __construct(Traversable $watchdogCollection, Traversable $watchdogHandlerCollection)
+    public function __construct(\Traversable $watchdogCollection, \Traversable $watchdogHandlerCollection)
     {
         $this->watchdogCollection = iterator_to_array($watchdogCollection);
         $this->watchdogHandlerCollection = iterator_to_array($watchdogHandlerCollection);

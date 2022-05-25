@@ -22,7 +22,7 @@
         "phpstan/phpstan": "*",
         "phpstan/phpstan-phpunit": "*",
         "phpstan/phpstan-symfony": "*",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^9.1.1|^9.5.20",
         "psalm/plugin-symfony": "*",
         "symfony/phpunit-bridge": "^4.4|^5.4|^6.0",
         "symfony/profiler-pack": "^1.0",
