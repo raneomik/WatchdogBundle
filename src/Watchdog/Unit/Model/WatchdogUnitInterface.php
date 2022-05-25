@@ -2,7 +2,7 @@
 
 namespace Raneomik\WatchdogBundle\Watchdog\Unit\Model;
 
-interface WatchdogUnitInterface
+interface WatchdogUnitInterface extends \Stringable
 {
     public const COMPOUND = 'compound';
     public const DATE_TIME = 'date_time';

@@ -26,6 +26,6 @@ final class Watchdog implements WatchdogInterface
 
     public function matchingUnits(): array
     {
-        return array_filter($this->dateCollectionToWatch->units(), fn(WatchdogUnitInterface $unit) => $unit->isMatching());
+        return array_filter($this->dateCollectionToWatch->units(), fn (WatchdogUnitInterface $unit) => $unit->isMatching());
     }
 }

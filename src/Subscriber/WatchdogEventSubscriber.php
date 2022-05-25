@@ -12,16 +12,16 @@ class WatchdogEventSubscriber implements EventSubscriberInterface
 {
     /** @var array<string, WatchdogInterface> */
     private array $watchdogCollection;
-    private iterable $watchdogHandlers;
+    private iterable $watchdogHandlerCollection;
 
     /**
      * @param Traversable<string, WatchdogInterface>     $watchdogCollection
-     * @param Traversable<int, WatchdogHandlerInterface> $watchdogHandlers
+     * @param Traversable<int, WatchdogHandlerInterface> $watchdogHandlerCollection
      */
-    public function __construct(Traversable $watchdogCollection, Traversable $watchdogHandlers)
+    public function __construct(Traversable $watchdogCollection, Traversable $watchdogHandlerCollection)
     {
         $this->watchdogCollection = iterator_to_array($watchdogCollection);
-        $this->watchdogHandlers = $watchdogHandlers;
+        $this->watchdogHandlerCollection = $watchdogHandlerCollection;
     }
 
     public static function getSubscribedEvents(): array
@@ -60,7 +60,7 @@ class WatchdogEventSubscriber implements EventSubscriberInterface
     private function triggerHandlers(WatchdogWoofCheckEvent $event): void
     {
         /** @var WatchdogHandlerInterface $handler */
-        foreach ($this->watchdogHandlers as $handler) {
+        foreach ($this->watchdogHandlerCollection as $handler) {
             $handler->processWoof($event->eventParams());
         }
     }

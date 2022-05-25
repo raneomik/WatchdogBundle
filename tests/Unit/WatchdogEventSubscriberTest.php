@@ -51,7 +51,7 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
         $this->subscribeAndDispatch(['relative' => 'now'], $handler, 'unknown');
     }
 
-    public function subscribeAndDispatch(array $timeRule, WatchdogHandlerInterface $handler, ?string $watchdogId = null): void
+    private function subscribeAndDispatch(array $timeRule, WatchdogHandlerInterface $handler, ?string $watchdogId = null): void
     {
         $subscriber = new WatchdogEventSubscriber(
             new \ArrayIterator(['default' => new Watchdog($timeRule)]),

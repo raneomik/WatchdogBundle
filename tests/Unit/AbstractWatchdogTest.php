@@ -8,19 +8,42 @@ use Symfony\Component\Yaml\Yaml;
 
 abstract class AbstractWatchdogTest extends TestCase
 {
+    /**
+     * Map : [
+     *      config,
+     *      type,
+     *      string representation,
+     *      woof match config offset,
+     * ]
+     */
     public function woofMatchCasesProvider(): \Generator
     {
         $now = new \DateTime();
         $minus1Mins = new \DateTime('-1 minutes');
         $plus1Mins = new \DateTime('+1 minutes');
 
-        yield [[['date_time' => $now->format('Y-m-d H:i')]]];
-        yield [[['hour' => $now->format('H:i')]]];
-        yield [[['time' => $now->format('H:i')]]];
-        yield [[['date' => $now->format('Y-m-d')]]];
-        yield [[['start' => $minus1Mins->format('H:i'), 'end' => $plus1Mins->format('H:i')]]];
-        yield [[['start' => (new \DateTime('-1 day'))->format('Y-m-d'), 'end' => (new \DateTime('+1 day'))->format('Y-m-d')]]];
-        yield [[['relative' => 'today']]];
+        yield [[['date_time' => $config = $now->format('Y-m-d H:i')]], 'date_time', sprintf('DateTime : %s', $config), 0];
+        yield [[['hour' => $config = $now->format('H:i')]], 'hour', sprintf('Hour : %s', $config), 0];
+        yield [[['time' => $config = $now->format('H:i')]], 'time', sprintf('Time : %s', $config), 0];
+        yield [[['date' => $config = $now->format('Y-m-d')]], 'date', sprintf('Date : %s', $config), 0];
+        yield [
+            [[
+            'start' => $startConfig = $minus1Mins->format('H:i'),
+            'end' => $endConfig = $plus1Mins->format('H:i'),
+            ]],
+            'interval',
+            sprintf('Interval : %s - %s', $startConfig, $endConfig),
+            0,
+        ];
+        yield [[[
+            'start' => $startConfig = (new \DateTime('-1 day'))->format('Y-m-d'),
+            'end' => $endConfig = (new \DateTime('+1 day'))->format('Y-m-d'),
+            ]],
+            'interval',
+            sprintf('Interval : %s - %s', $startConfig, $endConfig),
+            0,
+        ];
+        yield [[['relative' => $config = 'today']], 'relative', sprintf('Relative : %s', $config), 0];
         yield [[[
             'compound' => [
                 ['relative' => 'today'],
@@ -28,16 +51,24 @@ abstract class AbstractWatchdogTest extends TestCase
                 ['hour' => $now->format('H:i')],
                 ['time' => $now->format('H:i')],
                 ['date' => $now->format('Y-m-d')],
-            ],
-        ]]];
+            ], ]],
+            'compound', '', 0,
+        ];
 
         // global config wth 1 ok rule
         yield [[
             ['relative' => 'tomorrow'],
-            ['start' => $minus1Mins->format('H:i'), 'end' => $plus1Mins->format('H:i')], // ok
+            [   // ok
+                'start' => $startConfig = $minus1Mins->format('H:i'),
+                'end' => $endConfig = $plus1Mins->format('H:i'),
+            ],
             ['hour' => (new \DateTime('+2 hours'))->format('H:i')],
             ['date' => (new \DateTime('+2 days'))->format('Y-m-d')],
-        ]];
+        ],
+            'interval',
+            sprintf('Interval : %s - %s', $startConfig, $endConfig),
+            1,
+        ];
     }
 
     public function notWoofMatchCasesProvider(): \Generator

@@ -56,4 +56,9 @@ class Compound implements WatchdogUnitInterface
     {
         return '';
     }
+
+    public function __toString(): string
+    {
+        return '';
+    }
 }

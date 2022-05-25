@@ -4,7 +4,7 @@ namespace Raneomik\WatchdogBundle\Watchdog\Unit\Model;
 
 use Raneomik\WatchdogBundle\Exception\MalformedConfigurationValueException;
 
-abstract class AbstractSimpleWatchdogUnit implements WatchdogUnitInterface, \Stringable
+abstract class AbstractSimpleWatchdogUnit implements WatchdogUnitInterface
 {
     protected string $originalConfig;
     protected \DateTimeInterface $dateConfig;

@@ -27,7 +27,7 @@ return static function (ContainerConfigurator $container) {
     $container->services()
         ->set(WatchdogEventSubscriber::class)
             ->arg('$watchdogCollection', tagged_iterator(WatchdogExtension::SERVICE_TAG, 'id'))
-            ->arg('$watchdogHandlers', tagged_iterator(WatchdogExtension::HANDLER_SERVICE_TAG))
+            ->arg('$watchdogHandlerCollection', tagged_iterator(WatchdogExtension::HANDLER_SERVICE_TAG))
         ->tag('kernel.event_subscriber')
     ;
 

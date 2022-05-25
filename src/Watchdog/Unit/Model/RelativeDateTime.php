@@ -16,6 +16,6 @@ class RelativeDateTime extends AbstractSimpleWatchdogUnit
 
     public function __toString()
     {
-        return sprintf('Relative : %s', $this->dateConfig->format('Y-m-d'));
+        return sprintf('Relative : %s', $this->originalConfig);
     }
 }

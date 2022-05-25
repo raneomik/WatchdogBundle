@@ -12,7 +12,9 @@ use Traversable;
 
 class WatchdogDataCollector extends AbstractDataCollector
 {
+    /** @var array<string, WatchdogInterface> */
     private array $watchdogCollection;
+    /** @var array<int, WatchdogHandlerInterface> */
     private array $watchdogHandlerCollection;
 
     /**
@@ -33,14 +35,16 @@ class WatchdogDataCollector extends AbstractDataCollector
         ];
     }
 
+    /** @psalm-suppress MixedInferredReturnType, MixedReturnStatement */
     public function getWatchdogs(): array
     {
-        return $this->data['watchdogs'];
+        return $this->data['watchdogs'] ?? [];
     }
 
+    /** @psalm-suppress MixedInferredReturnType, MixedReturnStatement */
     public function getWatchdogHandlers(): array
     {
-        return $this->data['watchdogHandlers'];
+        return $this->data['watchdogHandlers'] ?? [];
     }
 
     public function reset(): void

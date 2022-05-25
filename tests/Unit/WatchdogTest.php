@@ -18,10 +18,13 @@ class WatchdogTest extends AbstractWatchdogTest
     /**
      * @dataProvider woofMatchCasesProvider
      */
-    public function testOkCases(array $timeRule): void
+    public function testOkCases(array $timeRule, string $type, string $stringRepresentation, int $matchOffset): void
     {
         $watchDog = new Watchdog($timeRule);
         $this->assertTrue($watchDog->isWoofTime());
+        $this->assertEquals($type, ($unit = $watchDog->units()[$matchOffset])->type());
+        $this->assertEquals($stringRepresentation, (string) $unit);
+        $this->assertEquals($unit, $watchDog->matchingUnits()[$matchOffset]);
     }
 
     /**
@@ -31,6 +34,7 @@ class WatchdogTest extends AbstractWatchdogTest
     {
         $watchDog = new Watchdog($timeRule);
         $this->assertFalse($watchDog->isWoofTime());
+        $this->assertEmpty($watchDog->matchingUnits());
     }
 
     /**
@@ -86,5 +90,32 @@ class WatchdogTest extends AbstractWatchdogTest
         $this->expectException(MalformedConfigurationValueException::class);
         $this->expectExceptionMessage('Missing "end" data for interval');
         new Watchdog([['start' => '10:00']]);
+    }
+
+    public function testIncoherentIntervalDataExceptionCase(): void
+    {
+        $dateTime = new \DateTime();
+
+        $this->expectException(IllogicConfigurationException::class);
+        $this->expectExceptionMessage('start and end times have same date, time or dateTime format');
+        new Watchdog([['start' => $dateTime->format('Y-m-d'), 'end' => $dateTime->format('H:i')]]);
+    }
+
+    public function testIncoherentStartIntervalDataExceptionCase(): void
+    {
+        $dateTime = new \DateTime();
+
+        $this->expectException(IllogicConfigurationException::class);
+        $this->expectExceptionMessage('start and end times have same date, time or dateTime format');
+        new Watchdog([['start' => $dateTime->format('Y-m-d'), 'end' => $dateTime->format('H:i')]]);
+    }
+
+    public function testIncoherentEndIntervalDataExceptionCase(): void
+    {
+        $dateTime = new \DateTime();
+
+        $this->expectException(IllogicConfigurationException::class);
+        $this->expectExceptionMessage('start and end times have same date, time or dateTime format');
+        new Watchdog([['start' => $dateTime->format('H:i'), 'end' => $dateTime->format('Y-m-d')]]);
     }
 }
