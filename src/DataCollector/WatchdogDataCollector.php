@@ -4,6 +4,7 @@ namespace Raneomik\WatchdogBundle\DataCollector;
 
 use Raneomik\WatchdogBundle\DependencyInjection\WatchdogExtension;
 use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
+use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,6 +45,13 @@ class WatchdogDataCollector extends DataCollector
     public function getWatchdogHandlers(): array
     {
         return $this->data['watchdogHandlers'] ?? [];
+    }
+
+    public function getMatchingWatchdogsCount(): int
+    {
+        return array_sum(
+            array_map(fn (Watchdog $watchdog) => \count($watchdog->matchingUnits()), $this->getWatchdogs())
+        );
     }
 
     public function reset(): void

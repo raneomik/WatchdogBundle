@@ -4,7 +4,8 @@
             "src"
         ],
         "excludes": [
-            "DependencyInjection/SymfonyVersionChecker"
+            "DependencyInjection/SymfonyVersionChecker",
+            "DependencyInjection/Compiler/WatchdogCompilerPass"
         ]
     },
     "logs": {

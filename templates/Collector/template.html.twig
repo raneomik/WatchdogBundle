@@ -1,43 +1,48 @@
 {% extends '@WebProfiler/Profiler/layout.html.twig' %}
 
 {% block toolbar %}
-    {% set icon %}
-        {# this is the content displayed as a panel in the toolbar #}
+    {% set hasMatches = collector.watchdogs|filter(v => v.hasMatches)|length %}
+    {% set matchCount = collector.matchingWatchdogsCount %}
 
-        <a class="sf-toggle btn btn-sm" data-toggle-selector="#sidebar-watchdog" {% if tokens is defined or about is defined %}data-toggle-initial="display"{% endif %}>
-            {{ include('@Watchdog/Collector/icon.svg') }}
-        </a>
-        <span class="sf-toolbar-value">Watchdog</span>
+    {% set icon %}
+        {{ include('@Watchdog/Collector/icon.svg') }}
+        {% if matchCount %}
+            <span class="sf-toolbar-value">{{ matchCount }}</span>
+        {% endif %}
     {% endset %}
 
     {% set text %}
         {# this is the content displayed when hovering the mouse over
            the toolbar panel #}
-        <div class="sf-toolbar-info-piece">
-            <table>
-            {% for watchdogId, watchdog in collector.watchdogs %}
-                <tr>
+        {% for watchdogId, watchdog in collector.watchdogs %}
+            <div class="sf-toolbar-info-piece">
                 {% for matchingUnit in watchdog.matchingUnits %}
-                    {% if 'compound' != matchingUnit.type %}
-                    <td>{{ matchingUnit }}</td>
-                    {% endif %}
+                    <div class="sf-toolbar-info-piece">
+                        {% if 'compound' != matchingUnit.type %}
+                            <b>{{ matchingUnit.type|title }}</b>
+                            <span class="sf-toolbar-status">{{ matchingUnit.originalConfig }}</span>
+                        {% endif %}
+                    </div>
                 {% endfor %}
-                </tr>
-            {% endfor %}
-            </table>
-        </div>
+            </div>
+        {% endfor %}
+
+        {% if 0 == matchCount %}
+            There's nothing to bark at
+        {% endif %}
     {% endset %}
 
-    {# the 'link' value set to 'false' means that this panel doesn't
-       show a section in the web profiler #}
-    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', {
-        link : true,
-    }) }}
+    {% if collector.watchdogs %}
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', {
+            link: profiler_url,
+            status: matchCount  ? 'green'
+        }) }}
+    {% endif %}
 {% endblock %}
 
 {% block menu %}
     {# This left-hand menu appears when using the full-screen profiler. #}
-    <span class="label">
+    <span class="label{{ 0 == collector.watchdogs|filter(v => v.hasMatches)|length ? ' disabled' }}">
         <span class="icon">
              {{ include('@Watchdog/Collector/icon.svg') }} <span class="hidden-small"></span>
         </span>
@@ -48,17 +53,23 @@
 {% block panel %}
     {# Optional, for showing the most details. #}
     <h2>Watchdog</h2>
-        {% for watchdogId, watchdog in collector.watchdogs %}
-            <b>{{ watchdogId }}</b>
-            <table>
-                {% for unit in watchdog.units %}
+    {% for watchdogId, watchdog in collector.watchdogs|filter(v => v.hasUnits) %}
+        <b>{{ watchdogId|title }}</b>
+        <table>
+            <tbody>
+            {% for unit in watchdog.units %}
                 <tr>
                     <td>{{ unit.type }}</td>
                     <td>{{ unit.originalConfig }}</td>
                     <td>{{ 'compound' != unit.type ? unit }}</td>
                     <td>{{ unit.isMatching }}</td>
                 </tr>
-                {% endfor %}
-            </table>
-        {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="empty">
+            <p>Nothing was configured ...</p>
+        </div>
+    {% endfor %}
 {% endblock %}

@@ -37,7 +37,7 @@ class WatchdogExtension extends Extension
             /** @var array<string,array> $config */
             $config = $this->processConfiguration($configuration, $configs);
 
-            $container->setParameter('watchdog_config', $config['default'] ?? $config);
+            $container->setParameter('watchdog_config', $config);
 
             $container->registerForAutoconfiguration(WatchdogHandlerInterface::class)
                 ->addTag(self::HANDLER_SERVICE_TAG)
@@ -67,8 +67,9 @@ class WatchdogExtension extends Extension
         foreach ($config as $name => $scopeConfig) {
             $container
                 ->register($name, Watchdog::class)
-                ->setArguments([$scopeConfig])
-                ->addTag(self::SERVICE_TAG, ['id' => $name]);
+                ->addArgument($scopeConfig)
+                ->addTag(self::SERVICE_TAG, ['id' => $name])
+            ;
 
             $container->registerAliasForArgument($name, WatchdogInterface::class);
         }

@@ -13,6 +13,7 @@ class WatchdogTest extends AbstractWatchdogTest
     {
         $watchDog = new Watchdog([]);
         $this->assertFalse($watchDog->isWoofTime());
+        $this->assertFalse($watchDog->hasUnits());
     }
 
     /**
@@ -25,6 +26,7 @@ class WatchdogTest extends AbstractWatchdogTest
         $this->assertEquals($type, ($unit = $watchDog->units()[$matchOffset])->type());
         $this->assertEquals($stringRepresentation, (string) $unit);
         $this->assertEquals($unit, $watchDog->matchingUnits()[$matchOffset]);
+        $this->assertTrue($watchDog->hasMatches());
     }
 
     /**
@@ -35,6 +37,7 @@ class WatchdogTest extends AbstractWatchdogTest
         $watchDog = new Watchdog($timeRule);
         $this->assertFalse($watchDog->isWoofTime());
         $this->assertEmpty($watchDog->matchingUnits());
+        $this->assertFalse($watchDog->hasMatches());
     }
 
     /**

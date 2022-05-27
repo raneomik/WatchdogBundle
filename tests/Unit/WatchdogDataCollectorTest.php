@@ -15,7 +15,7 @@ class WatchdogDataCollectorTest extends TestCase
     public function testDataCollection(): void
     {
         $dataCollector = new WatchdogDataCollector(
-            new \ArrayIterator($watchdogs = ['default' => new Watchdog([])]),
+            new \ArrayIterator($watchdogs = ['default' => new Watchdog(['relative' => 'now'])]),
             new \ArrayIterator($handlers = [$this->createMock(WatchdogHandlerInterface::class)])
         );
         $this->assertEquals(WatchdogExtension::SERVICE_TAG, $dataCollector->getName());
@@ -24,10 +24,12 @@ class WatchdogDataCollectorTest extends TestCase
 
         $this->assertEquals($watchdogs, $dataCollector->getWatchdogs());
         $this->assertEquals($handlers, $dataCollector->getWatchdogHandlers());
+        $this->assertEquals(1, $dataCollector->getMatchingWatchdogsCount());
 
         $dataCollector->reset();
 
         $this->assertEmpty($dataCollector->getWatchdogs());
         $this->assertEmpty($dataCollector->getWatchdogHandlers());
+        $this->assertEquals(0, $dataCollector->getMatchingWatchdogsCount());
     }
 }

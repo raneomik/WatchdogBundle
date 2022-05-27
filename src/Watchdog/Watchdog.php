@@ -24,8 +24,18 @@ final class Watchdog implements WatchdogInterface
         return $this->dateCollectionToWatch->units();
     }
 
+    public function hasUnits(): bool
+    {
+        return false === empty($this->units());
+    }
+
     public function matchingUnits(): array
     {
         return array_filter($this->dateCollectionToWatch->units(), fn (WatchdogUnitInterface $unit) => $unit->isMatching());
+    }
+
+    public function hasMatches(): bool
+    {
+        return false === empty($this->matchingUnits());
     }
 }

@@ -12,7 +12,6 @@ use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
 return static function (ContainerConfigurator $container) {
     $container->services()
         ->set(Watchdog::class)
-            ->public()
             ->arg('$watchdogParameters', '%watchdog_config%')
         ->tag(WatchdogExtension::SERVICE_TAG, ['id' => 'default'])
 
