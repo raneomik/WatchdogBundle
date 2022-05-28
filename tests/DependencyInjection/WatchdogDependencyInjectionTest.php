@@ -3,14 +3,12 @@
 namespace Raneomik\WatchdogBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Psr\Log\NullLogger;
 use Raneomik\WatchdogBundle\DependencyInjection\Compiler\WatchdogCompilerPass;
 use Raneomik\WatchdogBundle\DependencyInjection\WatchdogExtension;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\Kernel;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\Kernel as KernelStub;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\MultiwiredStub;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\SimplewiredStub;
-use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
 use Raneomik\WatchdogBundle\WatchdogBundle;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
