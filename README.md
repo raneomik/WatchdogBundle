@@ -94,10 +94,6 @@ If you wish to use it but your project isn't set to be autoconfigured, all your 
 
 You can access watchdog data in Symfony profiler :
 
-![toolbar-match.png](doc/images/toolbar-match.png)
-![toolbar.png](doc/images/toolbar.png)
-
-![profiler](doc/images/profiler.png)
-
+![profiler.png](doc/images/profiler.gif)
 
 [License](LICENCE)
