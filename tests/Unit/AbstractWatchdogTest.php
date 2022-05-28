@@ -12,7 +12,7 @@ abstract class AbstractWatchdogTest extends TestCase
      * Map : [
      *      config,
      *      type,
-     *      original config
+     *      original config simple representation
      *      string representation,
      *      woof match config offset,
      * ]
