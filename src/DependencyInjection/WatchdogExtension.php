@@ -18,7 +18,7 @@ class WatchdogExtension extends Extension
 {
     public const SERVICE_TAG = 'raneomik_watchdog';
     public const HANDLER_SERVICE_TAG = 'raneomik_watchdog.handler';
-    public const DATA_COLLECTOR_SERVICE_TAG = 'raneomik_watchdog.Collector';
+    public const DATA_COLLECTOR_SERVICE_TAG = 'raneomik_watchdog.data_collector';
 
     private LegacyChecker $symfonyVersionChecker;
 

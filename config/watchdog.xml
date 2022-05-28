@@ -21,7 +21,7 @@
             <argument type="tagged_iterator" tag="raneomik_watchdog.handler"/>
         </service>
 
-        <service id="Raneomik\WatchdogBundle\DataCollector\WatchdogDataCollector" class="Raneomik\WatchdogBundle\DataCollector\WatchdogDataCollector">
+        <service id="raneomik_watchdog.data_collector" class="Raneomik\WatchdogBundle\DataCollector\WatchdogDataCollector">
             <tag name="data_collector" id="Raneomik\WatchdogBundle\DataCollector\WatchdogDataCollector" template="@Watchdog/Collector/template.html.twig"/>
             <argument type="tagged_iterator" tag="raneomik_watchdog" index-by="id"/>
             <argument type="tagged_iterator" tag="raneomik_watchdog.handler"/>
