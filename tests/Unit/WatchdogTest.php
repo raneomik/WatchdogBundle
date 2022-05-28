@@ -19,11 +19,12 @@ class WatchdogTest extends AbstractWatchdogTest
     /**
      * @dataProvider woofMatchCasesProvider
      */
-    public function testOkCases(array $timeRule, string $type, string $stringRepresentation, int $matchOffset): void
+    public function testOkCases(array $timeRule, string $type, string $config, string $stringRepresentation, int $matchOffset): void
     {
         $watchDog = new Watchdog($timeRule);
         $this->assertTrue($watchDog->isWoofTime());
         $this->assertEquals($type, ($unit = $watchDog->units()[$matchOffset])->type());
+        $this->assertEquals($config, $unit->originalConfig());
         $this->assertEquals($stringRepresentation, (string) $unit);
         $this->assertEquals($unit, $watchDog->matchingUnits()[$matchOffset]);
         $this->assertTrue($watchDog->hasMatches());

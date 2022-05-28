@@ -15,7 +15,7 @@
             <directory>src/</directory>
         </include>
         <exclude>
-            <directory>src/DependencyInjection/SymfonyVersionChecker/</directory>
+            <directory>src/DependencyInjection/SymfonyVersionChecker</directory>
         </exclude>
     </coverage>
 

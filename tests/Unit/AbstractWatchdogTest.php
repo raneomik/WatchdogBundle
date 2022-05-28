@@ -22,16 +22,17 @@ abstract class AbstractWatchdogTest extends TestCase
         $minus1Mins = new \DateTime('-1 minutes');
         $plus1Mins = new \DateTime('+1 minutes');
 
-        yield [[['date_time' => $config = $now->format('Y-m-d H:i')]], 'date_time', sprintf('DateTime : %s', $config), 0];
-        yield [[['hour' => $config = $now->format('H:i')]], 'hour', sprintf('Hour : %s', $config), 0];
-        yield [[['time' => $config = $now->format('H:i')]], 'time', sprintf('Time : %s', $config), 0];
-        yield [[['date' => $config = $now->format('Y-m-d')]], 'date', sprintf('Date : %s', $config), 0];
+        yield [[['date_time' => $config = $now->format('Y-m-d H:i')]], 'date_time', $config, sprintf('DateTime : %s', $config), 0];
+        yield [[['hour' => $config = $now->format('H:i')]], 'hour', $config, sprintf('Hour : %s', $config), 0];
+        yield [[['time' => $config = $now->format('H:i')]], 'time', $config, sprintf('Time : %s', $config), 0];
+        yield [[['date' => $config = $now->format('Y-m-d')]], 'date', $config, sprintf('Date : %s', $config), 0];
         yield [
             [[
             'start' => $startConfig = $minus1Mins->format('H:i'),
             'end' => $endConfig = $plus1Mins->format('H:i'),
             ]],
             'interval',
+            sprintf('start : %s / end : %s', $startConfig, $endConfig),
             sprintf('Interval : %s - %s', $startConfig, $endConfig),
             0,
         ];
@@ -40,10 +41,11 @@ abstract class AbstractWatchdogTest extends TestCase
             'end' => $endConfig = (new \DateTime('+1 day'))->format('Y-m-d'),
             ]],
             'interval',
+            sprintf('start : %s / end : %s', $startConfig, $endConfig),
             sprintf('Interval : %s - %s', $startConfig, $endConfig),
             0,
         ];
-        yield [[['relative' => $config = 'today']], 'relative', sprintf('Relative : %s', $config), 0];
+        yield [[['relative' => $config = 'today']], 'relative', $config, sprintf('Relative : %s', $config), 0];
         yield [[[
             'compound' => [
                 ['relative' => 'today'],
@@ -52,7 +54,7 @@ abstract class AbstractWatchdogTest extends TestCase
                 ['time' => $now->format('H:i')],
                 ['date' => $now->format('Y-m-d')],
             ], ]],
-            'compound', '', 0,
+            'compound', '', '', 0,
         ];
 
         // global config wth 1 ok rule
@@ -66,6 +68,7 @@ abstract class AbstractWatchdogTest extends TestCase
             ['date' => (new \DateTime('+2 days'))->format('Y-m-d')],
         ],
             'interval',
+            sprintf('start : %s / end : %s', $startConfig, $endConfig),
             sprintf('Interval : %s - %s', $startConfig, $endConfig),
             1,
         ];

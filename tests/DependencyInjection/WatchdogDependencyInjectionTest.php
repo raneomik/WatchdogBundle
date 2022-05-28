@@ -3,12 +3,14 @@
 namespace Raneomik\WatchdogBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use Raneomik\WatchdogBundle\DependencyInjection\Compiler\WatchdogCompilerPass;
 use Raneomik\WatchdogBundle\DependencyInjection\WatchdogExtension;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\Kernel;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\Kernel as KernelStub;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\MultiwiredStub;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\SimplewiredStub;
+use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
 use Raneomik\WatchdogBundle\WatchdogBundle;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -42,6 +44,71 @@ class WatchdogDependencyInjectionTest extends TestCase
 
         $compilerPasses = $container->getCompilerPassConfig()->getBeforeOptimizationPasses();
         $this->assertContains(WatchdogCompilerPass::class, array_map(fn (CompilerPassInterface $compilerPass) => \get_class($compilerPass), $compilerPasses));
+    }
+
+    /**
+     * @dataProvider legacyCasesProvider
+     */
+    public function testCompiledPass(bool $fakeLegacy): void
+    {
+        $container = $this->createContainer($fakeLegacy);
+
+        $bundle = new WatchdogBundle();
+        $bundle->build($container);
+        $container
+            ->register(Watchdog::class)
+            ->addArgument([
+                [
+                    'start' => (new \DateTime('-5mins'))->format('Y-m-d H:i'),
+                    'end' => (new \DateTime('+5mins'))->format('Y-m-d H:i'),
+                ],
+                ['relative' => 'now'],
+            ])
+            ->setPublic(true)
+            ->setAutowired(true)
+            ->addTag(WatchdogExtension::SERVICE_TAG)
+        ;
+        $container->register('profiler', NullLogger::class);
+        $container->compile();
+
+        $this->assertTrue($container->hasDefinition(Watchdog::class));
+    }
+
+    /**
+     * @dataProvider legacyCasesProvider
+     */
+    public function testCompiledPassForProfiler(bool $fakeLegacy): void
+    {
+        $container = $this->createContainer($fakeLegacy);
+
+        $bundle = new WatchdogBundle();
+        $bundle->build($container);
+        $container
+            ->register(Watchdog::class)
+            ->addArgument([
+                [
+                    'start' => (new \DateTime('-5mins'))->format('Y-m-d H:i'),
+                    'end' => (new \DateTime('+5mins'))->format('Y-m-d H:i'),
+                ],
+                ['relative' => 'now'],
+            ])
+            ->setPublic(true)
+            ->setAutowired(true)
+            ->addTag(WatchdogExtension::SERVICE_TAG)
+        ;
+        $container
+            ->register('other', Watchdog::class)
+            ->addArgument([
+                ['relative' => 'now'],
+            ])
+            ->setPublic(true)
+            ->setAutowired(true)
+            ->addTag(WatchdogExtension::SERVICE_TAG)
+        ;
+        $container->register('profiler', NullLogger::class);
+        $container->compile();
+
+        $this->assertFalse($container->hasDefinition(Watchdog::class));
     }
 
     /**
