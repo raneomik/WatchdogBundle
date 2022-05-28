@@ -27,7 +27,9 @@ check-code: cs psalm stan
 cs: ## Code Sniff fixer
 	vendor/bin/php-cs-fixer fix --verbose --allow-risky=yes
 psalm: ## Psalm analysis
-	$(SF) php vendor/bin/psalm --no-progress --show-info=true
+	@$(SF) composer req php:^8.0 -q --no-ansi
+	$(SF) php vendor/bin/psalm --no-progress --show-info=true --no-cache
+	@$(SF) composer req php:"^7.4|^8.0" -q --no-ansi
 stan: ## phpstan analysis
 	$(SF) php vendor/bin/phpstan --no-progress
 

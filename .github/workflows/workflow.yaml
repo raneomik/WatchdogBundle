@@ -206,7 +206,10 @@ jobs:
         run: vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes --diff
 
       - name: "Run Psalm"
-        run: vendor/bin/psalm --no-progress --shepherd --output-format=github --show-info=true --stats
+        run: |
+          composer req php:^8.0 -q --no-ansi
+          vendor/bin/psalm --no-progress --shepherd --output-format=github --show-info=true --stats
+
 
       - name: "Run Phpstan"
         run: vendor/bin/phpstan --no-progress

@@ -9,6 +9,7 @@
   <projectFiles>
     <directory name="src"/>
     <ignoreFiles>
+      <file name="vendor/symfony/dependency-injection/Loader/XmlFileLoader.php"/>
       <directory name="vendor"/>
       <!-- <file name="src/.preload.php"/>-->
     </ignoreFiles>
