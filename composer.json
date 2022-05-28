@@ -12,7 +12,7 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "symfony/framework-bundle":  "^4.4|^5.4|^6.0"
+        "symfony/framework-bundle": "^4.4|^5.4|^6.0"
     },
     "require-dev": {
         "ekino/phpstan-banned-code": "*",
@@ -22,9 +22,10 @@
         "phpstan/phpstan": "*",
         "phpstan/phpstan-phpunit": "*",
         "phpstan/phpstan-symfony": "*",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^9.1.1|^9.5.20",
         "psalm/plugin-symfony": "*",
-        "symfony/phpunit-bridge": "^6.0.0",
+        "symfony/phpunit-bridge": "^4.4.10|^5.4|^6.0",
+        "symfony/profiler-pack": "^1.0",
         "symfony/yaml": "^4.4|^5.4|^6.0",
         "symplify/coding-standard": "*",
         "symplify/phpstan-rules": "*",

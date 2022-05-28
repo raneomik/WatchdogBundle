@@ -18,6 +18,7 @@ class WatchdogExtension extends Extension
 {
     public const SERVICE_TAG = 'raneomik_watchdog';
     public const HANDLER_SERVICE_TAG = 'raneomik_watchdog.handler';
+    public const DATA_COLLECTOR_SERVICE_TAG = 'raneomik_watchdog.data_collector';
 
     private LegacyChecker $symfonyVersionChecker;
 
@@ -36,7 +37,7 @@ class WatchdogExtension extends Extension
             /** @var array<string,array> $config */
             $config = $this->processConfiguration($configuration, $configs);
 
-            $container->setParameter('watchdog_config', $config['default'] ?? $config);
+            $container->setParameter('watchdog_config', $config);
 
             $container->registerForAutoconfiguration(WatchdogHandlerInterface::class)
                 ->addTag(self::HANDLER_SERVICE_TAG)
@@ -66,8 +67,9 @@ class WatchdogExtension extends Extension
         foreach ($config as $name => $scopeConfig) {
             $container
                 ->register($name, Watchdog::class)
-                ->setArguments([$scopeConfig])
-                ->addTag(self::SERVICE_TAG, ['id' => $name]);
+                ->addArgument($scopeConfig)
+                ->addTag(self::SERVICE_TAG, ['id' => $name])
+            ;
 
             $container->registerAliasForArgument($name, WatchdogInterface::class);
         }
@@ -75,19 +77,19 @@ class WatchdogExtension extends Extension
 
     private function registerLegacyServiceDefinitions(ContainerBuilder $container): void
     {
-        /** @psalm-suppress ReservedWord */
+        /** @psalm-suppress UndefinedClass */
         (new XmlFileLoader(
             $container,
-            new FileLocator(\dirname(__DIR__).'/../Resources/config')
+            new FileLocator(\dirname(__DIR__).'/../config')
         ))->load('watchdog.xml');
     }
 
     private function registerServiceDefinitions(ContainerBuilder $container): void
     {
-        /** @psalm-suppress ReservedWord */
+        /** @psalm-suppress ReservedWord, ParseError */
         (new PhpFileLoader(
             $container,
-            new FileLocator(\dirname(__DIR__).'/../Resources/config')
+            new FileLocator(\dirname(__DIR__).'/../config')
         ))->load('watchdog.php');
     }
 

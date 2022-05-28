@@ -86,8 +86,14 @@ and if it `isWoofTime`, it will trigger all `WatchdogHandlerInterface`s
 and their `processWoof(array $parameters = []) // passed to the WatchdogWoofCheckEvent constructor`.
 
 `$watchdogId` is null by default, which results in all defined watchdogs check.
-If on is passed by this parameter, it check only the concerned one.
+If one is passed by this parameter, it checks only the concerned one.
 
 If you wish to use it but your project isn't set to be autoconfigured, all your `Handlers` implementing `WatchdogHandlerInterface` must be tagged with `raneomik_watchdog.handler`.
+
+### Profiler data collection
+
+You can access watchdog data in Symfony profiler :
+
+![profiler.png](doc/images/profiler.gif)
 
 [License](LICENCE)

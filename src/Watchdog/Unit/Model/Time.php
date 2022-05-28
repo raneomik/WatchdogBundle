@@ -8,4 +8,14 @@ class Time extends AbstractSimpleWatchdogUnit
     {
         return $this->dateConfig->format('Hi') === (new \DateTime())->format('Hi');
     }
+
+    public function type(): string
+    {
+        return self::TIME;
+    }
+
+    public function __toString()
+    {
+        return sprintf('Time : %s', $this->dateConfig->format('H:i'));
+    }
 }

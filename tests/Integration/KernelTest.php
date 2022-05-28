@@ -26,13 +26,6 @@ class KernelTest extends KernelTestCase
         $fs->remove(sys_get_temp_dir().'/WatchdogBundle/');
     }
 
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        static::ensureKernelShutdown();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -68,8 +61,8 @@ class KernelTest extends KernelTestCase
         /** @var SimplewiredStub $simpleWired */
         $simpleWired = self::container()->get(SimplewiredStub::class);
 
-        $this->assertArrayHasKey('relative', $config[0]);
-        $this->assertArrayHasKey('compound', $config[1]);
+        $this->assertArrayHasKey('relative', $config['default'][0] ?? $config[0]);
+        $this->assertArrayHasKey('compound', $config['default'][1] ?? $config[1]);
 
         $this->assertTrue($watchdog->isWoofTime());
         $this->assertSame($watchdog, $simpleWired->watchdog());

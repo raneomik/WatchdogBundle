@@ -2,8 +2,8 @@
 
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
+>
     <services>
         <service id="Raneomik\WatchdogBundle\Watchdog\Watchdog" class="Raneomik\WatchdogBundle\Watchdog\Watchdog">
             <tag name="raneomik_watchdog" id="default"/>
@@ -17,6 +17,12 @@
 
         <service id="Raneomik\WatchdogBundle\Subscriber\WatchdogEventSubscriber" class="Raneomik\WatchdogBundle\Subscriber\WatchdogEventSubscriber">
             <tag name="kernel.event_subscriber"/>
+            <argument type="tagged_iterator" tag="raneomik_watchdog" index-by="id"/>
+            <argument type="tagged_iterator" tag="raneomik_watchdog.handler"/>
+        </service>
+
+        <service id="raneomik_watchdog.data_collector" class="Raneomik\WatchdogBundle\DataCollector\WatchdogDataCollector">
+            <tag name="data_collector" id="Raneomik\WatchdogBundle\DataCollector\WatchdogDataCollector" template="@Watchdog/Collector/template.html.twig"/>
             <argument type="tagged_iterator" tag="raneomik_watchdog" index-by="id"/>
             <argument type="tagged_iterator" tag="raneomik_watchdog.handler"/>
         </service>

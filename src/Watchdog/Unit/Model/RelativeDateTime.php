@@ -8,4 +8,14 @@ class RelativeDateTime extends AbstractSimpleWatchdogUnit
     {
         return $this->dateConfig->format('Ymd') === (new \DateTime())->format('Ymd');
     }
+
+    public function type(): string
+    {
+        return self::RELATIVE;
+    }
+
+    public function __toString()
+    {
+        return sprintf('Relative : %s', $this->originalConfig);
+    }
 }

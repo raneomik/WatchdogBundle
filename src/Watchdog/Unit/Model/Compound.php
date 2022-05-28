@@ -41,4 +41,24 @@ class Compound implements WatchdogUnitInterface
 
         return $match || $unit->isMatching();
     }
+
+    public function units(): array
+    {
+        return $this->unitCollection;
+    }
+
+    public function type(): string
+    {
+        return self::COMPOUND;
+    }
+
+    public function originalConfig(): string
+    {
+        return '';
+    }
+
+    public function __toString(): string
+    {
+        return '';
+    }
 }

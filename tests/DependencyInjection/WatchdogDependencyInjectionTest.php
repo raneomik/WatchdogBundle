@@ -3,13 +3,18 @@
 namespace Raneomik\WatchdogBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
+use Raneomik\WatchdogBundle\DependencyInjection\Compiler\WatchdogCompilerPass;
 use Raneomik\WatchdogBundle\DependencyInjection\WatchdogExtension;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\Kernel;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\Kernel as KernelStub;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\MultiwiredStub;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\SimplewiredStub;
+use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
+use Raneomik\WatchdogBundle\WatchdogBundle;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -20,6 +25,90 @@ class WatchdogDependencyInjectionTest extends TestCase
     {
         yield ['fakeLegacy' => true];
         yield ['fakeLegacy' => false];
+    }
+
+    /**
+     * @dataProvider legacyCasesProvider
+     */
+    public function testBuiltBundleWithPass(bool $fakeLegacy): void
+    {
+        $container = $this->createContainer($fakeLegacy, ['watchdog' => []]);
+
+        $compilerPasses = $container->getCompilerPassConfig()->getBeforeOptimizationPasses();
+        $this->assertNotContains(WatchdogCompilerPass::class, array_map(fn (CompilerPassInterface $compilerPass) => \get_class($compilerPass), $compilerPasses));
+
+        $bundle = new WatchdogBundle();
+        $this->assertSame('WatchdogBundle', $bundle->getName());
+
+        $bundle->build($container);
+
+        $compilerPasses = $container->getCompilerPassConfig()->getBeforeOptimizationPasses();
+        $this->assertContains(WatchdogCompilerPass::class, array_map(fn (CompilerPassInterface $compilerPass) => \get_class($compilerPass), $compilerPasses));
+    }
+
+    /**
+     * @dataProvider legacyCasesProvider
+     */
+    public function testCompiledPass(bool $fakeLegacy): void
+    {
+        $container = $this->createContainer($fakeLegacy);
+
+        $bundle = new WatchdogBundle();
+        $bundle->build($container);
+        $container
+            ->register(Watchdog::class)
+            ->addArgument([
+                [
+                    'start' => (new \DateTime('-5mins'))->format('Y-m-d H:i'),
+                    'end' => (new \DateTime('+5mins'))->format('Y-m-d H:i'),
+                ],
+                ['relative' => 'now'],
+            ])
+            ->setPublic(true)
+            ->setAutowired(true)
+            ->addTag(WatchdogExtension::SERVICE_TAG)
+        ;
+        $container->register('profiler', NullLogger::class);
+        $container->compile();
+
+        $this->assertTrue($container->hasDefinition(Watchdog::class));
+    }
+
+    /**
+     * @dataProvider legacyCasesProvider
+     */
+    public function testCompiledPassForProfiler(bool $fakeLegacy): void
+    {
+        $container = $this->createContainer($fakeLegacy);
+
+        $bundle = new WatchdogBundle();
+        $bundle->build($container);
+        $container
+            ->register(Watchdog::class)
+            ->addArgument([
+                [
+                    'start' => (new \DateTime('-5mins'))->format('Y-m-d H:i'),
+                    'end' => (new \DateTime('+5mins'))->format('Y-m-d H:i'),
+                ],
+                ['relative' => 'now'],
+            ])
+            ->setPublic(true)
+            ->setAutowired(true)
+            ->addTag(WatchdogExtension::SERVICE_TAG)
+        ;
+        $container
+            ->register('other', Watchdog::class)
+            ->addArgument([
+                ['relative' => 'now'],
+            ])
+            ->setPublic(true)
+            ->setAutowired(true)
+            ->addTag(WatchdogExtension::SERVICE_TAG)
+        ;
+        $container->register('profiler', NullLogger::class);
+        $container->compile();
+
+        $this->assertFalse($container->hasDefinition(Watchdog::class));
     }
 
     /**
@@ -95,7 +184,6 @@ class WatchdogDependencyInjectionTest extends TestCase
         /** @var SimplewiredStub $stub */
         $stub = $container->get('test.autowired');
         $this->assertInstanceOf(WatchdogInterface::class, $watchdog = $stub->watchdog());
-
         $this->assertTrue($watchdog->isWoofTime());
     }
 
@@ -145,7 +233,7 @@ class WatchdogDependencyInjectionTest extends TestCase
         $this->assertFalse($watchdogTwo->isWoofTime());
     }
 
-    protected static function createContainer(bool $fakeLegacy, array $configs = []): ContainerBuilder
+    private static function createContainer(bool $fakeLegacy, array $configs = []): ContainerBuilder
     {
         $container = new ContainerBuilder(new ParameterBag([
             'kernel.build_dir' => __DIR__,
