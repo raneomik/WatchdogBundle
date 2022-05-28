@@ -27,7 +27,7 @@ check-code: cs psalm stan
 cs: ## Code Sniff fixer
 	vendor/bin/php-cs-fixer fix --verbose --allow-risky=yes
 psalm: ## Psalm analysis
-	$(SF) php vendor/bin/psalm --no-progress --show-info=true --no-cache
+	$(SF) php vendor/bin/psalm --no-progress --show-info=true
 stan: ## phpstan analysis
 	$(SF) php vendor/bin/phpstan --no-progress
 

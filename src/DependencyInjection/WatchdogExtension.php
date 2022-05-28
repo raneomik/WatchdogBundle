@@ -77,7 +77,7 @@ class WatchdogExtension extends Extension
 
     private function registerLegacyServiceDefinitions(ContainerBuilder $container): void
     {
-        /** @psalm-suppress ReservedWord */
+        /** @psalm-suppress UndefinedClass */
         (new XmlFileLoader(
             $container,
             new FileLocator(\dirname(__DIR__).'/../config')
@@ -86,7 +86,7 @@ class WatchdogExtension extends Extension
 
     private function registerServiceDefinitions(ContainerBuilder $container): void
     {
-        /** @psalm-suppress ReservedWord */
+        /** @psalm-suppress ReservedWord, ParseError */
         (new PhpFileLoader(
             $container,
             new FileLocator(\dirname(__DIR__).'/../config')
