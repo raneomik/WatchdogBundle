@@ -51,7 +51,7 @@ infection: ## Mutation tests
 
 ##---------------------------------------------------------------------------
 ##
-## Dependencies
+## Dependencies - highest vs. lowest requirements case switch
 ##
 up-deps: ## Update to latest dependencies
 	 $(SF) composer require --no-progress --no-update --no-scripts --dev \
@@ -69,3 +69,4 @@ down-deps: ## Downgrade to least supported dependencies
               infection/infection
 	echo $(LOW_PHP) > .php-version
 	$(SF) composer update --no-interaction --no-progress --prefer-lowest --prefer-stable -W
+
