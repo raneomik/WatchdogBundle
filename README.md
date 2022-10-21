@@ -1,13 +1,8 @@
 WatchdogBundle
 ==============
 
-[![Workflow](https://github.com/raneomik/WatchdogBundle/actions/workflows/workflow.yaml/badge.svg)](https://github.com/raneomik/WatchdogBundle/actions/workflows/workflow.yaml)
-[![codecov](https://codecov.io/gh/raneomik/WatchdogBundle/branch/main/graph/badge.svg?token=CAJ62EG1GB)](https://codecov.io/gh/raneomik/WatchdogBundle)
-[![SymfonyInsight](https://insight.symfony.com/projects/2fc0de74-a97a-44df-ad48-c5534a2e8065/mini.svg)](https://insight.symfony.com/projects/2fc0de74-a97a-44df-ad48-c5534a2e8065)
-[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Franeomik%2FWatchdogBundle%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/raneomik/WatchdogBundle/main)
-[![Type coverage](https://shepherd.dev/github/raneomik/WatchdogBundle/coverage.svg)](https://shepherd.dev/github/raneomik/WatchdogBundle)
-[![Type coverage](https://shepherd.dev/github/raneomik/WatchdogBundle/level.svg)](https://shepherd.dev/github/raneomik/WatchdogBundle)
-[![Type coverage](https://img.shields.io/badge/PHPStan-level%209-brightgreen.svg?style=flat)](https://shepherd.dev/github/raneomik/WatchdogBundle)
+|[![Workflow](https://github.com/raneomik/WatchdogBundle/actions/workflows/workflow.yaml/badge.svg)](https://github.com/raneomik/WatchdogBundle/actions/workflows/workflow.yaml)|[![codecov](https://codecov.io/gh/raneomik/WatchdogBundle/branch/main/graph/badge.svg?token=CAJ62EG1GB)](https://codecov.io/gh/raneomik/WatchdogBundle)|[![SymfonyInsight](https://insight.symfony.com/projects/2fc0de74-a97a-44df-ad48-c5534a2e8065/mini.svg)](https://insight.symfony.com/projects/2fc0de74-a97a-44df-ad48-c5534a2e8065)|[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Franeomik%2FWatchdogBundle%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/raneomik/WatchdogBundle/main)|[![Type coverage](https://shepherd.dev/github/raneomik/WatchdogBundle/coverage.svg)](https://shepherd.dev/github/raneomik/WatchdogBundle)|[![psalm](https://shepherd.dev/github/raneomik/WatchdogBundle/level.svg)](https://shepherd.dev/github/raneomik/WatchdogBundle)|[![phpstan](https://img.shields.io/badge/PHPStan-level%209-brightgreen.svg?style=flat)](https://shepherd.dev/github/raneomik/WatchdogBundle)|
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 
 
 A widget bundle providing a watchdog which "woofs" if current time matches provided configuration.
