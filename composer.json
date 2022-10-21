@@ -38,7 +38,11 @@
         "psr-4": { "Raneomik\\WatchdogBundle\\Tests\\": "tests/" }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "infection/extension-installer": true,
+            "phpstan/extension-installer": true
+        }
     },
     "extra": {
         "sort-packages": true,

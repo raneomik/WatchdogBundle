@@ -51,6 +51,14 @@ class WatchdogUnitTest extends TestCase
             WatchdogUnitInterface::TIME => $hour,
             WatchdogUnitInterface::COMPOUND => $atLeastOneCompound,
         ])];
+
+        yield [new Compound([
+            WatchdogUnitInterface::RELATIVE => 'today',
+            [
+                WatchdogUnitInterface::START => $nowMinus1Minutes->format('Y-m-d H:i'),
+                WatchdogUnitInterface::END => $nowPlus1Minutes->format('Y-m-d H:i'),
+            ],
+        ], true)];
     }
 
     public function notMatchingUnitProvider(): \Generator
@@ -110,6 +118,14 @@ class WatchdogUnitTest extends TestCase
                 ],
             ], true),
         ])];
+
+        yield [new Compound([
+            WatchdogUnitInterface::RELATIVE => 'today',
+            [
+                WatchdogUnitInterface::START => $now->modify('+1 minute')->format('Y-m-d H:i'),
+                WatchdogUnitInterface::END => $nowPlus2Minutes->format('Y-m-d H:i'),
+            ],
+        ], true)];
     }
 
     /**

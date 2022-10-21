@@ -1,6 +1,6 @@
 includes:
-    - vendor/symplify/phpstan-rules/packages/symfony/config/symfony-rules.neon
-    - vendor/symplify/phpstan-rules/packages/cognitive-complexity/config/cognitive-complexity-rules.neon
+    - vendor/symplify/phpstan-rules/config/packages/symfony/symfony-rules.neon
+    - vendor/symplify/phpstan-rules/config/packages/cognitive-complexity/cognitive-complexity-rules.neon
     - vendor/symplify/phpstan-rules/config/naming-rules.neon
     - vendor/symplify/phpstan-rules/config/test-rules.neon
 
