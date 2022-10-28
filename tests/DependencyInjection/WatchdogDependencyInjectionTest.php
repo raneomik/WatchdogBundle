@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
@@ -21,8 +23,12 @@ class WatchdogDependencyInjectionTest extends TestCase
 {
     public function legacyCasesProvider(): \Generator
     {
-        yield ['fakeLegacy' => true];
-        yield ['fakeLegacy' => false];
+        yield [
+            'fakeLegacy' => true
+        ];
+        yield [
+            'fakeLegacy' => false
+        ];
     }
 
     /**
@@ -41,21 +47,23 @@ class WatchdogDependencyInjectionTest extends TestCase
                     'start' => (new \DateTime('-5mins'))->format('Y-m-d H:i'),
                     'end' => (new \DateTime('+5mins'))->format('Y-m-d H:i'),
                 ],
-                ['relative' => 'now'],
+                [
+                    'relative' => 'now'
+                ],
             ])
             ->setPublic(true)
             ->setAutowired(true)
-            ->addTag(WatchdogExtension::SERVICE_TAG)
-        ;
+            ->addTag(WatchdogExtension::SERVICE_TAG);
         $container
             ->register('other', Watchdog::class)
             ->addArgument([
-                ['relative' => 'now'],
+                [
+                    'relative' => 'now'
+                ],
             ])
             ->setPublic(true)
             ->setAutowired(true)
-            ->addTag(WatchdogExtension::SERVICE_TAG)
-        ;
+            ->addTag(WatchdogExtension::SERVICE_TAG);
         $container->register('profiler', NullLogger::class);
         $container->compile();
 
@@ -150,10 +158,14 @@ class WatchdogDependencyInjectionTest extends TestCase
                         'start' => (new \DateTime('-5mins'))->format('Y-m-d H:i'),
                         'end' => (new \DateTime('+5mins'))->format('Y-m-d H:i'),
                     ],
-                    ['relative' => 'now'],
+                    [
+                        'relative' => 'now'
+                    ],
                 ],
                 'test_two' => [
-                    ['relative' => 'tomorrow'],
+                    [
+                        'relative' => 'tomorrow'
+                    ],
                 ],
             ],
         ]);
@@ -166,9 +178,11 @@ class WatchdogDependencyInjectionTest extends TestCase
         $container->compile();
 
         /** @var Definition $testOneDef */
-        $testOneDef = $container->getDefinition('test.autowired')->getArgument(0);
+        $testOneDef = $container->getDefinition('test.autowired')
+            ->getArgument(0);
         /** @var Definition $testTwoDef */
-        $testTwoDef = $container->getDefinition('test.autowired')->getArgument(1);
+        $testTwoDef = $container->getDefinition('test.autowired')
+            ->getArgument(1);
 
         if (false === KernelStub::IS_LEGACY) {
             $this->assertContains('test_one', $testOneDef->getTag(WatchdogExtension::SERVICE_TAG)[0]);

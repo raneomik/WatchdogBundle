@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Tests\Unit;
 
 use Raneomik\WatchdogBundle\Exception\IllogicConfigurationException;
@@ -19,8 +21,13 @@ class WatchdogTest extends AbstractWatchdogTest
     /**
      * @dataProvider woofMatchCasesProvider
      */
-    public function testOkCases(array $timeRule, string $type, string $config, string $stringRepresentation, int $matchOffset): void
-    {
+    public function testOkCases(
+        array $timeRule,
+        string $type,
+        string $config,
+        string $stringRepresentation,
+        int $matchOffset
+    ): void {
         $watchDog = new Watchdog($timeRule);
         $this->assertTrue($watchDog->isWoofTime());
         $this->assertEquals($type, ($unit = $watchDog->units()[$matchOffset])->type());
@@ -58,42 +65,58 @@ class WatchdogTest extends AbstractWatchdogTest
     {
         $this->expectException(NotSupportedConfigurationException::class);
         $this->expectExceptionMessage('test : 12345" is not a supported config');
-        new Watchdog([['test' => '12345']]);
+        new Watchdog([[
+            'test' => '12345'
+        ]]);
     }
 
     public function testMalformedDataExceptionCase(): void
     {
         $this->expectException(MalformedConfigurationValueException::class);
         $this->expectExceptionMessage('"DateTime string 12345" is malformed config');
-        new Watchdog([['date' => '12345'], ['hour' => '12345']]);
+        new Watchdog([[
+            'date' => '12345'
+        ], [
+            'hour' => '12345'
+        ]]);
     }
 
     public function testIllogicDataExceptionCase(): void
     {
         $this->expectException(IllogicConfigurationException::class);
         $this->expectExceptionMessage('start time cannot occur after end time');
-        new Watchdog([['start' => '11:00', 'end' => '10:00']]);
+        new Watchdog([[
+            'start' => '11:00',
+            'end' => '10:00'
+        ]]);
     }
 
     public function testIllogicIntervalDataExceptionCase(): void
     {
         $this->expectException(IllogicConfigurationException::class);
         $this->expectExceptionMessage('start and end times must differ');
-        new Watchdog([['start' => '10:00', 'end' => '10:00']]);
+        new Watchdog([[
+            'start' => '10:00',
+            'end' => '10:00'
+        ]]);
     }
 
     public function testMalformedStartIntervalDataExceptionCase(): void
     {
         $this->expectException(MalformedConfigurationValueException::class);
         $this->expectExceptionMessage('Missing "start" data for interval');
-        new Watchdog([['end' => '10:00']]);
+        new Watchdog([[
+            'end' => '10:00'
+        ]]);
     }
 
     public function testMalformedEndIntervalDataExceptionCase(): void
     {
         $this->expectException(MalformedConfigurationValueException::class);
         $this->expectExceptionMessage('Missing "end" data for interval');
-        new Watchdog([['start' => '10:00']]);
+        new Watchdog([[
+            'start' => '10:00'
+        ]]);
     }
 
     public function testIncoherentIntervalDataExceptionCase(): void
@@ -102,7 +125,10 @@ class WatchdogTest extends AbstractWatchdogTest
 
         $this->expectException(IllogicConfigurationException::class);
         $this->expectExceptionMessage('start and end times have same date, time or dateTime format');
-        new Watchdog([['start' => $dateTime->format('Y-m-d'), 'end' => $dateTime->format('H:i')]]);
+        new Watchdog([[
+            'start' => $dateTime->format('Y-m-d'),
+            'end' => $dateTime->format('H:i')
+        ]]);
     }
 
     public function testIncoherentStartIntervalDataExceptionCase(): void
@@ -111,7 +137,10 @@ class WatchdogTest extends AbstractWatchdogTest
 
         $this->expectException(IllogicConfigurationException::class);
         $this->expectExceptionMessage('start and end times have same date, time or dateTime format');
-        new Watchdog([['start' => $dateTime->format('Y-m-d'), 'end' => $dateTime->format('H:i')]]);
+        new Watchdog([[
+            'start' => $dateTime->format('Y-m-d'),
+            'end' => $dateTime->format('H:i')
+        ]]);
     }
 
     public function testIncoherentEndIntervalDataExceptionCase(): void
@@ -120,6 +149,9 @@ class WatchdogTest extends AbstractWatchdogTest
 
         $this->expectException(IllogicConfigurationException::class);
         $this->expectExceptionMessage('start and end times have same date, time or dateTime format');
-        new Watchdog([['start' => $dateTime->format('H:i'), 'end' => $dateTime->format('Y-m-d')]]);
+        new Watchdog([[
+            'start' => $dateTime->format('H:i'),
+            'end' => $dateTime->format('Y-m-d')
+        ]]);
     }
 }

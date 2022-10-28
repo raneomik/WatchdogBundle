@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
@@ -15,7 +17,11 @@ class WatchdogDataCollectorTest extends TestCase
     public function testDataCollection(): void
     {
         $dataCollector = new WatchdogDataCollector(
-            new \ArrayIterator($watchdogs = ['default' => new Watchdog(['relative' => 'now'])]),
+            new \ArrayIterator($watchdogs = [
+                'default' => new Watchdog([
+                    'relative' => 'now'
+                ])
+            ]),
             new \ArrayIterator($handlers = [$this->createMock(WatchdogHandlerInterface::class)])
         );
         $this->assertEquals(WatchdogExtension::SERVICE_TAG, $dataCollector->getName());

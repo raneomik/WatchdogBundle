@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Watchdog\Unit\Model;
 
 use Raneomik\WatchdogBundle\Watchdog\Unit\WatchdogUnitFactory;
@@ -7,6 +9,7 @@ use Raneomik\WatchdogBundle\Watchdog\Unit\WatchdogUnitFactory;
 class Compound implements WatchdogUnitInterface
 {
     private bool $logicalAndMode;
+
     private array $unitCollection = [];
 
     public function __construct(array $data, bool $logicalAnd = false)
@@ -15,9 +18,7 @@ class Compound implements WatchdogUnitInterface
 
         /** @var array|string $value */
         foreach ($data as $value) {
-            $this->unitCollection[] = WatchdogUnitFactory::create(
-                \is_string($value) ? $data : $value
-            );
+            $this->unitCollection[] = WatchdogUnitFactory::create(\is_string($value) ? $data : $value);
         }
     }
 

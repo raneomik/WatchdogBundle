@@ -214,6 +214,5 @@ jobs:
           composer req php:^8.0 -q --no-ansi
           vendor/bin/psalm --no-progress --shepherd --output-format=github --show-info=true --stats
 
-
       - name: "Run Phpstan"
         run: vendor/bin/phpstan --no-progress

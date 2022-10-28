@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
@@ -36,15 +38,21 @@ class WatchdogUnitTest extends TestCase
         yield [new RelativeDateTime('now')];
 
         yield [new Compound([
-            [WatchdogUnitInterface::RELATIVE => 'today'],
+            [
+                WatchdogUnitInterface::RELATIVE => 'today'
+            ],
             [
                 WatchdogUnitInterface::START => $nowMinus1Minutes->format('Y-m-d H:i'),
                 WatchdogUnitInterface::END => $nowPlus1Minutes->format('Y-m-d H:i'),
             ],
         ], true)];
         yield [new Compound($atLeastOneCompound = [
-            [WatchdogUnitInterface::RELATIVE => 'tomorrow'],
-            [WatchdogUnitInterface::TIME => $hour],
+            [
+                WatchdogUnitInterface::RELATIVE => 'tomorrow'
+            ],
+            [
+                WatchdogUnitInterface::TIME => $hour
+            ],
         ])];
 
         yield [WatchdogUnitFactory::create([
@@ -85,19 +93,32 @@ class WatchdogUnitTest extends TestCase
 
         yield [new RelativeDateTime('tomorrow')];
 
-        yield [new Compound($compound = [
-            [WatchdogUnitInterface::RELATIVE => 'now'],
-            [WatchdogUnitInterface::TIME => $hour],
-            [WatchdogUnitInterface::DATE => $date],
-            [WatchdogUnitInterface::DATE_TIME => $dateTime],
-            [
-                WatchdogUnitInterface::START => $nowPlus2Minutes->format('Y-m-d H:i'),
-                WatchdogUnitInterface::END => $notNow->format('Y-m-d H:i'),
-            ],
-        ], true)];
+        yield [
+            new Compound($compound = [
+                [
+                    WatchdogUnitInterface::RELATIVE => 'now'
+                ],
+                [
+                    WatchdogUnitInterface::TIME => $hour
+                ],
+                [
+                    WatchdogUnitInterface::DATE => $date
+                ],
+                [
+                    WatchdogUnitInterface::DATE_TIME => $dateTime
+                ],
+                [
+                    WatchdogUnitInterface::START => $nowPlus2Minutes->format('Y-m-d H:i'),
+                    WatchdogUnitInterface::END => $notNow->format('Y-m-d H:i'),
+                ],
+            ], true)];
         yield [new Compound($noneCompound = [
-            [WatchdogUnitInterface::RELATIVE => 'tomorrow'],
-            [WatchdogUnitInterface::TIME => $hour],
+            [
+                WatchdogUnitInterface::RELATIVE => 'tomorrow'
+            ],
+            [
+                WatchdogUnitInterface::TIME => $hour
+            ],
         ])];
 
         yield [WatchdogUnitFactory::create([
@@ -108,16 +129,19 @@ class WatchdogUnitTest extends TestCase
             WatchdogUnitInterface::TIME => $hour,
             WatchdogUnitInterface::COMPOUND => $noneCompound,
         ])];
-        yield [WatchdogUnitFactory::create([
-            WatchdogUnitInterface::TIME => $hour,
-            WatchdogUnitInterface::COMPOUND => new Compound([
-                [WatchdogUnitInterface::RELATIVE => 'today'],
-                [
-                    WatchdogUnitInterface::START => $nowMinus2Minutes->format('Y-m-d H:i'),
-                    WatchdogUnitInterface::END => $nowPlus2Minutes->format('Y-m-d H:i'),
-                ],
-            ], true),
-        ])];
+        yield [
+            WatchdogUnitFactory::create([
+                WatchdogUnitInterface::TIME => $hour,
+                WatchdogUnitInterface::COMPOUND => new Compound([
+                    [
+                        WatchdogUnitInterface::RELATIVE => 'today'
+                    ],
+                    [
+                        WatchdogUnitInterface::START => $nowMinus2Minutes->format('Y-m-d H:i'),
+                        WatchdogUnitInterface::END => $nowPlus2Minutes->format('Y-m-d H:i'),
+                    ],
+                ], true),
+            ])];
 
         yield [new Compound([
             WatchdogUnitInterface::RELATIVE => 'today',
@@ -150,7 +174,7 @@ class WatchdogUnitTest extends TestCase
         $notNow = new \DateTime('-1 day -1 hour');
 
         $unit = new Compound([
-             WatchdogUnitInterface::COMPOUND => [
+            WatchdogUnitInterface::COMPOUND => [
                 WatchdogUnitInterface::COMPOUND => [
                     WatchdogUnitInterface::COMPOUND => [
                         WatchdogUnitInterface::COMPOUND => [
@@ -171,7 +195,7 @@ class WatchdogUnitTest extends TestCase
                     WatchdogUnitInterface::DATE_TIME => $now->format('d-m-Y H:i'),
                 ],
                 WatchdogUnitInterface::DATE => $now->format('d-m-Y'),
-             ],
+            ],
             WatchdogUnitInterface::TIME => $notNow->format('H:i'),
         ]);
 

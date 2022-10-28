@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\DataCollector;
 
 use Raneomik\WatchdogBundle\DependencyInjection\WatchdogExtension;
@@ -14,6 +16,7 @@ class WatchdogDataCollector extends DataCollector
 {
     /** @var array<string, WatchdogInterface> */
     private array $watchdogCollection;
+
     /** @var array<int, WatchdogHandlerInterface> */
     private array $watchdogHandlerCollection;
 

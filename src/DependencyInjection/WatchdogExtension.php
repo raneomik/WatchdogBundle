@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\DependencyInjection;
 
 use Raneomik\WatchdogBundle\DependencyInjection\SymfonyVersionChecker\LegacyChecker;
@@ -17,7 +19,9 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class WatchdogExtension extends Extension
 {
     public const SERVICE_TAG = 'raneomik_watchdog';
+
     public const HANDLER_SERVICE_TAG = 'raneomik_watchdog.handler';
+
     public const DATA_COLLECTOR_SERVICE_TAG = 'raneomik_watchdog.data_collector';
 
     private LegacyChecker $symfonyVersionChecker;
@@ -46,7 +50,9 @@ class WatchdogExtension extends Extension
             $this->registerWatchdogConfiguration($config, $container);
         } catch (InvalidConfigurationException $exception) {
             if (str_contains($exception->getMessage(), Configuration::LEGACY_CONFIG_ERROR_MESSAGE)) {
-                throw new InvalidConfigurationException('Your watchdog configuration needs to be set under "default" (or other) key');
+                throw new InvalidConfigurationException(
+                    'Your watchdog configuration needs to be set under "default" (or other) key'
+                );
             }
         }
     }
@@ -68,7 +74,9 @@ class WatchdogExtension extends Extension
             $container
                 ->register($name, Watchdog::class)
                 ->addArgument($scopeConfig)
-                ->addTag(self::SERVICE_TAG, ['id' => $name])
+                ->addTag(self::SERVICE_TAG, [
+'id' => $name
+])
             ;
 
             $container->registerAliasForArgument($name, WatchdogInterface::class);
@@ -78,19 +86,13 @@ class WatchdogExtension extends Extension
     private function registerLegacyServiceDefinitions(ContainerBuilder $container): void
     {
         /** @psalm-suppress UndefinedClass */
-        (new XmlFileLoader(
-            $container,
-            new FileLocator(\dirname(__DIR__).'/../config')
-        ))->load('watchdog.xml');
+        (new XmlFileLoader($container, new FileLocator(\dirname(__DIR__) . '/../config')))->load('watchdog.xml');
     }
 
     private function registerServiceDefinitions(ContainerBuilder $container): void
     {
         /** @psalm-suppress ReservedWord, ParseError */
-        (new PhpFileLoader(
-            $container,
-            new FileLocator(\dirname(__DIR__).'/../config')
-        ))->load('watchdog.php');
+        (new PhpFileLoader($container, new FileLocator(\dirname(__DIR__) . '/../config')))->load('watchdog.php');
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration

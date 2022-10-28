@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Exception;
 
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -8,7 +10,8 @@ class MalformedConfigurationValueException extends InvalidConfigurationException
 {
     public function __construct(string $malformed)
     {
-        $message = sprintf('"%s" is malformed config. Please, see documentation for correct configuration.',
+        $message = sprintf(
+            '"%s" is malformed config. Please, see documentation for correct configuration.',
             $malformed
         );
 

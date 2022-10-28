@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Exception;
 
 use Raneomik\WatchdogBundle\Watchdog\Unit\Model\WatchdogUnitInterface;
@@ -9,7 +11,8 @@ class NotSupportedConfigurationException extends InvalidConfigurationException
 {
     public function __construct(string $unsupportedValue)
     {
-        $message = sprintf('"%s" is not a supported config. Please, provide one of the following : %s',
+        $message = sprintf(
+            '"%s" is not a supported config. Please, provide one of the following : %s',
             $unsupportedValue,
             implode(', ', WatchdogUnitInterface::UNIT_KEY_MAP)
         );

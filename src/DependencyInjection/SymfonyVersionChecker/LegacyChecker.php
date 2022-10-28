@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\DependencyInjection\SymfonyVersionChecker;
 
 use Symfony\Component\HttpKernel\Kernel;

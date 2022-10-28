@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle;
 
 use Raneomik\WatchdogBundle\DependencyInjection\Compiler\WatchdogCompilerPass;

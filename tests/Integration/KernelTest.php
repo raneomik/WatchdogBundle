@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Tests\Integration;
 
 use Raneomik\WatchdogBundle\DependencyInjection\SymfonyVersionChecker\LegacyChecker;
@@ -23,7 +25,7 @@ class KernelTest extends KernelTestCase
         parent::setUp();
 
         $fs = new Filesystem();
-        $fs->remove(sys_get_temp_dir().'/WatchdogBundle/');
+        $fs->remove(sys_get_temp_dir() . '/WatchdogBundle/');
     }
 
     /**
@@ -47,7 +49,9 @@ class KernelTest extends KernelTestCase
 
     public function testLoadedLegacyBaseConfig(): void
     {
-        self::bootKernel(['config' => 'base_alt']);
+        self::bootKernel([
+'config' => 'base_alt'
+]);
         $this->assertCorrectBaseConfig();
     }
 
@@ -70,7 +74,9 @@ class KernelTest extends KernelTestCase
 
     public function testLoadedMultiConfig(): void
     {
-        self::bootKernel(['config' => 'multi']);
+        self::bootKernel([
+'config' => 'multi'
+]);
         /** @var MultiwiredStub $stub */
         $stub = self::container()->get(MultiwiredStub::class);
 
@@ -80,7 +86,9 @@ class KernelTest extends KernelTestCase
 
     public function testLoadedEmptyConfig(): void
     {
-        self::bootKernel(['config' => 'empty']);
+        self::bootKernel([
+'config' => 'empty'
+]);
         /** @var array $config */
         $config = self::container()->getParameter('watchdog_config');
         /** @var WatchdogInterface $watchdog */
@@ -93,7 +101,9 @@ class KernelTest extends KernelTestCase
 
     public function testDispatchedSimpleEvent(): void
     {
-        self::bootKernel(['config' => self::isLegacy() ? 'base_alt' : 'base']);
+        self::bootKernel([
+'config' => self::isLegacy() ? 'base_alt' : 'base'
+]);
 
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = self::container()->get(EventDispatcherInterface::class);
@@ -102,7 +112,9 @@ class KernelTest extends KernelTestCase
 
         $this->assertEmpty($testHandler->handled);
 
-        $dispatcher->dispatch(new WatchdogWoofCheckEvent(['handled' => true]));
+        $dispatcher->dispatch(new WatchdogWoofCheckEvent([
+'handled' => true
+]));
 
         $this->assertArrayHasKey('handled', $testHandler->handled);
         $this->assertTrue($testHandler->handled['handled']);
@@ -110,7 +122,9 @@ class KernelTest extends KernelTestCase
 
     public function testDispatchedMultiEvents(): void
     {
-        self::bootKernel(['config' => 'multi']);
+        self::bootKernel([
+'config' => 'multi'
+]);
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = self::container()->get(EventDispatcherInterface::class);
         /** @var DummyHandler $testHandler */
@@ -118,18 +132,26 @@ class KernelTest extends KernelTestCase
 
         $this->assertEmpty($testHandler->handled);
 
-        $dispatcher->dispatch(new WatchdogWoofCheckEvent(['handledOne' => true], 'test_one'));
+        $dispatcher->dispatch(new WatchdogWoofCheckEvent([
+'handledOne' => true
+], 'test_one'));
         $this->assertArrayHasKey('handledOne', $testHandler->handled);
         $this->assertTrue($testHandler->handled['handledOne']);
 
-        $dispatcher->dispatch(new WatchdogWoofCheckEvent(['handledTwo' => true], 'test_two'));
+        $dispatcher->dispatch(new WatchdogWoofCheckEvent([
+'handledTwo' => true
+], 'test_two'));
         $this->assertArrayNotHasKey('handledTwo', $testHandler->handled);
 
-        $dispatcher->dispatch(new WatchdogWoofCheckEvent(['handledOneMoreTime' => true], 'test_one'));
+        $dispatcher->dispatch(new WatchdogWoofCheckEvent([
+'handledOneMoreTime' => true
+], 'test_one'));
         $this->assertArrayHasKey('handledOneMoreTime', $testHandler->handled);
         $this->assertTrue($testHandler->handled['handledOneMoreTime']);
 
-        $dispatcher->dispatch(new WatchdogWoofCheckEvent(['handledAll' => true]));
+        $dispatcher->dispatch(new WatchdogWoofCheckEvent([
+'handledAll' => true
+]));
         $this->assertArrayHasKey('handledAll', $testHandler->handled);
         $this->assertTrue($testHandler->handled['handledAll']);
     }

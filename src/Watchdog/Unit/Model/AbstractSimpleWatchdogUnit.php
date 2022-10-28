@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Watchdog\Unit\Model;
 
 use Raneomik\WatchdogBundle\Exception\MalformedConfigurationValueException;
@@ -7,6 +9,7 @@ use Raneomik\WatchdogBundle\Exception\MalformedConfigurationValueException;
 abstract class AbstractSimpleWatchdogUnit implements WatchdogUnitInterface
 {
     protected string $originalConfig;
+
     protected \DateTimeInterface $dateConfig;
 
     public function __construct(string $stringDateConfig)

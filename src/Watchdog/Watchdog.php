@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Watchdog;
 
 use Raneomik\WatchdogBundle\Watchdog\Unit\Model\Compound;
@@ -31,7 +33,10 @@ final class Watchdog implements WatchdogInterface
 
     public function matchingUnits(): array
     {
-        return array_filter($this->dateCollectionToWatch->units(), fn (WatchdogUnitInterface $unit) => $unit->isMatching());
+        return array_filter(
+            $this->dateCollectionToWatch->units(),
+            fn (WatchdogUnitInterface $unit) => $unit->isMatching()
+        );
     }
 
     public function hasMatches(): bool

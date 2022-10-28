@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Tests\Unit;
 
 use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
@@ -17,8 +19,7 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
         $handler = $this->createMock(WatchdogHandlerInterface::class);
         $handler
             ->expects($this->once())
-            ->method('processWoof')
-        ;
+            ->method('processWoof');
 
         $this->subscribeAndDispatch($timeRule, $handler);
     }
@@ -31,8 +32,7 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
         $handler = $this->createMock(WatchdogHandlerInterface::class);
         $handler
             ->expects($this->never())
-            ->method('processWoof')
-        ;
+            ->method('processWoof');
 
         $this->subscribeAndDispatch($timeRule, $handler);
     }
@@ -42,19 +42,25 @@ class WatchdogEventSubscriberTest extends AbstractWatchdogTest
         $handler = $this->createMock(WatchdogHandlerInterface::class);
         $handler
             ->expects($this->never())
-            ->method('processWoof')
-        ;
+            ->method('processWoof');
 
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionMessage('Unknown "unknown" watchdog');
 
-        $this->subscribeAndDispatch(['relative' => 'now'], $handler, 'unknown');
+        $this->subscribeAndDispatch([
+            'relative' => 'now'
+        ], $handler, 'unknown');
     }
 
-    private function subscribeAndDispatch(array $timeRule, WatchdogHandlerInterface $handler, ?string $watchdogId = null): void
-    {
+    private function subscribeAndDispatch(
+        array $timeRule,
+        WatchdogHandlerInterface $handler,
+        ?string $watchdogId = null
+    ): void {
         $subscriber = new WatchdogEventSubscriber(
-            new \ArrayIterator(['default' => new Watchdog($timeRule)]),
+            new \ArrayIterator([
+                'default' => new Watchdog($timeRule)
+            ]),
             new \ArrayIterator([$handler])
         );
 
