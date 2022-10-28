@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Watchdog\Unit;
 
 use Raneomik\WatchdogBundle\Exception\MalformedConfigurationValueException;

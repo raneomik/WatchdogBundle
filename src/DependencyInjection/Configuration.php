@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\DependencyInjection;
 
 use Raneomik\WatchdogBundle\DependencyInjection\SymfonyVersionChecker\LegacyChecker;
@@ -30,7 +32,8 @@ class Configuration implements ConfigurationInterface
          */
         $this->configureLegacyPartIfNeeded($treeBuilder->getRootNode())
             ->fixXmlConfig('watchdog')
-                ->variablePrototype()->end()
+            ->variablePrototype()
+            ->end()
             ->end()
         ;
 

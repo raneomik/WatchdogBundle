@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Watchdog\Unit\Model;
 
 class RelativeDateTime extends AbstractSimpleWatchdogUnit
@@ -14,7 +16,7 @@ class RelativeDateTime extends AbstractSimpleWatchdogUnit
         return self::RELATIVE;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('Relative : %s', $this->originalConfig);
     }

@@ -22,10 +22,11 @@ check-deps:	## Check php dependencies
 	$(SF) security:check
 
 check-code:	## Static code analysis
-check-code: cs psalm stan
+check-code: ecs psalm stan
 
-cs: ## Code Sniff fixer
-	vendor/bin/php-cs-fixer fix --verbose --allow-risky=yes
+ecs: ## Code Sniff fixer
+	vendor/bin/ecs check src tests --fix
+
 psalm: ## Psalm analysis
 	@$(SF) composer req php:^8.0 -q --no-ansi
 	$(SF) php vendor/bin/psalm --no-progress --show-info=true --no-cache
@@ -55,7 +56,7 @@ infection: ## Mutation tests
 ##
 up-deps: ## Update to latest dependencies
 	 $(SF) composer require --no-progress --no-update --no-scripts --dev \
-              symplify/coding-standard:* symplify/phpstan-rules:* \
+              symplify/easy-coding-standard:* symplify/coding-standard:* symplify/phpstan-rules:* \
               phpstan/phpstan-symfony:* ekino/phpstan-banned-code:* phpstan/phpstan-phpunit:* phpstan/extension-installer:* phpstan/phpstan:* \
               psalm/plugin-symfony:* vimeo/psalm:* \
               infection/infection:*

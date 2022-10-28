@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
@@ -9,13 +11,7 @@ use Symfony\Component\Yaml\Yaml;
 abstract class AbstractWatchdogTest extends TestCase
 {
     /**
-     * Map : [
-     *      config,
-     *      type,
-     *      original config simple representation
-     *      string representation,
-     *      woof match config offset,
-     * ]
+     * Map : [ config, type, original config simple representation string representation, woof match config offset, ]
      */
     public function woofMatchCasesProvider(): \Generator
     {
@@ -23,14 +19,22 @@ abstract class AbstractWatchdogTest extends TestCase
         $minus1Mins = new \DateTime('-1 minutes');
         $plus1Mins = new \DateTime('+1 minutes');
 
-        yield [[['date_time' => $config = $now->format('Y-m-d H:i')]], 'date_time', $config, sprintf('DateTime : %s', $config), 0];
-        yield [[['hour' => $config = $now->format('H:i')]], 'hour', $config, sprintf('Hour : %s', $config), 0];
-        yield [[['time' => $config = $now->format('H:i')]], 'time', $config, sprintf('Time : %s', $config), 0];
-        yield [[['date' => $config = $now->format('Y-m-d')]], 'date', $config, sprintf('Date : %s', $config), 0];
+        yield [[[
+            'date_time' => $config = $now->format('Y-m-d H:i')
+        ]], 'date_time', $config, sprintf('DateTime : %s', $config), 0];
+        yield [[[
+            'hour' => $config = $now->format('H:i')
+        ]], 'hour', $config, sprintf('Hour : %s', $config), 0];
+        yield [[[
+            'time' => $config = $now->format('H:i')
+        ]], 'time', $config, sprintf('Time : %s', $config), 0];
+        yield [[[
+            'date' => $config = $now->format('Y-m-d')
+        ]], 'date', $config, sprintf('Date : %s', $config), 0];
         yield [
             [[
-            'start' => $startConfig = $minus1Mins->format('H:i'),
-            'end' => $endConfig = $plus1Mins->format('H:i'),
+                'start' => $startConfig = $minus1Mins->format('H:i'),
+                'end' => $endConfig = $plus1Mins->format('H:i'),
             ]],
             'interval',
             sprintf('start : %s / end : %s', $startConfig, $endConfig),
@@ -40,33 +44,54 @@ abstract class AbstractWatchdogTest extends TestCase
         yield [[[
             'start' => $startConfig = (new \DateTime('-1 day'))->format('Y-m-d'),
             'end' => $endConfig = (new \DateTime('+1 day'))->format('Y-m-d'),
-            ]],
+        ]],
             'interval',
             sprintf('start : %s / end : %s', $startConfig, $endConfig),
             sprintf('Interval : %s - %s', $startConfig, $endConfig),
             0,
         ];
-        yield [[['relative' => $config = 'today']], 'relative', $config, sprintf('Relative : %s', $config), 0];
+        yield [[[
+            'relative' => $config = 'today'
+        ]], 'relative', $config, sprintf('Relative : %s', $config), 0];
         yield [[[
             'compound' => [
-                ['relative' => 'today'],
-                ['start' => $minus1Mins->format('H:i'), 'end' => $plus1Mins->format('H:i')],
-                ['hour' => $now->format('H:i')],
-                ['time' => $now->format('H:i')],
-                ['date' => $now->format('Y-m-d')],
-            ], ]],
+                [
+                    'relative' => 'today'
+                ],
+                [
+                    'start' => $minus1Mins->format('H:i'),
+                    'end' => $plus1Mins->format('H:i')
+                ],
+                [
+                    'hour' => $now->format('H:i')
+                ],
+                [
+                    'time' => $now->format('H:i')
+                ],
+                [
+                    'date' => $now->format('Y-m-d')
+                ],
+            ],
+        ]],
             'compound', '', '', 0,
         ];
 
         // global config wth 1 ok rule
         yield [[
-            ['relative' => 'tomorrow'],
-            [   // ok
+            [
+                'relative' => 'tomorrow'
+            ],
+            [
+                // ok
                 'start' => $startConfig = $minus1Mins->format('H:i'),
                 'end' => $endConfig = $plus1Mins->format('H:i'),
             ],
-            ['hour' => (new \DateTime('+2 hours'))->format('H:i')],
-            ['date' => (new \DateTime('+2 days'))->format('Y-m-d')],
+            [
+                'hour' => (new \DateTime('+2 hours'))->format('H:i')
+            ],
+            [
+                'date' => (new \DateTime('+2 days'))->format('Y-m-d')
+            ],
         ],
             'interval',
             sprintf('start : %s / end : %s', $startConfig, $endConfig),
@@ -87,24 +112,54 @@ abstract class AbstractWatchdogTest extends TestCase
             $plus2Hours->modify('+1 hours');
         }
 
-        yield [[['date_time' => $plus1Hour->format('Y-m-d H:i')]]];
-        yield [[['hour' => $plus1Hour->format('H:i')]]];
-        yield [[['time' => $plus2Hours->format('H:i')]]];
-        yield [[['date' => (new \DateTime('+2 days'))->format('Y-m-d')]]];
-        yield [[['start' => $plus1Hour->format('H:i'), 'end' => $plus2Hours->format('H:i')]]];
-        yield [[['start' => (new \DateTime('+1 day'))->format('Y-m-d'), 'end' => (new \DateTime('+2 days'))->format('Y-m-d')]]];
-        yield [[['relative' => 'tomorrow']]];
+        yield [[[
+            'date_time' => $plus1Hour->format('Y-m-d H:i')
+        ]]];
+        yield [[[
+            'hour' => $plus1Hour->format('H:i')
+        ]]];
+        yield [[[
+            'time' => $plus2Hours->format('H:i')
+        ]]];
+        yield [[[
+            'date' => (new \DateTime('+2 days'))->format('Y-m-d')
+        ]]];
+        yield [[[
+            'start' => $plus1Hour->format('H:i'),
+            'end' => $plus2Hours->format('H:i')
+        ]]];
+        yield [[[
+            'start' => (new \DateTime('+1 day'))->format('Y-m-d'),
+            'end' => (new \DateTime('+2 days'))->format('Y-m-d')
+        ]]];
+        yield [[[
+            'relative' => 'tomorrow'
+        ]]];
         yield [[[
             'compound' => [
-                ['relative' => 'today'],
-                ['start' => $plus1Hour->format('H:i'), 'end' => $plus2Hours->format('H:i')],
+                [
+                    'relative' => 'today'
+                ],
+                [
+                    'start' => $plus1Hour->format('H:i'),
+                    'end' => $plus2Hours->format('H:i')
+                ],
             ],
         ]]];
         yield [[
-            ['relative' => 'tomorrow'],
-            ['start' => $plus1Hour->format('H:i'), 'end' => $plus2Hours->format('H:i')],
-            ['hour' => $plus1Hour->format('H:i')],
-            ['date' => (new \DateTime('+2 days'))->format('Y-m-d')],
+            [
+                'relative' => 'tomorrow'
+            ],
+            [
+                'start' => $plus1Hour->format('H:i'),
+                'end' => $plus2Hours->format('H:i')
+            ],
+            [
+                'hour' => $plus1Hour->format('H:i')
+            ],
+            [
+                'date' => (new \DateTime('+2 days'))->format('Y-m-d')
+            ],
         ]];
     }
 
@@ -114,13 +169,13 @@ abstract class AbstractWatchdogTest extends TestCase
         $nowPlus1Minute = (new \DateTime('+1 minutes'))->format('H:i');
         $nowPlus2Minutes = (new \DateTime('+2 minutes'))->format('H:i');
 
-        $matchingYamlConfig = <<<YAML
+        $matchingYamlConfig = <<<CODE_SAMPLE
 ---
 - { start: '{plus1Minute}', end: '{plus2Minutes}' }
 - compound:
     - relative: 'today'
     - { start: '{minus1Minute}', end: '{plus1Minute}' }
-YAML;
+CODE_SAMPLE;
 
         $yamlConfig = Yaml::parse(str_replace(
             ['{minus1Minute}', '{plus1Minute}', '{plus2Minutes}'],
@@ -135,7 +190,9 @@ YAML;
             ],
             [
                 WatchdogUnitInterface::COMPOUND => [
-                    [WatchdogUnitInterface::RELATIVE => 'today'],
+                    [
+                        WatchdogUnitInterface::RELATIVE => 'today'
+                    ],
                     [
                         WatchdogUnitInterface::START => $nowMinus1Minute,
                         WatchdogUnitInterface::END => $nowPlus1Minute,
@@ -146,13 +203,13 @@ YAML;
 
         yield [$yamlConfig, $arrayConfig, true];
 
-        $notMatchingYamlConfig = <<<YAML
+        $notMatchingYamlConfig = <<<CODE_SAMPLE
 ---
 - { start: '{plus1Minute}', end: '{plus2Minutes}' }
 - compound:
     - relative: 'today'
     - { start: '{plus1Minute}', end: '{plus2Minutes}' }
-YAML;
+CODE_SAMPLE;
 
         $yamlConfig = Yaml::parse(str_replace(
             ['{minus1Minute}', '{plus1Minute}', '{plus2Minutes}'],
@@ -167,7 +224,9 @@ YAML;
             ],
             [
                 WatchdogUnitInterface::COMPOUND => [
-                    [WatchdogUnitInterface::RELATIVE => 'today'],
+                    [
+                        WatchdogUnitInterface::RELATIVE => 'today'
+                    ],
                     [
                         WatchdogUnitInterface::START => $nowPlus1Minute,
                         WatchdogUnitInterface::END => $nowPlus2Minutes,

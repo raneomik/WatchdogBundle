@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Event;
 
 class WatchdogWoofCheckEvent
 {
     private array $parameters;
+
     private ?string $watchdogId;
 
     public function __construct(array $parameters = [], ?string $watchdogId = null)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Tests\Integration\Stubs;
 
 use Symfony\Component\Config\FileLocator;
@@ -16,7 +18,7 @@ class BundleExtension extends Extension implements PrependExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $phpLoader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../config'));
+        $phpLoader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../config'));
         $phpLoader->load('services.php');
     }
 
@@ -35,6 +37,10 @@ class BundleExtension extends Extension implements PrependExtensionInterface
         }
 
         /* @phpstan-ignore-next-line */
-        $container->prependExtensionConfig('framework', ['annotations' => ['enabled' => false]]);
+        $container->prependExtensionConfig('framework', [
+            'annotations' => [
+                'enabled' => false
+            ]
+        ]);
     }
 }

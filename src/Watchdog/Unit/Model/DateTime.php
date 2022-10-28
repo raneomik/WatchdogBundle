@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Watchdog\Unit\Model;
 
 class DateTime extends AbstractSimpleWatchdogUnit
@@ -14,7 +16,7 @@ class DateTime extends AbstractSimpleWatchdogUnit
         return self::DATE_TIME;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('DateTime : %s', $this->dateConfig->format('Y-m-d H:i'));
     }

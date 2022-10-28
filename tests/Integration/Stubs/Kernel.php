@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Tests\Integration\Stubs;
 
 use Psr\Log\NullLogger;
@@ -28,11 +30,7 @@ class Kernel extends BaseKernel
      */
     public function registerBundles(): iterable
     {
-        return [
-            new FrameworkBundle(),
-            new WatchdogBundle(),
-            new Bundle(),
-        ];
+        return [new FrameworkBundle(), new WatchdogBundle(), new Bundle(), ];
     }
 
     /**
@@ -40,7 +38,7 @@ class Kernel extends BaseKernel
      */
     public function getCacheDir(): string
     {
-        return sys_get_temp_dir().'/WatchdogBundle/cache';
+        return sys_get_temp_dir() . '/WatchdogBundle/cache';
     }
 
     /**
@@ -48,7 +46,7 @@ class Kernel extends BaseKernel
      */
     public function getLogDir(): string
     {
-        return sys_get_temp_dir().'/WatchdogBundle/logs';
+        return sys_get_temp_dir() . '/WatchdogBundle/logs';
     }
 
     protected function build(ContainerBuilder $container): void
@@ -61,6 +59,6 @@ class Kernel extends BaseKernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(sprintf(__DIR__.'/../config/%s_config.yml', $this->config));
+        $loader->load(sprintf(__DIR__ . '/../config/%s_config.yml', $this->config));
     }
 }

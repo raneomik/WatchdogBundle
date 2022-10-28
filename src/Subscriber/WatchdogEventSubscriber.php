@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Subscriber;
 
 use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
@@ -11,6 +13,7 @@ class WatchdogEventSubscriber implements EventSubscriberInterface
 {
     /** @var array<string, WatchdogInterface> */
     private array $watchdogCollection;
+
     private iterable $watchdogHandlerCollection;
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Watchdog\Unit\Model;
 
 class Hour extends AbstractSimpleWatchdogUnit
@@ -14,7 +16,7 @@ class Hour extends AbstractSimpleWatchdogUnit
         return self::HOUR;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('Hour : %s', $this->dateConfig->format('H:i'));
     }

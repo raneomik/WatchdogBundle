@@ -15,7 +15,6 @@ return (new PhpCsFixer\Config())
     ->setFinder($finder)
     ->setRules([
         '@Symfony:risky' => true,
-        '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
         'binary_operator_spaces' => ['default' => 'single_space'],
         'combine_consecutive_unsets' => true,

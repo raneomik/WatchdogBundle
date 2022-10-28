@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Raneomik\WatchdogBundle\Watchdog\Unit\Model;
 
 use Raneomik\WatchdogBundle\Exception\IllogicConfigurationException;
@@ -7,8 +9,11 @@ use Raneomik\WatchdogBundle\Exception\IllogicConfigurationException;
 class Interval implements WatchdogUnitInterface
 {
     private \DateTimeInterface $start;
+
     private \DateTimeInterface $end;
+
     private string $originalConfig;
+
     private string $type;
 
     public function __construct(string $start, string $end)
@@ -64,7 +69,7 @@ class Interval implements WatchdogUnitInterface
         return 'interval';
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $format = 'Y-m-d H:i';
 
