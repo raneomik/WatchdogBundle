@@ -22,10 +22,11 @@ check-deps:	## Check php dependencies
 	$(SF) security:check
 
 check-code:	## Static code analysis
-check-code: cs psalm stan
+check-code: ecs psalm stan
 
-cs: ## Code Sniff fixer
-	vendor/bin/php-cs-fixer fix --verbose --allow-risky=yes
+ecs: ## Code Sniff fixer
+	vendor/bin/ecs check src tests
+
 psalm: ## Psalm analysis
 	@$(SF) composer req php:^8.0 -q --no-ansi
 	$(SF) php vendor/bin/psalm --no-progress --show-info=true --no-cache

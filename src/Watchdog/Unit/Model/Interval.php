@@ -64,7 +64,7 @@ class Interval implements WatchdogUnitInterface
         return 'interval';
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $format = 'Y-m-d H:i';
 

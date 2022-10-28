@@ -14,7 +14,7 @@ class Hour extends AbstractSimpleWatchdogUnit
         return self::HOUR;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('Hour : %s', $this->dateConfig->format('H:i'));
     }

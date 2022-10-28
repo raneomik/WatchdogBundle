@@ -16,7 +16,6 @@
     },
     "require-dev": {
         "ekino/phpstan-banned-code": "*",
-        "friendsofphp/php-cs-fixer": "^3.0",
         "infection/infection": "*",
         "phpstan/extension-installer": "*",
         "phpstan/phpstan": "*",

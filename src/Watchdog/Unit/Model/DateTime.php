@@ -14,7 +14,7 @@ class DateTime extends AbstractSimpleWatchdogUnit
         return self::DATE_TIME;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('DateTime : %s', $this->dateConfig->format('Y-m-d H:i'));
     }
