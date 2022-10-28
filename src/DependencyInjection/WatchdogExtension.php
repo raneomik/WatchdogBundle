@@ -44,8 +44,7 @@ class WatchdogExtension extends Extension
             $container->setParameter('watchdog_config', $config);
 
             $container->registerForAutoconfiguration(WatchdogHandlerInterface::class)
-                ->addTag(self::HANDLER_SERVICE_TAG)
-            ;
+                ->addTag(self::HANDLER_SERVICE_TAG);
 
             $this->registerWatchdogConfiguration($config, $container);
         } catch (InvalidConfigurationException $exception) {
@@ -75,9 +74,8 @@ class WatchdogExtension extends Extension
                 ->register($name, Watchdog::class)
                 ->addArgument($scopeConfig)
                 ->addTag(self::SERVICE_TAG, [
-'id' => $name
-])
-            ;
+                    'id' => $name
+                ]);
 
             $container->registerAliasForArgument($name, WatchdogInterface::class);
         }

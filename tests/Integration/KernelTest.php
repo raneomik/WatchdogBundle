@@ -50,8 +50,8 @@ class KernelTest extends KernelTestCase
     public function testLoadedLegacyBaseConfig(): void
     {
         self::bootKernel([
-'config' => 'base_alt'
-]);
+            'config' => 'base_alt'
+        ]);
         $this->assertCorrectBaseConfig();
     }
 
@@ -75,8 +75,8 @@ class KernelTest extends KernelTestCase
     public function testLoadedMultiConfig(): void
     {
         self::bootKernel([
-'config' => 'multi'
-]);
+            'config' => 'multi'
+        ]);
         /** @var MultiwiredStub $stub */
         $stub = self::container()->get(MultiwiredStub::class);
 
@@ -87,8 +87,8 @@ class KernelTest extends KernelTestCase
     public function testLoadedEmptyConfig(): void
     {
         self::bootKernel([
-'config' => 'empty'
-]);
+            'config' => 'empty'
+        ]);
         /** @var array $config */
         $config = self::container()->getParameter('watchdog_config');
         /** @var WatchdogInterface $watchdog */
@@ -102,8 +102,8 @@ class KernelTest extends KernelTestCase
     public function testDispatchedSimpleEvent(): void
     {
         self::bootKernel([
-'config' => self::isLegacy() ? 'base_alt' : 'base'
-]);
+            'config' => self::isLegacy() ? 'base_alt' : 'base'
+        ]);
 
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = self::container()->get(EventDispatcherInterface::class);
@@ -113,8 +113,8 @@ class KernelTest extends KernelTestCase
         $this->assertEmpty($testHandler->handled);
 
         $dispatcher->dispatch(new WatchdogWoofCheckEvent([
-'handled' => true
-]));
+            'handled' => true
+        ]));
 
         $this->assertArrayHasKey('handled', $testHandler->handled);
         $this->assertTrue($testHandler->handled['handled']);
@@ -123,8 +123,8 @@ class KernelTest extends KernelTestCase
     public function testDispatchedMultiEvents(): void
     {
         self::bootKernel([
-'config' => 'multi'
-]);
+            'config' => 'multi'
+        ]);
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = self::container()->get(EventDispatcherInterface::class);
         /** @var DummyHandler $testHandler */
@@ -133,25 +133,25 @@ class KernelTest extends KernelTestCase
         $this->assertEmpty($testHandler->handled);
 
         $dispatcher->dispatch(new WatchdogWoofCheckEvent([
-'handledOne' => true
-], 'test_one'));
+            'handledOne' => true
+        ], 'test_one'));
         $this->assertArrayHasKey('handledOne', $testHandler->handled);
         $this->assertTrue($testHandler->handled['handledOne']);
 
         $dispatcher->dispatch(new WatchdogWoofCheckEvent([
-'handledTwo' => true
-], 'test_two'));
+            'handledTwo' => true
+        ], 'test_two'));
         $this->assertArrayNotHasKey('handledTwo', $testHandler->handled);
 
         $dispatcher->dispatch(new WatchdogWoofCheckEvent([
-'handledOneMoreTime' => true
-], 'test_one'));
+            'handledOneMoreTime' => true
+        ], 'test_one'));
         $this->assertArrayHasKey('handledOneMoreTime', $testHandler->handled);
         $this->assertTrue($testHandler->handled['handledOneMoreTime']);
 
         $dispatcher->dispatch(new WatchdogWoofCheckEvent([
-'handledAll' => true
-]));
+            'handledAll' => true
+        ]));
         $this->assertArrayHasKey('handledAll', $testHandler->handled);
         $this->assertTrue($testHandler->handled['handledAll']);
     }
@@ -160,7 +160,8 @@ class KernelTest extends KernelTestCase
     {
         /* @phpstan-ignore-next-line */
         if (KernelStub::IS_LEGACY) {
-            return self::$container; /* @phpstan-ignore-line */
+            /* @phpstan-ignore-next-line */
+            return self::$container;
         }
 
         return self::getContainer();
