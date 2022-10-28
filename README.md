@@ -85,7 +85,7 @@ If one is passed by this parameter, it checks only the concerned one.
 
 If you wish to use it but your project isn't set to be autoconfigured, all your `Handlers` implementing `WatchdogHandlerInterface` must be tagged with `raneomik_watchdog.handler`.
 
-### Profiler data collection
+### *WIP*: Profiler data collection 
 
 You can access watchdog data in Symfony profiler :
 
