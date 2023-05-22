@@ -1,0 +1,106 @@
+
+<h2>Watchdog</h2>
+{% set watchdogsCount = collector.watchdogs|filter(v => v.hasUnits)|length %}
+{% set matchCount = collector.matchingWatchdogsCount %}
+
+<div class="metrics">
+    <div class="metric">
+        <span class="value">{{ watchdogsCount }}</span>
+        <span class="label">Watchdogs</span>
+    </div>
+
+    <div class="metric">
+        <span class="value">{{ matchCount}}</span>
+        <span class="label">Matches</span>
+    </div>
+
+    <div class="metric">
+        <span class="value">{{ 'now'|date('Y-m-d H:i') }}</span>
+        <span class="label">Current date-time</span>
+    </div>
+</div>
+
+{% for watchdogId, watchdog in collector.watchdogs|filter(v => v.hasUnits) %}
+    <h3 class="d-flex">
+        {{ watchdogId|title }}
+        <span class="col text-right">
+                {{ source('@WebProfiler/Icon/' ~ (watchdog.isWoofTime ? 'yes' : 'no') ~ '.svg') }}
+            </span>
+    </h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Match</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for index,unit in watchdog.units %}
+            <tr>
+                {% if 'compound' != unit.type %}
+                    <td class="font-normal">{{ unit.type|title }}</td>
+                    <td class="font-normal"> {{ unit.originalConfig }}</td>
+                    <td>
+                        <span class="value">
+                            {{ source('@WebProfiler/Icon/' ~ (unit.isMatching ? 'yes' : 'no') ~ '.svg') }}
+                        </span>
+                    </td>
+                {% else %}
+                    {% set matchCount = unit.units|filter(v => v.isMatching)|length %}
+                    <td colspan="3">
+                        <div class="sf-toggle d-flex" data-toggle-selector="#content-{{ index }}">
+                            <div class="col">
+                                <span class="font-normal">
+                                    Compound
+                                </span>
+                            </div>
+                            <a class="toggle-button col">
+                                <span class="icon icon-close">{{ source('@WebProfiler/images/icon-minus-square.svg') }}</span>
+                                <span class="icon icon-open">{{ source('@WebProfiler/images/icon-plus-square.svg') }}</span>
+                            </a>
+                            <div class="col"></div>
+                            <div class="col">
+                                <span class="value">
+                                    {{ source('@WebProfiler/Icon/' ~ (unit.isMatching ? 'yes' : 'no') ~ '.svg') }}
+                                </span>
+                                <span class="label status-{{ unit.units|length == matchCount ? 'success' : 'normal' }}">
+                                    {{ matchCount }} / {{ unit.units|length }}
+                                </span>
+                            </div>
+                        </div>
+                        <div id="content-{{ index }}" class="context sf-toggle-content sf-toggle-hidden">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th class="font-normal">Type</th>
+                                    <th class="font-normal">Value</th>
+                                    <th class="font-normal">Match</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for subunit in unit.units %}
+                                    <tr>
+                                        <td class="font-normal">{{ subunit.type|title }}</td>
+                                        <td class="font-normal"> {{ subunit.originalConfig }}</td>
+                                        <td>
+                                            <span class="value">
+                                                {{ source('@WebProfiler/Icon/' ~ (subunit.isMatching ? 'yes' : 'no') ~ '.svg') }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="empty">
+        <p>Nothing was configured ...</p>
+    </div>
+{% endfor %}

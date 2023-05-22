@@ -8,12 +8,12 @@ use PHPUnit\Framework\TestCase;
 use Raneomik\WatchdogBundle\Watchdog\Unit\Model\WatchdogUnitInterface;
 use Symfony\Component\Yaml\Yaml;
 
-abstract class AbstractWatchdogTest extends TestCase
+abstract class AbstractWatchdogTestCase extends TestCase
 {
     /**
      * Map : [ config, type, original config simple representation string representation, woof match config offset, ]
      */
-    public function woofMatchCasesProvider(): \Generator
+    public static function woofMatchCasesProvider(): \Generator
     {
         $now = new \DateTime();
         $minus1Mins = new \DateTime('-1 minutes');
@@ -100,7 +100,7 @@ abstract class AbstractWatchdogTest extends TestCase
         ];
     }
 
-    public function notWoofMatchCasesProvider(): \Generator
+    public static function notWoofMatchCasesProvider(): \Generator
     {
         $now = new \DateTime();
         $plus1Hour = new \DateTime('+1 hours');
@@ -163,7 +163,7 @@ abstract class AbstractWatchdogTest extends TestCase
         ]];
     }
 
-    public function compoundIntervalInYamlProvider(): \Generator
+    public static function compoundIntervalInYamlProvider(): \Generator
     {
         $nowMinus1Minute = (new \DateTime('-1 minutes'))->format('H:i');
         $nowPlus1Minute = (new \DateTime('+1 minutes'))->format('H:i');

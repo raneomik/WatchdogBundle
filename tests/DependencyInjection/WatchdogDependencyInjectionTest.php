@@ -14,29 +14,15 @@ use Raneomik\WatchdogBundle\Tests\Integration\Stubs\SimplewiredStub;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
 use Raneomik\WatchdogBundle\WatchdogBundle;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class WatchdogDependencyInjectionTest extends TestCase
 {
-    public function legacyCasesProvider(): \Generator
+    public function testCompiledPassForProfiler(): void
     {
-        yield [
-            'fakeLegacy' => true
-        ];
-        yield [
-            'fakeLegacy' => false
-        ];
-    }
-
-    /**
-     * @dataProvider legacyCasesProvider
-     */
-    public function testCompiledPassForProfiler(bool $fakeLegacy): void
-    {
-        $container = $this->createContainer($fakeLegacy);
+        $container = $this->createContainer();
 
         $bundle = new WatchdogBundle();
         $bundle->build($container);
@@ -70,12 +56,9 @@ class WatchdogDependencyInjectionTest extends TestCase
         $this->assertFalse($container->hasDefinition(Watchdog::class));
     }
 
-    /**
-     * @dataProvider legacyCasesProvider
-     */
-    public function testLoadNewSimpleConfiguration(bool $fakeLegacy): void
+    public function testLoadNewSimpleConfiguration(): void
     {
-        $container = $this->createContainer($fakeLegacy, [
+        $container = $this->createContainer([
             'watchdog' => [
                 [
                     'start' => (new \DateTime('-5mins'))->format('Y-m-d H:i'),
@@ -84,21 +67,12 @@ class WatchdogDependencyInjectionTest extends TestCase
             ],
         ]);
 
-        /* @phpstan-ignore-next-line */
-        if ($fakeLegacy || Kernel::IS_LEGACY) {
-            $this->expectException(InvalidConfigurationException::class);
-            $this->expectExceptionMessage('Your watchdog configuration needs to be set under "default"');
-        }
-
         $this->assertCorrectBaseConfig($container);
     }
 
-    /**
-     * @dataProvider legacyCasesProvider
-     */
-    public function testLoadSimpleConfiguration(bool $isLegacy): void
+    public function testLoadSimpleConfiguration(): void
     {
-        $container = $this->createContainer($isLegacy, [
+        $container = $this->createContainer([
             'watchdog' => [
                 'default' => [
                     [
@@ -112,12 +86,9 @@ class WatchdogDependencyInjectionTest extends TestCase
         $this->assertCorrectBaseConfig($container);
     }
 
-    /**
-     * @dataProvider legacyCasesProvider
-     */
-    public function testLoadRedundantSimpleConfiguration(bool $isLegacy): void
+    public function testLoadRedundantSimpleConfiguration(): void
     {
-        $container = $this->createContainer($isLegacy, [
+        $container = $this->createContainer([
             'watchdog' => [
                 'watchdog' => [
                     [
@@ -146,12 +117,9 @@ class WatchdogDependencyInjectionTest extends TestCase
         $this->assertTrue($watchdog->isWoofTime());
     }
 
-    /**
-     * @dataProvider legacyCasesProvider
-     */
-    public function testLoadMultiConfiguration(bool $fakeLegacy): void
+    public function testLoadMultiConfiguration(): void
     {
-        $container = $this->createContainer($fakeLegacy, [
+        $container = $this->createContainer([
             'watchdog' => [
                 'test_one' => [
                     [
@@ -198,7 +166,7 @@ class WatchdogDependencyInjectionTest extends TestCase
         $this->assertFalse($watchdogTwo->isWoofTime());
     }
 
-    private static function createContainer(bool $fakeLegacy, array $configs = []): ContainerBuilder
+    private static function createContainer(array $configs = []): ContainerBuilder
     {
         $container = new ContainerBuilder(new ParameterBag([
             'kernel.build_dir' => __DIR__,
@@ -214,7 +182,7 @@ class WatchdogDependencyInjectionTest extends TestCase
 
         $container->set('kernel', new Kernel('test', false));
 
-        $container->registerExtension(new WatchdogExtension($fakeLegacy));
+        $container->registerExtension(new WatchdogExtension());
 
         foreach ($configs as $extension => $config) {
             $container->loadFromExtension($extension, $config);

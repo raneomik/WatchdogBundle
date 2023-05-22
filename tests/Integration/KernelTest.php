@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Raneomik\WatchdogBundle\Tests\Integration;
 
-use Raneomik\WatchdogBundle\DependencyInjection\SymfonyVersionChecker\LegacyChecker;
 use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\DummyHandler;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\Kernel as KernelStub;
@@ -12,7 +11,6 @@ use Raneomik\WatchdogBundle\Tests\Integration\Stubs\MultiwiredStub;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\SimplewiredStub;
 use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -38,12 +36,6 @@ class KernelTest extends KernelTestCase
 
     public function testLoadedBaseConfig(): void
     {
-        if (self::isLegacy()) {
-            $this->expectException(InvalidConfigurationException::class);
-            $this->expectExceptionMessage('Your watchdog configuration needs to be set under "default"');
-        }
-
-        self::bootKernel();
         $this->assertCorrectBaseConfig();
     }
 
@@ -102,7 +94,7 @@ class KernelTest extends KernelTestCase
     public function testDispatchedSimpleEvent(): void
     {
         self::bootKernel([
-            'config' => self::isLegacy() ? 'base_alt' : 'base'
+            'config' => 'base'
         ]);
 
         /** @var EventDispatcherInterface $dispatcher */
@@ -158,25 +150,15 @@ class KernelTest extends KernelTestCase
 
     private static function container(): ContainerInterface
     {
-        /* @phpstan-ignore-next-line */
-        if (KernelStub::IS_LEGACY) {
-            /* @phpstan-ignore-next-line */
-            return self::$container;
+        if (method_exists(KernelTestCase::class, 'getContainer')) {
+            return self::getContainer();
         }
 
-        return self::getContainer();
-    }
-
-    private static function isLegacy(): bool
-    {
-        /* @phpstan-ignore-next-line */
-        if (KernelStub::IS_LEGACY) {
-            return true;
+        if (false === self::$booted) {
+            self::bootKernel();
         }
 
-        /** @var LegacyChecker $checker */
-        $checker = self::container()->get(LegacyChecker::class);
-
-        return $checker->isLegacy();
+        /** @phpstan-ignore-next-line */
+        return self::$container;
     }
 }
