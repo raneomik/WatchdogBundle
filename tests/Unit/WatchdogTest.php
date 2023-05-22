@@ -9,7 +9,7 @@ use Raneomik\WatchdogBundle\Exception\MalformedConfigurationValueException;
 use Raneomik\WatchdogBundle\Exception\NotSupportedConfigurationException;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 
-class WatchdogTest extends WatchdogTestCase
+class WatchdogTest extends AbstractWatchdogTestCase
 {
     public function testNoEventCase(): void
     {

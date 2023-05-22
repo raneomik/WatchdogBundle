@@ -158,6 +158,7 @@ class KernelTest extends KernelTestCase
             self::bootKernel();
         }
 
+        /** @phpstan-ignore-next-line */
         return self::$container;
     }
 }

@@ -23,6 +23,5 @@ return function (ContainerConfigurator $configurator) {
         ->set(DummyHandler::class)
         ->set(SimplewiredStub::class)
         ->set(MultiwiredStub::class)
-        ->set(LegacyChecker::class, LegacyFaker::class)
     ;
 };

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Raneomik\WatchdogBundle\Watchdog\Unit\Model\WatchdogUnitInterface;
 use Symfony\Component\Yaml\Yaml;
 
-class WatchdogTestCase extends TestCase
+abstract class AbstractWatchdogTestCase extends TestCase
 {
     /**
      * Map : [ config, type, original config simple representation string representation, woof match config offset, ]
