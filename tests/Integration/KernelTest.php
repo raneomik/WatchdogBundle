@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Raneomik\WatchdogBundle\Tests\Integration;
 
-use Raneomik\WatchdogBundle\DependencyInjection\SymfonyVersionChecker\LegacyChecker;
 use Raneomik\WatchdogBundle\Event\WatchdogWoofCheckEvent;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\DummyHandler;
 use Raneomik\WatchdogBundle\Tests\Integration\Stubs\Kernel as KernelStub;

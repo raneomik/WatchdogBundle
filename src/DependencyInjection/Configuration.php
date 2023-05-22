@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Raneomik\WatchdogBundle\DependencyInjection;
 
-use Raneomik\WatchdogBundle\DependencyInjection\SymfonyVersionChecker\LegacyChecker;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 

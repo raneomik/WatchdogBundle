@@ -39,7 +39,6 @@ class WatchdogExtension extends Extension
 
     private function registerWatchdogConfiguration(array $config, ContainerBuilder $container): void
     {
-
         (new PhpFileLoader($container, new FileLocator(\dirname(__DIR__) . '/../config')))
             ->load('watchdog.php');
 

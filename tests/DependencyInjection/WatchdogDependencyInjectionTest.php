@@ -14,7 +14,6 @@ use Raneomik\WatchdogBundle\Tests\Integration\Stubs\SimplewiredStub;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
 use Raneomik\WatchdogBundle\WatchdogBundle;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
