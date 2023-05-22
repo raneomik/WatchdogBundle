@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          backupGlobals="false"
-         backupStaticAttributes="false"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
          bootstrap="vendor/autoload.php"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
->
-    <coverage>
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd"
+         cacheDirectory=".phpunit.cache"
+         backupStaticProperties="false">
+    <source>
         <include>
             <directory>src/</directory>
         </include>
         <exclude>
             <directory>src/DependencyInjection/SymfonyVersionChecker</directory>
         </exclude>
-    </coverage>
+    </source>
 
     <testsuites>
         <testsuite name="WatchdogBundle Test Suite">
@@ -31,7 +28,5 @@
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
     </php>
 
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
-    </listeners>
+
 </phpunit>

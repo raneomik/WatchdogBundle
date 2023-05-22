@@ -17,7 +17,7 @@ use Raneomik\WatchdogBundle\Watchdog\Unit\WatchdogUnitFactory;
 
 class WatchdogUnitTest extends TestCase
 {
-    public function matchingUnitProvider(): \Generator
+    public static function matchingUnitProvider(): \Generator
     {
         $now = new \DateTime();
         $nowPlus1Minutes = new \DateTime('+1 minutes');
@@ -69,7 +69,7 @@ class WatchdogUnitTest extends TestCase
         ], true)];
     }
 
-    public function notMatchingUnitProvider(): \Generator
+    public static function notMatchingUnitProvider(): \Generator
     {
         $now = new \DateTime();
         $notNow = new \DateTime('+1 day +1 hour');

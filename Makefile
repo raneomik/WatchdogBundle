@@ -1,8 +1,8 @@
 .DEFAULT_GLOBAL = help
 SHELL:=/bin/bash
 
-LOW_PHP = 7.4
-HIGH_PHP = 8.1
+LOW_PHP = '7.4'
+HIGH_PHP = '8.2'
 SF = symfony
 
 help:	## Shows this help hint
@@ -45,7 +45,7 @@ else
 endif
 
 cover: ## Unit tests with coverage
-	XDEBUG_MODE=coverage $(SF) php vendor/bin/simple-phpunit --coverage-xml=cov/xml --coverage-html=cov/html --log-junit=cov/junit.xml
+	XDEBUG_MODE=coverage $(SF) php vendor/bin/phpunit --coverage-xml=cov/xml --coverage-html=cov/html --log-junit=cov/junit.xml
 
 infection: ## Mutation tests
 	XDEBUG_MODE=coverage vendor/bin/infection --ansi
@@ -55,19 +55,22 @@ infection: ## Mutation tests
 ## Dependencies - highest vs. lowest requirements case switch
 ##
 up-deps: ## Update to latest dependencies
+	 $(SF) composer config minimum-stability dev
 	 $(SF) composer require --no-progress --no-update --no-scripts --dev \
               symplify/easy-coding-standard:* symplify/coding-standard:* symplify/phpstan-rules:* \
               phpstan/phpstan-symfony:* ekino/phpstan-banned-code:* phpstan/phpstan-phpunit:* phpstan/extension-installer:* phpstan/phpstan:* \
               psalm/plugin-symfony:* vimeo/psalm:* \
               infection/infection:*
+	$(SF) composer remove symfony/polyfill --no-progress --no-update --no-scripts
 	echo $(HIGH_PHP) > .php-version
 	$(SF) composer update --no-interaction --no-progress -W
 
 down-deps: ## Downgrade to least supported dependencies
+	 rm -f composer.lock
 	 $(SF) composer remove --no-progress --no-update --no-scripts --dev \
               symplify/* phpstan/* ekino/phpstan-banned-code \
               psalm/plugin-symfony vimeo/psalm \
               infection/infection
 	echo $(LOW_PHP) > .php-version
+	$(SF) composer require symfony/polyfill
 	$(SF) composer update --no-interaction --no-progress --prefer-lowest --prefer-stable -W
-

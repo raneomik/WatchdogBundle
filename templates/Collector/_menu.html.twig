@@ -1,0 +1,11 @@
+{% set matchCount = collector.matchingWatchdogsCount %}
+
+<span class="label{{ 0 == collector.watchdogs|filter(v => v.hasUnits)|length ? ' disabled' }}">
+    <span class="icon">
+         {{ source('@Watchdog/Collector/icon.svg') }} <span class="hidden-small"></span>
+    </span>
+    <strong>Watchdog</strong>
+    {% if matchCount %}
+        <span class="count">{{ matchCount }}</span>
+    {% endif %}
+</span>

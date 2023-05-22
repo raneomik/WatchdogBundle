@@ -9,7 +9,7 @@ use Raneomik\WatchdogBundle\Exception\MalformedConfigurationValueException;
 use Raneomik\WatchdogBundle\Exception\NotSupportedConfigurationException;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 
-class WatchdogTest extends AbstractWatchdogTest
+class WatchdogTest extends WatchdogTestCase
 {
     public function testNoEventCase(): void
     {
@@ -40,7 +40,7 @@ class WatchdogTest extends AbstractWatchdogTest
     /**
      * @dataProvider notWoofMatchCasesProvider
      */
-    public function testKoCases(array $timeRule): void
+    public function testNoMatchCases(array $timeRule): void
     {
         $watchDog = new Watchdog($timeRule);
         $this->assertFalse($watchDog->isWoofTime());

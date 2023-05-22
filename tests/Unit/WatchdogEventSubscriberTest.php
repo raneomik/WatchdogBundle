@@ -9,7 +9,7 @@ use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
 use Raneomik\WatchdogBundle\Subscriber\WatchdogEventSubscriber;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 
-class WatchdogEventSubscriberTest extends AbstractWatchdogTest
+class WatchdogEventSubscriberTest extends WatchdogTestCase
 {
     /**
      * @dataProvider woofMatchCasesProvider

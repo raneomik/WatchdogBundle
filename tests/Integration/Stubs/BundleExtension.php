@@ -32,11 +32,11 @@ class BundleExtension extends Extension implements PrependExtensionInterface
         // doctrine/annotations has been removed from required dependencies
         /** @phpstan-ignore-next-line */
         $annotationsEnabled = Kernel::MAJOR_VERSION >= 3 && Kernel::MINOR_VERSION >= 2;
+        /** @phpstan-ignore-next-line */
         if (false === $annotationsEnabled) {
             return;
         }
 
-        /* @phpstan-ignore-next-line */
         $container->prependExtensionConfig('framework', [
             'annotations' => [
                 'enabled' => false
