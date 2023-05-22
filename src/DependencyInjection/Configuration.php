@@ -13,6 +13,9 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('watchdog');
 
+        /**
+         * @psalm-suppress UndefinedInterfaceMethod, PossiblyNullReference
+         */
         $treeBuilder->getRootNode()
             ->fixXmlConfig('watchdog')
             ->variablePrototype()

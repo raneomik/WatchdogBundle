@@ -7,6 +7,7 @@ namespace Raneomik\WatchdogBundle\DependencyInjection;
 use Raneomik\WatchdogBundle\Handler\WatchdogHandlerInterface;
 use Raneomik\WatchdogBundle\Watchdog\Watchdog;
 use Raneomik\WatchdogBundle\Watchdog\WatchdogInterface;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -25,6 +26,7 @@ class WatchdogExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
+        /** @var ConfigurationInterface $configuration */
         $configuration = $this->getConfiguration($configs, $container);
         /** @var array<string,array> $config */
         $config = $this->processConfiguration($configuration, $configs);
