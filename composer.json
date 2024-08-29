@@ -45,11 +45,6 @@
             "phpstan/extension-installer": true,
             "infection/extension-installer": true,
             "symfony/flex": true
-        },
-        "phpstan": {
-            "includes": [
-                "extension.neon"
-            ]
         }
     }
 }
